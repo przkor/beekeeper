@@ -1,5 +1,16 @@
 # Getting Started with Create React App
 
+BEEKEEPER.
+System for beekeepers to manage apiarys an hives.
+You can :
+-Create account for each Worker in your farm,
+-Manage each apiary (add, edit, delete)
+-Manage hives (add new, edit, make inspection, set status for each hive, migration beetwen apiarys)
+-Manage tasks for apiarys/hives
+-Set Treatment for seeks hives
+-Manage medicines for hives
+-Manage bee dums and convert it to production family
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
