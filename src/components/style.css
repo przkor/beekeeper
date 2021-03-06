@@ -1,0 +1,28 @@
+.hive {
+  width: 100%;
+  text-align: left;
+}
+label {
+  text-align: left;
+}
+.hive::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.hiveNumberInput {
+  float: left;
+  width: 50%;
+  margin-right: 5px;
+}
+
+.hiveTypeInput {
+  float: left;
+  width: 100%;
+}
+
+.hiveNumberButton {
+  float: left;
+  width: 40%;
+}
