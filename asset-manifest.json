@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/beekeeper/static/css/main.7f8cc86b.chunk.css",
+    "main.js": "/beekeeper/static/js/main.bac34b96.chunk.js",
+    "main.js.map": "/beekeeper/static/js/main.bac34b96.chunk.js.map",
+    "runtime-main.js": "/beekeeper/static/js/runtime-main.06b75ddc.js",
+    "runtime-main.js.map": "/beekeeper/static/js/runtime-main.06b75ddc.js.map",
+    "static/css/2.1a02f21c.chunk.css": "/beekeeper/static/css/2.1a02f21c.chunk.css",
+    "static/js/2.795103df.chunk.js": "/beekeeper/static/js/2.795103df.chunk.js",
+    "static/js/2.795103df.chunk.js.map": "/beekeeper/static/js/2.795103df.chunk.js.map",
+    "static/js/3.2f3fb882.chunk.js": "/beekeeper/static/js/3.2f3fb882.chunk.js",
+    "static/js/3.2f3fb882.chunk.js.map": "/beekeeper/static/js/3.2f3fb882.chunk.js.map",
+    "index.html": "/beekeeper/index.html",
+    "static/css/2.1a02f21c.chunk.css.map": "/beekeeper/static/css/2.1a02f21c.chunk.css.map",
+    "static/css/main.7f8cc86b.chunk.css.map": "/beekeeper/static/css/main.7f8cc86b.chunk.css.map",
+    "static/js/2.795103df.chunk.js.LICENSE.txt": "/beekeeper/static/js/2.795103df.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.06b75ddc.js",
+    "static/css/2.1a02f21c.chunk.css",
+    "static/js/2.795103df.chunk.js",
+    "static/css/main.7f8cc86b.chunk.css",
+    "static/js/main.bac34b96.chunk.js"
+  ]
+}
