@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/beekeeper/static/css/main.7f8cc86b.chunk.css",
-    "main.js": "/beekeeper/static/js/main.bac34b96.chunk.js",
-    "main.js.map": "/beekeeper/static/js/main.bac34b96.chunk.js.map",
+    "main.js": "/beekeeper/static/js/main.d01601a4.chunk.js",
+    "main.js.map": "/beekeeper/static/js/main.d01601a4.chunk.js.map",
     "runtime-main.js": "/beekeeper/static/js/runtime-main.06b75ddc.js",
     "runtime-main.js.map": "/beekeeper/static/js/runtime-main.06b75ddc.js.map",
     "static/css/2.1a02f21c.chunk.css": "/beekeeper/static/css/2.1a02f21c.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.1a02f21c.chunk.css",
     "static/js/2.795103df.chunk.js",
     "static/css/main.7f8cc86b.chunk.css",
-    "static/js/main.bac34b96.chunk.js"
+    "static/js/main.d01601a4.chunk.js"
   ]
 }
