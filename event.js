@@ -4,7 +4,7 @@ var url = "mongodb://localhost:27017";
 
 module.exports = {
   addEvent: function (username, title, subject, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection("event").insertOne(
@@ -24,7 +24,7 @@ module.exports = {
     });
   },
   getEventWithId: function (username, id, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection("event").findOne(
@@ -43,7 +43,7 @@ module.exports = {
     });
   },
   updateEvent: function (username, id, title, subject, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon
@@ -63,7 +63,7 @@ module.exports = {
     });
   },
   getEvents: function (username, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection("event", function (err, collection) {
@@ -76,7 +76,7 @@ module.exports = {
   },
 
   deleteEvent: function (username, id, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection("event").deleteOne(
@@ -96,7 +96,7 @@ module.exports = {
   },
 
   getProfile: function (username, session_email, callback) {
-    const client = MongoClient(url)
+    const client = MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true })
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection("user").findOne(
