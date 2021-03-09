@@ -329,7 +329,7 @@ app.post("/deleteElement", function (req, res) {
 
 //PONIŻSZE FNUKCJĘ SĄ NIE DO USUNIĘCIA !!!
 app.post("/getHivesAmountInApiary", function (req, res) { 
-  sessions = req.session.username;
+  sessions = req.session.username; 
   const sessionUsername = sessions.split("@");
   const username = sessionUsername[0];
   const id = req.body._id
