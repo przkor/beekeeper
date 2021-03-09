@@ -129,6 +129,35 @@ export function addHive(data,setDefault) {
   }
 }
 
+export function delHive(id) {
+    return (dispatch) => {
+        axios.post("/delete", {
+            data:{id},
+            dbCollection
+        })
+        .then(function (response) {
+            //const newID=response.data
+            if (response.data==="access denied")
+            {
+                window.location.assign('/');
+                return
+            }
+            else if(response.data===false) {
+                alert('Błąd, nie dodano rekordu!'); 
+                return; 
+            }
+            else {
+                dispatch({type:DELETE, data:{_id:id}})  
+
+            }
+        })
+        .catch(function (error) {
+           console.log(error);
+        });
+      
+  }
+}
+
 export function editHive(data) {
     return dispatch => {
     axios.post("/update", {

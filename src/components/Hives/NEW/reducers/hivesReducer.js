@@ -30,7 +30,7 @@ const hivesReducer = (state=[],action) => {
             return [...action.data]
         }
         case DELETE:
-            return state.filter(element=>element._id !== action.data.id);
+            return state.filter(element=>element._id !== action.data._id);
         case CLEAR:
             return []
         default: return state

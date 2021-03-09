@@ -6,18 +6,23 @@ class Signup extends Component {
     constructor(props) {
       super(props);
       this.signUp = this.signUp.bind(this);
+      this.handleLoginChange = this.handleLoginChange.bind(this);
       this.handleNameChange = this.handleNameChange.bind(this);
       this.handleEmailChange = this.handleEmailChange.bind(this);
       this.handlePasswordChange = this.handlePasswordChange.bind(this);
       this.state = {
-        name: "",
-        email: "",
-        password: "",
-        confirmation: "",
+        login: '',
+        name: '',
+        email: '',
+        password: '',
+        confirmation: '',
       };
     }
     handleNameChange(e) {
       this.setState({ name: e.target.value });
+    }
+    handleLoginChange(e) {
+      this.setState({ login: e.target.value });
     }
     handleEmailChange(e) {
       this.setState({ email: e.target.value });
@@ -30,12 +35,13 @@ class Signup extends Component {
   }
   componentDidMount() {
     document.getElementById('mainMenu').style.display='none'
-}
+  }
 
     signUp() {
      const self = this;
       axios
         .post("/signup", {
+          login: this.state.login,
           name: this.state.name,
           email: this.state.email,
           password: this.state.password,
@@ -43,10 +49,11 @@ class Signup extends Component {
         .then(function (response) {
           if (response.data === "success") {
             self.setState({
-              name: "",
-              email: "",
-              password: "",
-              confirmation: "Rejestrację się powiodła. Możesz się zalogować",
+              login: '',
+              name: '',
+              email: '',
+              password: '',
+              confirmation: 'Rejestrację się powiodła. Możesz się zalogować'
             });
           } 
           else if (response.data==='access denied') {console.log('Dostęp wzbroniony')}
@@ -71,6 +78,19 @@ class Signup extends Component {
         <div>
           <form className="form-signin" onSubmit={this.handleSubmit}>
             <h2 className="form-signin-heading">Zarejestruj się:</h2>
+            <label htmlFor="inputLogin" className="sr-only">
+              Login
+            </label>
+            <input
+              type="name"
+              onChange={this.handleLoginChange}
+              id="inputLogin"
+              value={this.state.login}
+              className="form-control"
+              placeholder="Login"
+              required
+              autoFocus
+            />
             <label htmlFor="inputName" className="sr-only">
               Imie
             </label>
@@ -80,9 +100,8 @@ class Signup extends Component {
               id="inputName"
               value={this.state.name}
               className="form-control"
-              placeholder="Nick/imię"
+              placeholder="Imie"
               required
-              autofocus
             />
             <label htmlFor="inputEmail" className="sr-only">
               Adres email
@@ -93,9 +112,8 @@ class Signup extends Component {
               id="inputEmail"
               value={this.state.email}
               className="form-control"
-              placeholder="Adres email"
+              placeholder="E-mail"
               required
-              autofocus
             />
             <label htmlFor="inputPassword" className="sr-only">
               Hasło
@@ -109,7 +127,6 @@ class Signup extends Component {
               placeholder="Hasło"
               required
             />
-  
             <button
               className="btn btn-lg btn-primary btn-block"
               onClick={this.signUp}

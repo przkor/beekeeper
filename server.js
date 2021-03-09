@@ -43,11 +43,11 @@ const checkIsLogged = (sessions)=> {
 
 
 app.post("/signin", function (req, res) {
-  const user_name = "wiesiek@gmail.com"//req.body.email;
-  const password = "w"//req.body.password;
-  user.validateSignIn(user_name, password, function (result) {
+  const login = req.body.login;
+  const password = req.body.password;
+  user.validateSignIn(login, password, function (result) {
     if (result) {
-      req.session.username = user_name;
+      req.session.username = login;
       res.send("success");
     } else {
       res.send("failure");
@@ -56,11 +56,12 @@ app.post("/signin", function (req, res) {
 });
 
 app.post("/signup", function (req, res) {
+  let login = req.body.login;
   let name = req.body.name;
   let email = req.body.email;
   let password = req.body.password;
-  if (name && email && password) {
-    user.signup(name, email, password, function (result) {
+  if (login && name && email && password) {
+    user.signup(login, name, email, password, function (result) {
       if (result) {
         res.send("success");
       } else {
@@ -344,11 +345,18 @@ app.post("/delete", function (req, res) {
   const username = sessionUsername[0];
   const id = req.body.data.id;
   const collection = req.body.dbCollection
-  console.log(`Collection: ${collection}`)
-  deleteElement.delete(username, id, collection, 
+  if (collection === 'hives') {
+    hives.deleteHive(username, id, 
+      function (result) {
+      res.send(result);
+    });
+  }
+  else {
+    deleteElement.delete(username, id, collection, 
     function (result) {
     res.send(result);
   });
+}
 });
 
 

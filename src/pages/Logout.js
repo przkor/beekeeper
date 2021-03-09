@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { ContextLogin } from '../components/ContextLogin';
 
-const Logout = () => {
+const Logout = () => { 
 
   let {cleanUsername, toggleUserLogged} = useContext(ContextLogin)
   const history = useHistory()

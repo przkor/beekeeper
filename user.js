@@ -1,11 +1,39 @@
 var MongoClient = require("mongodb").MongoClient;
-var assert = require("assert");
-var url = "mongodb://localhost:27017";
-var datacollection = "user";
+//var uri = "mongodb://localhost:27017";
+const uri = "mongodb+srv://beekeeper:Misio123PK@cluster0.fwg7e.mongodb.net/?retryWrites=true&w=majority"
+const collectionName = "user"
 
 module.exports = {
-  signup: function (name, email, password, callback) {
-    MongoClient.connect(url, function (err, db) {
+  signup: function (login, name, email, password, callback) {
+    //const textToSplit = email.split("@");
+    //const dbName = textToSplit[0];
+    const dbName = login
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(err => {
+      client.db(dbName).collection(collectionName).insertOne(
+        {
+          login: login,
+          name:name,
+          email: email,
+          password: password,
+        },
+        function (err, result) {
+          client.close();
+          if ((result.insertedCount === 0) || (result === undefined)) {
+            console.log("Nie dodano użytkownika. ",err);
+            callback(false);
+            
+          } else {
+            console.log("Dodano użytkownika");
+            callback(true);
+          }
+        }
+      );    
+    });
+
+  
+   /*
+    MongoClient.connect(url,function (err, db) {
       const textToSplit = email.split("@");
       const dbName = textToSplit[0];
       const dbcon = db.db(dbName);
@@ -16,7 +44,6 @@ module.exports = {
           password: password,
         },
         function (err, result) {
-          assert.equal(err, null);
           console.log("Saved the user sign up details.");
           if (result == null) {
             console.log("Nie dodano użytkownika");
@@ -28,26 +55,72 @@ module.exports = {
         }
       );
     });
+    */
   },
-  validateSignIn: function (username, password, callback) {
-    MongoClient.connect(url, function (err, db) {
-      const textToSplit = username.split("@");
-      const dbName = textToSplit[0];
+
+  validateSignIn: function (login, password, callback) {
+    const dbName = login
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(err => {
+      client.db(dbName).collection(collectionName).findOne(
+        {
+          login: login,
+          password: password,
+        },
+        function (err, result) {
+          client.close();
+          if (result === null) {
+            console.log("Niezalogowano",err);
+            callback(false);
+          } else {
+            console.log("Zalogowano poprawnie");
+            callback(true);
+          }
+        }
+      );    
+    });
+    /*
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    client.connect(err => {
+      console.log(`Połączono z bazą`)
+      client.db("wiesiek").collection("user").findOne({ email: username, password: password }, function (
+        err,
+        result
+      ) {
+        if (result === null) {
+          console.log("returning false");
+          callback(false);
+          client.close();
+        } else {
+          console.log("returning true");
+          callback(true);
+          client.close();
+        }
+      })
+      // perform actions on the collection object
+      
+    });
+    */
+    
+    /*
+    MongoClient.connect(uri, function (err, db) {
+      const dbName = login
       const dbcon = db.db(dbName);
       dbcon
-        .collection(datacollection)
-        .findOne({ email: username, password: password }, function (
+        .collection(collectionName)
+        .findOne({ login: login, password: password }, function (
           err,
           result
         ) {
-          if (result == null) {
-            console.log("returning false");
+          if (result === null) {
+            console.log("Błąd. Nie zalogowano",result);
             callback(false);
           } else {
-            console.log("returning true");
+            console.log("Zalogowano poprawnie");
             callback(true);
           }
         });
     });
+    */
   },
 };

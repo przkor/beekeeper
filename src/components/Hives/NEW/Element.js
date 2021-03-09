@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import FormEdit from './FormEdit'
-import {del} from './actions/hivesActions'
+import {delHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
 
 const collection = 'hives'
 
-const Element = ({_id,number,type,mother,motherYear,power,status,apiary}) => {
+const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}) => {
 
     const [isVisibleForm,setIsVisibleForm]= useState(false)
 
@@ -13,8 +13,9 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary}) => {
         setIsVisibleForm(current=>!current)
     }
 
-    const handleDelete = () => {    
-        del(_id,collection)
+    const handleDelete = () => {   
+        let id =_id 
+        delHive(id,collection)
     }
 
     const formElement = () => {
@@ -52,7 +53,7 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary}) => {
 }
 
 const connectActionsToProps = ({
-    del
+    delHive
   })
 
 const ElementWithReduxAction = connect(null,connectActionsToProps)(Element)

@@ -35,7 +35,7 @@ const AddEvent = (props) => {
     }
     const handleSubjectChange = (e) => {
       setSubject(e.target.value);
-    }
+    }  
 
     const getEventWithId = useCallback(() => {
       if (eventID !== undefined && eventID!==null) {

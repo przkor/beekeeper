@@ -6,13 +6,13 @@ import { ContextLogin } from '../components/ContextLogin';
 const Signin = (props) => {
     const history = useHistory()
     const {toggleUserLogged,changeUsername} = useContext(ContextLogin)
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const [wrongLogOrPass,setWronLogOrPass] = useState("")
+    const [login,setLogin] = useState('')
+    const [password,setPassword] = useState('')
+    const [wrongLogOrPass,setWronLogOrPass] = useState('')
 
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+    const handleLoginChange = (e) => {
+        setLogin(e.target.value);
       }
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
@@ -29,23 +29,23 @@ const Signin = (props) => {
     const signin = () => {
       axios
         .post("/signin", {
-          email: email ,
+          login: login ,
           password: password,
         })
         .then(function (response) {
           if (response.data === "success") {    
             toggleUserLogged(true)
-            changeUsername(email)
+            changeUsername(login)
             setWronLogOrPass('Zalogowano poprawnie')
-            setEmail('')
-            setPassword('')
+           // setLogin('')
+          //  setPassword('')
             history.push('events')
             //self.props.history.push("/events")
             return
         }
           if (response.data === "failure") {
               setWronLogOrPass("Błędny login lub hasło")
-              setEmail('')
+              setLogin('')
               setPassword('')
             return
           }
@@ -60,16 +60,16 @@ const Signin = (props) => {
         <div>
           <h4>Panel logowania</h4>
           <form className="form-signin" onSubmit={handleSubmit}>
-            <label htmlFor="inputEmail" className="sr-only">
+            <label htmlFor="inputLogin" className="sr-only">
               Adres email
             </label>
             <input autoFocus={true}
-              type="email"
-              onChange={handleEmailChange}
-              id="inputEmail"
+              type="login"
+              onChange={handleLoginChange}
+              id="inputLogin"
               className="form-control"
-              placeholder="Email"
-              value={email}
+              placeholder="Login"
+              value={login}
               required
               
             />

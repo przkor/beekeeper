@@ -31,7 +31,13 @@ const FormAdd = ({
  const [confirmation,setConfirmation] = useState('')
 
   const handleAddHive = () => {
-    addHive(hive,setHive)
+    if (hive.number && hive.type && hive.mother && hive.motherYear && hive.power && hive.status && hive.apiary) {
+      addHive(hive,setHive)
+    }
+    else {
+      alert(`Błąd. Nie podano wszystkich parametrów`)
+    }
+    
   }
 
   const handleNumber = (e) => {
