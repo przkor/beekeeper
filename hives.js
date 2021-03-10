@@ -1,11 +1,11 @@
+const {uri,mongoConstructor} = require("./mongoConfig")
 const MongoClient = require("mongodb").MongoClient;
 const mongodb = require("mongodb");
-const url = "mongodb://localhost:27017";
 const dbcollection = 'hives'
 
 module.exports = {
   getHivesNumbers: function (username, callback) {
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     async function run() {
       try {
         await client.connect();
@@ -62,7 +62,7 @@ module.exports = {
     */
 
    getHives: function (username,apiaryID, callback) {
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     let query
     async function run() {
       try {
@@ -90,7 +90,7 @@ module.exports = {
 
   updateHive: function (username,data,callback) {
     const {_id,number,type,mother,motherYear,power,status,apiary} = data
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
      const dbcon = db.db(username);
       dbcon
@@ -114,7 +114,7 @@ module.exports = {
   },
 
   getHivesAmountInApiary: function (username,id, callback) {
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     async function run() {
       try {
         await client.connect();
@@ -162,7 +162,7 @@ module.exports = {
 
 
 getHivesAmountInApiary2: function (username,id,callback) {
-  const client = MongoClient(url)
+  const client =  MongoClient(uri,mongoConstructor)
   async function run() {
     try {
       await client.connect();
@@ -189,7 +189,7 @@ getHivesAmountInApiary2: function (username,id,callback) {
 
   addHive: function (username,hive,callback) {
     const {number,type,mother,motherYear,power,status,apiary,isActive}=hive
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
         client.connect(async function (err, db) {
             const dbcon = await db.db(username);
             const hives = await dbcon.collection(dbcollection)
@@ -253,7 +253,7 @@ getHivesAmountInApiary2: function (username,id,callback) {
   
  
   deleteHive: function (username, hiveID, callback) {
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
       const dbcon = db.db(username);
       dbcon.collection(dbcollection).updateOne(

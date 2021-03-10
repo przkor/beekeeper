@@ -1,14 +1,15 @@
-var MongoClient = require("mongodb").MongoClient;
-//var uri = "mongodb://localhost:27017";
-const uri = "mongodb+srv://beekeeper:Misio123PK@cluster0.fwg7e.mongodb.net/?retryWrites=true&w=majority"
+const {uri,mongoConstructor} = require("./mongoConfig")
+//import {uri,mongoConstructor} from './mongoConfig' 
+let MongoClient = require("mongodb").MongoClient;
 const collectionName = "user"
+
 
 module.exports = {
   signup: function (login, name, email, password, callback) {
     //const textToSplit = email.split("@");
     //const dbName = textToSplit[0];
     const dbName = login
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(uri, mongoConstructor);
     client.connect(err => {
       client.db(dbName).collection(collectionName).insertOne(
         {
@@ -60,7 +61,8 @@ module.exports = {
 
   validateSignIn: function (login, password, callback) {
     const dbName = login
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    //{ useNewUrlParser: true, useUnifiedTopology: true }
+    const client = new MongoClient(uri, mongoConstructor );
     client.connect(err => {
       client.db(dbName).collection(collectionName).findOne(
         {

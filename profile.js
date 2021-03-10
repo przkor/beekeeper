@@ -1,10 +1,10 @@
+const {uri,mongoConstructor} = require("./mongoConfig")
 const MongoClient = require("mongodb").MongoClient;
-const url = "mongodb://localhost:27017";
 const tableDB = "user";
 
 module.exports = {
   updateProfile: function (username, name, password, callback) {
-    const client = MongoClient(url)
+    const client =  MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
      const dbcon = db.db(username);
       dbcon

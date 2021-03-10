@@ -64,7 +64,7 @@ const App = () => {
 
   */
   return (
-    <Router history={hashHistory}> 
+    <Router basename={process.env.PUBLIC_URL} history={hashHistory}> 
     <ContextLogin.Provider value={
             {
                isUserLogged,
