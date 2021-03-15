@@ -21,7 +21,7 @@ const Migration = () => {
   useLayoutEffect(() => {
     document.getElementById('showHives').className='nav-link';
     document.getElementById('addHive').className='nav-link';
-    document.getElementById('migrationHives').className='nav-link active';
+    document.getElementById('migration').className='nav-link active';
   },[])
  
   return (
