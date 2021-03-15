@@ -15,8 +15,8 @@ const ComponentToShow = ({action}) => {
         break
         case 'addHive' : componentToShow=<FormAdd/>
         break
-        //case 'migrationHives' : componentToShow=<MigrationHives/>
-       // break
+       // case 'migrationHives' : componentToShow=<MigrationHives/>
+      //  break
         default: componentToShow=<ShowHives/>
     }
     return (  

@@ -1,14 +1,14 @@
 const {uri,mongoConstructor} = require("./mongoConfig")
 const MongoClient = require("mongodb").MongoClient;
 const mongodb = require("mongodb");
-const table = 'quens'
+const dbcollection = 'quens'
 
 module.exports = {
   getQuens: async function (username, callback) {
     const client =  MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
       const dbcon = db.db(username);
-      dbcon.collection(table, async function (err, collection) {
+      dbcon.collection(dbcollection, async function (err, collection) {
         await collection.find().toArray(function (err, list) {
           if (err===null)
           {
@@ -25,7 +25,7 @@ module.exports = {
     const client = MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
       const dbcon = db.db(username);
-      dbcon.collection(table).insertOne(
+      dbcon.collection(dbcollection).insertOne(
         {
           line: line,
           delivery: delivery,
@@ -49,7 +49,7 @@ module.exports = {
     const client = MongoClient(uri,mongoConstructor)
     client.connect(function (err, db) {
     const dbcon = db.db(username);
-    dbcon.collection(table).deleteOne(
+    dbcon.collection(dbcollection).deleteOne(
       {
         _id: new mongodb.ObjectID(id),
       },

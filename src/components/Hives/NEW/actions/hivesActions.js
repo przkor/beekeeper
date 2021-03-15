@@ -79,7 +79,12 @@ export function getHives(apiaryID) {
             else {
                // console.log(`apiaryID: ${apiaryID}`)
                // console.log(`Response.data.result: ${response.data.result}`)
+               if (response.data!==false) {
                 dispatch({type:GET,data:response.data})
+               }
+               else {return}
+              
+               //console.log(`Response.data: ${response.data}`)
             }
         })
         .catch(function (error) {
@@ -188,6 +193,6 @@ export function editHive(data) {
 
 export const clear= () => ({
     type: CLEAR,
-    data: null
+    data: []
 })
 

@@ -4,6 +4,7 @@ const mongodb = require("mongodb");
 const dbcollection = 'hives'
 
 module.exports = {
+  /*
   getHivesNumbers: function (username, callback) {
     const client =  MongoClient(uri,mongoConstructor)
     async function run() {
@@ -13,18 +14,25 @@ module.exports = {
         const collection = database.collection(dbcollection)
         const query = { isActive:false}
         const options = { projection: {number:1} }
-        const count = await collection.estimatedDocumentCount()+1
-        collection.findOne(query,options, function (err, result) {
-          if (err === null) {
-              if (result) { callback({number:result.number, count:count});}
-              else { callback({number:false, count:count}); }
+        const count = await collection.estimatedDocumentCount()
+        if (count===0) {callback({number:1,count:0})}
+        else {
+          collection.findOne(query,options, function (err, result) {
+            
+            if (err === null) {
+              console.log(`Jestem w err===null`)
+              console.log(`Result:${result}`)
+              if (result) { callback({number:result, count:count});}
+              else { callback({number:1, count:count}); }
             }
-          else {
-            callback(false);
+            else {
+              console.log(`Result:${result}`)
+              callback({number:count+1, count:count});
+            }
           }
+          );
         }
-        );
-      }
+      } 
       finally {
         await client.close();
       }
@@ -32,7 +40,8 @@ module.exports = {
     run().catch(console.dir)
     
   },
-  /*
+  */
+  
   getHivesNumbers: function (username, callback) {
     const query = { isActive: false};
     const options = {
@@ -41,16 +50,16 @@ module.exports = {
       // Include only the `title` and `imdb` fields in the returned document
       projection: { number: 1},
     };
-    MongoClient.connect(url, async function (err, db) {
+    MongoClient.connect(uri, mongoConstructor, async function (err, db) {
+      if (err) {console.log('błąd połączenia z bazą')}
+      else {
         const dbcon = db.db(username);
-        const count = await dbcon.collection(collection).estimatedDocumentCount()+1
-        dbcon.collection(collection).findOne(query,options
+        const count = await dbcon.collection(dbcollection).estimatedDocumentCount()+1
+        dbcon.collection(dbcollection).findOne(query,options
           ,
           function (err, result) {
-            assert.equal(err, null);
             if (err === null) {
-                console.log(`Count : ${count}`)
-                if (result) { callback({number:result, count:count});}
+                if (result) { callback({number:result.number, count:count});}
                 else { callback({number:false, count:count}); }
               }
             else {
@@ -58,9 +67,63 @@ module.exports = {
             }
           }
         );
-      });
-    */
+      }
+    });
+  },
 
+  getHivesAmountInApiary: async function (username,id, callback) {   
+    try {
+      const client =  new MongoClient(uri,mongoConstructor)
+      const query = {
+        apiary:id,
+        isActive:true
+      }
+      await client.connect(function (err, db) {
+        if (err) {console.log(`błąd połączenia z bazą`)}
+        else {
+          const dbcon = db.db(username);
+          dbcon.collection(dbcollection, function (err, collection) {
+            if (err) {console.warn(`błąd przy połączeniu z kolekcją danych`)}
+            else {
+              collection.countDocuments(query,function (err, result) {
+                client.close();
+                if (err === null) {callback({result})}
+                else { callback(false) };
+              }
+           )}        
+          } 
+        )};
+        }) 
+      } catch (e) {
+        console.error(e);
+      } 
+  },
+
+  getHives: function (username,apiaryID,callback) {
+    let query
+    if(apiaryID==='all') { query = { isActive:true}}
+    else { query = { isActive:true , apiary:apiaryID}}
+    const client =  MongoClient(uri,mongoConstructor)
+    client.connect(function (err, db) {
+      const dbcon = db.db(username);
+      dbcon.collection(dbcollection, function (err, collection) {
+        if (err) {console.warn(`Błąd połączenia z bazą`)}
+        else {
+          collection.find(query).toArray(function (err, result) {
+            client.close();
+            if (err===null)
+            {
+              if (result!==undefined) {callback(result);}
+              else {callback(false)} 
+            }
+            else {callback(false)}
+          });
+        } 
+      });
+    });
+  },
+
+  /*
    getHives: function (username,apiaryID, callback) {
     const client =  MongoClient(uri,mongoConstructor)
     let query
@@ -73,8 +136,11 @@ module.exports = {
         const collection = database.collection(dbcollection)
         //const options = {}
         collection.find(query).toArray(function (err, result) {
-          if (err === null) {
-            callback(result)
+          console.log(`Result: ${result}`)
+          if (err === null) { 
+            if (result!==undefined) {callback(result)}  
+            else {callback(false)}
+            
           }
           else {
             callback(false);
@@ -87,6 +153,8 @@ module.exports = {
     }
     run().catch(console.dir)
   },
+
+  */
 
   updateHive: function (username,data,callback) {
     const {_id,number,type,mother,motherYear,power,status,apiary} = data
@@ -112,80 +180,6 @@ module.exports = {
         );
     });
   },
-
-  getHivesAmountInApiary: function (username,id, callback) {
-    const client =  MongoClient(uri,mongoConstructor)
-    async function run() {
-      try {
-        await client.connect();
-        const database = client.db(username)
-        const collection = database.collection(dbcollection)
-        const query = {
-          apiary:id,
-          isActive:true
-        }
-        await collection.countDocuments(query,function (err, result) {
-          if (err === null) {
-            console.log(`Result:${result}`)
-            callback({result})
-            client.close();
-          }
-          else {
-            client.close();
-            callback(false);
-          }
-        })
-       /*
-        const match = {$match:{apiary:id}}
-       const group = {$group:{total:{$sum:1}}}
-       await collection.aggregate([match,group],function (err, result) {
-        console.log(`Result:${result}`)
-        client.close();
-        if (err === null) {
-          
-          callback(result)
-        }
-        else {
-          callback(false);
-        }
-      })
-        */
-     
-      }
-      finally {
-        await client.close();
-      }
-    }
-    run().catch(console.dir)
-  
-  },
-
-
-getHivesAmountInApiary2: function (username,id,callback) {
-  const client =  MongoClient(uri,mongoConstructor)
-  async function run() {
-    try {
-      await client.connect();
-      const database = client.db(username)
-      const collection = database.collection(dbcollection)
-      const match = {$match:{isActive:true}}
-      const group = {$group:{_id:"$apiary",amount:{$sum:1}}}
-      await collection.findOne([match,group]).toArray(function (err, result) {
-        client.close();
-        if (err === null) {
-          callback(result)
-        }
-        else {
-          callback(false);
-        }
-      })
-    }
-    finally {
-      await client.close();
-    }
-  }
-  run().catch(console.dir)
-},
 
   addHive: function (username,hive,callback) {
     const {number,type,mother,motherYear,power,status,apiary,isActive}=hive
@@ -248,9 +242,6 @@ getHivesAmountInApiary2: function (username,id,callback) {
             }
         });
   },
- 
-
-  
  
   deleteHive: function (username, hiveID, callback) {
     const client =  MongoClient(uri,mongoConstructor)

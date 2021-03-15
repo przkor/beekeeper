@@ -25,9 +25,19 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
         
     })
 
-    const table = 
-        (
-            <div>
+    const noHivesToShow = (
+        <div>
+            <p>Brak uli</p>
+        </div>
+    )
+
+    const noApiarysToShow = (
+        <div>
+            <p>Brak pasiek w bazie</p>
+        </div>
+    )
+    const apiarysList = (
+        <div>
             <h5>Lista uli</h5>
             <form style={{"marginTop":"20px", "marginBottom":"20px"}}>
                 <h6>Wybierz pasieke:</h6>
@@ -43,12 +53,18 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
                 <option value='all'>wszystkie</option>
                 </select>
             </form>
+        </div>
 
-            <table className="table table-striped table- mt-3">
+    )
+    const hivesList = 
+        (
+        <div>
+             <table className="table table-striped table- mt-3">
                 <thead className="thead thead-light">
                 <tr>
                     <th>Nr</th>
                     <th>Typ</th>
+                    <th>Siła</th>
                     <th>Status</th>
                     <th>edit</th>
                     <th>del</th>
@@ -70,7 +86,8 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
 
     return (
     <>
-        {table}
+        {apiarys.length>0 ? apiarysList : noApiarysToShow}
+        { hives.length>0 ? hivesList : noHivesToShow}
     </>
     )
 }

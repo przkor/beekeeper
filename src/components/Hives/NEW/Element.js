@@ -44,6 +44,7 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
             <td>{number}</td>
             <td>{type}</td>
             <td>{power}</td>
+            <td>{status}</td>
             <td>{isVisibleForm? '' : editButton}</td>
             <td>{deleteButton}</td>
         </tr>

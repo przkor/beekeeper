@@ -7,7 +7,6 @@ export const apiarysMiddleware = store => next => action =>  {
     const data=action.data
     const type=action.type
     const dbCollection = action.dbCollection
-    console.log(`Jestem w apiarysMiddlewar. Akcja: ${action.type}`)
     if (type === ADD) {
         axios.post("/add", {
             data,

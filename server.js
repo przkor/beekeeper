@@ -43,8 +43,8 @@ const checkIsLogged = (sessions)=> {
 
 
 app.post("/signin", function (req, res) {
-  const login = req.body.login;
-  const password = req.body.password;
+  const login = 'wiesiek'//req.body.login;
+  const password = 'w'//req.body.password;
   user.validateSignIn(login, password, function (result) {
     if (result) {
       req.session.username = login;
@@ -149,101 +149,6 @@ app.post("/updateProfile", function (req, res) {
   });
 });
 
-/*
-app.post("/addApiary", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  const data = req.body.data;
-  apiary.addApiary(username, data, function (result) {
-    res.send(result);
-  });
-});
-
-app.post("/deleteApiary", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  const id = req.body.id;
-  apiary.deleteApiary(username, id, function (result) {
-    res.send(result);
-  });
-});
-*/
-
-app.post("/getApiary", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  apiary.getApiary(username, function (result) {
-    res.send(result);
-  });
-});
-/*
-app.post("/updateApiary", function (req, res) { 
-  sessions = req.session.username;
-  const data = req.body.data;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  apiary.updateApiary(username,data, function (result) {
-    res.send(result);
-  });
-});
-*/
-
-app.post("/addHive", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  const hive = req.body.hive;
-  hives.addHive(username, hive, 
-    function (result) {
-    res.send(result);
-  });
-});
-
-app.post("/getHives", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  let apiaryID= req.body.apiaryID
-  if (apiaryID===null || apiaryID===undefined) {apiaryID=''}
-  hives.getHives(username, apiaryID, function (result) {
-    res.send(result);
-  });
-});
-
-app.post("/getHivesNumbers", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  hives.getHivesNumbers(username, function (result) {
-    res.send(result);
-  });
-});
-
-
-
-app.post("/getHivesAmount", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-    hives.getHivesAmount(username, function (result) {
-      res.send(result);
-    });
-});
-
-app.post("/deleteHive", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  const hiveID = req.body.hiveID;
-  hives.deleteHive(username, hiveID, function (result) {
-    res.send(result);
-  });
-});
-
 app.post("/getQuens", function (req, res) { 
   sessions = req.session.username;
   if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
@@ -328,6 +233,16 @@ app.post("/deleteElement", function (req, res) {
 */
 
 //PONIŻSZE FNUKCJĘ SĄ NIE DO USUNIĘCIA !!!
+
+app.post("/getHivesNumbers", function (req, res) { 
+  sessions = req.session.username;
+  const sessionUsername = sessions.split("@");
+  const username = sessionUsername[0];
+  hives.getHivesNumbers(username, function (result) {
+    res.send(result);
+  });
+});
+
 app.post("/getHivesAmountInApiary", function (req, res) { 
   sessions = req.session.username; 
   const sessionUsername = sessions.split("@");
@@ -443,10 +358,8 @@ app.post("/update", function (req, res) {
 });
 
 app.post("/get", function (req, res) { 
-  sessions = req.session.username;
+  const username = req.session.username;
   if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
   const dbCollection = req.body.dbCollection;
   switch (dbCollection) {
     case APIARY: {
