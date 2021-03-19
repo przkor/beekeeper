@@ -4,14 +4,7 @@ import {store} from '../../../store/hivesStore.js'
 import {useHistory} from 'react-router-dom'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
-import MigrationTable from './MigrationTable.js'
-
-const MigrationComponent = () => {
-  return (
-          <MigrationTable/>      
-  )
-}
-
+import MigrationTable from './MigrationTable2.js'
 
 const Migration = () => {
 
@@ -21,7 +14,7 @@ const Migration = () => {
   useLayoutEffect(() => {
     document.getElementById('showHives').className='nav-link';
     document.getElementById('addHive').className='nav-link';
-    document.getElementById('migration').className='nav-link active';
+    document.getElementById('migrationHives').className='nav-link active';
   },[])
  
   return (
@@ -32,7 +25,7 @@ const Migration = () => {
       <>
       <Provider store={store}>
         <div>
-          <MigrationComponent/>
+          <MigrationTable/>
         </div>
       </Provider>
      </>

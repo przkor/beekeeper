@@ -1,10 +1,8 @@
 import React, {useState, useContext} from 'react' ;
 import {useHistory} from 'react-router-dom'
-import {Provider} from 'react-redux'
-import {store} from '../../../store/hivesStore.js'
 import FormAdd from './FormAdd'
 import ShowHives from './ShowHives'
-//import MigrationHives from './MigrationHives'
+import MigrationHives from './MigrationHives'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
 
@@ -15,8 +13,8 @@ const ComponentToShow = ({action}) => {
         break
         case 'addHive' : componentToShow=<FormAdd/>
         break
-       // case 'migrationHives' : componentToShow=<MigrationHives/>
-      //  break
+        case 'migrationHives' : componentToShow=<MigrationHives/>
+        break
         default: componentToShow=<ShowHives/>
     }
     return (  
@@ -44,7 +42,7 @@ const Hives = () => {
             <li className="nav-item"><button className="nav-link" 
             onClick={handleClickButton} value="addHive" id="addHive">Dodaj</button></li>
             <li className="nav-item"><button className="nav-link" 
-            onClick={handleClickButton} value="migration" id="migration">Migracje</button></li>
+            onClick={handleClickButton} value="migrationHives" id="migrationHives">Migracje</button></li>
         </ul>
         )
     }
@@ -55,10 +53,9 @@ const Hives = () => {
            isUserLogged 
            ? 
            <>
-           <Provider store={store}>
+           
             {tab()}
             <ComponentToShow action={component}/>
-           </Provider>
           </>
           : 
            <NotLoggedComponent history={history}/>

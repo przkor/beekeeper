@@ -191,6 +191,42 @@ export function editHive(data) {
 }
 }
 
+export function migrateHive(id) {
+    const _id = id
+    return (dispatch) => {    
+            dispatch({type:DELETE, data:{_id}})          
+    }
+}
+
+export function doMigrateHives(data,apiaryID,handleClearMigrateList,setChangeConfirmation) {
+    return dispatch => {
+        console.log(`data:${data} , apiaryID:${apiaryID}`)
+        axios.post("/migrateHives", {
+            data,
+            apiaryID
+        })
+        .then(function (response) {
+            if (response.data==="access denied")
+            {
+                window.location.assign('/');
+                return
+            }
+            else {
+               if (response.data===true) {
+                    handleClearMigrateList()
+                    setChangeConfirmation('Zmigrowano pomyślnie')
+                    dispatch({type:'none'})
+                   
+                }
+               else {console.warn(`Błąd bazy! Nie zmigrowano.`)}   
+            }
+        })
+        .catch(function (error) {
+           console.log(error);
+        });
+    }
+}
+
 export const clear= () => ({
     type: CLEAR,
     data: []

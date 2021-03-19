@@ -1,21 +1,16 @@
-import React, {useLayoutEffect,useState} from 'react'
-import {connect} from 'react-redux'
-import {addHive} from './actions/hivesActions'
+import React, {useLayoutEffect,useEffect,useState} from 'react'
 import axios from 'axios'
+
 
 //import treatmentFromDatabase from './TreatmentDatabase'
 
-const FormAdd = ({
-  apiarys,
-  addHive,
-}) => 
-{
+const FormAdd = () => {
+
   useLayoutEffect(() => {
     document.getElementById('showHives').className='nav-link';
+    document.getElementById('migrationHives').className='nav-link';
     document.getElementById('addHive').className='nav-link active';
   },[])
-
-
 
   const [hive,setHive] = useState({
     number:'',
@@ -28,11 +23,96 @@ const FormAdd = ({
     isActive:true,
   })
 
+ const [apiarys,setApiarys] = useState('')
  const [confirmation,setConfirmation] = useState('')
+
+ const addHive= (data) => {
+    const dbCollection = 'hives'
+    axios.post("/add", {
+        data,
+        dbCollection
+    })
+    .then(function (response) {
+        if (response.data==="access denied")
+        {
+            window.location.assign('/');
+            return
+        }
+        else if(response.data===false) {
+            alert('Błąd, nie dodano rekordu!'); 
+            return; 
+        }
+        else {
+            alert('Dodano do bazy')
+            setHive({
+                number:'',
+                type:'',
+                mother:'',
+                motherYear:'',
+                power:'',
+                status:'',
+                apiary:'',
+                isActive:true,
+            })
+        }
+    })
+    .catch(function (error) {
+       console.log(error);
+    });
+
+ }
+
+  const handleNumberButton = (e) => {
+    e.preventDefault()
+    axios
+    .post("/getHivesNumbers", {
+    })
+    .then(function (response) {
+      if (response.data.number===false) {
+        setHive(prevHive => {
+          return {
+            ...prevHive,
+            number: response.data.count,  
+          }
+        })
+      }
+      else {
+        setHive(prevHive => {
+          return {
+            ...prevHive,
+            number: response.data.number
+          }
+        })
+      } 
+    })
+    .catch(function (error) {
+       console.log(error);
+    });
+  } 
+
+  const getApiarys = () => {
+    const dbCollection='apiary'
+    axios.post("/get", {
+        dbCollection
+    })
+    .then(function (response) {
+        if (response.data==="access denied")
+        {
+            window.location.assign('/');
+            return
+        }
+        else {
+            setApiarys(response.data)
+        }
+    })
+    .catch(function (error) {
+       console.log(error);
+    });
+  }
 
   const handleAddHive = () => {
     if (hive.number && hive.type && hive.mother && hive.motherYear && hive.power && hive.status && hive.apiary) {
-      addHive(hive,setHive)
+      addHive(hive)
     }
     else {
       alert(`Błąd. Nie podano wszystkich parametrów`)
@@ -105,72 +185,11 @@ const FormAdd = ({
     })
   }
 
-  const handleNumberButton = (e) => {
-    e.preventDefault()
-    axios
-    .post("/getHivesNumbers", {
-    })
-    .then(function (response) {
-      if (response.data.number===false) {
-        setHive(prevHive => {
-          return {
-            ...prevHive,
-            number: response.data.count,  
-          }
-        })
-      }
-      else {
-        setHive(prevHive => {
-          return {
-            ...prevHive,
-            number: response.data.number
-          }
-        })
-      } 
-    })
-    .catch(function (error) {
-       console.log(error);
-    });
-  } 
-
-  /*
-  const addHive = (e) => {
-    
-    if (hive.number !==''){
-      axios
-        .post("/addHive", {
-          hive, 
-        })
-        .then(function (response) {
-          if (response.data===true) {
-          }
-          else if (response.data==='exist') {
-            alert ('Ul z takim numerem już istnieje!!!')
-          }
-          else {}
-          setHive(() => {
-            return {
-              number:'',
-              type:'',
-              mother:'',
-              motherYear:'',
-              power:'',
-              status:'',
-              apiary:'',  
-            }
-          })
-          setConfirmation('Dodano nowy UL')
-          setReadOnly(false)
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    } 
-    else (alert('Podaj numer ula!!!')) 
-  }
-  */
-
-  //const inputReadOnlyNumberField = <InputReadOnlyNumberField handleNumber={handleNumber} number={hive.number}/>
+  useEffect(() => { 
+    getApiarys()
+    return function cleanUp() {}
+    },[] 
+    )
   
   const Section = () => {
     return (
@@ -332,13 +351,14 @@ const FormAdd = ({
                 >
                  <option value=''>wybierz</option>
                  {
+                 apiarys ? 
                   apiarys.map((apiary, index) => {
-                  const {name,_id} = apiary
-                  return (
-                    <option key={index} value={_id}>{name}</option>
-                  );
-                  }
-                 )
+                    const {name,_id} = apiary
+                    return (
+                      <option key={index} value={_id}>{name}</option>
+                    );
+                })  
+                : null
                 }
                 </select>
               </div>    
@@ -360,19 +380,6 @@ const FormAdd = ({
   return (
     <Section/>  
     )
-
-
-
 }
 
-const connectReduxStateToProps = store => ({
-  apiarys:store.apiarys
-})
-  
-  const connectActionsToProps = ({
-    addHive
-  })
-
-  const FormAddConsumer = connect(connectReduxStateToProps,connectActionsToProps)(FormAdd)
-
-  export default FormAddConsumer
+export default FormAdd

@@ -31,13 +31,13 @@ app.use(session({
   }
  // resave:true
 }));
-let sessions;
+let username;
 
 app.use(express.static(path.join(__dirname, "./public")));
 app.use(bodyParser.json());
 
-const checkIsLogged = (sessions)=> {
-  if (sessions!==undefined) {return true}
+const checkIsLogged = (username)=> {
+  if (username!==undefined) {return true}
   else {return false} 
 }
 
@@ -75,16 +75,14 @@ app.post("/signup", function (req, res) {
 });
 
 app.post("/getUsername", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   res.send(username) 
 });
 
 app.post("/addEvent", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const id = req.body.id;
   const title = req.body.title;
   const subject = req.body.subject;
@@ -100,19 +98,16 @@ app.post("/addEvent", function (req, res) {
 });
 
 app.post("/getEvents", function (req, res) {
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   event.getEvents(username, function (result) {
     res.send(result);
   });
 });
 
 app.post("/getEventWithId", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const id = req.body.id;
   event.getEventWithId(username, id, function (result) {
     res.send(result);
@@ -120,9 +115,8 @@ app.post("/getEventWithId", function (req, res) {
 });
 
 app.post("/deleteEvent", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const id = req.body.id;
   event.deleteEvent(username, id, function (result) {
     res.send(result);
@@ -130,18 +124,16 @@ app.post("/deleteEvent", function (req, res) {
 });
 
 app.post("/getProfile", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
-  event.getProfile(username, sessions, function (result) {
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
+  event.getProfile(username, username, function (result) {
     res.send(result);
   });
 });
 
 app.post("/updateProfile", function (req, res) {
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const name = req.body.name;
   const password = req.body.password;
   profile.updateProfile(username, name, password, function (result) {
@@ -150,20 +142,16 @@ app.post("/updateProfile", function (req, res) {
 });
 
 app.post("/getQuens", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   quens.getQuens(username, function (result) {
     res.send(result);
   });
 });
 
 app.post("/addQuen", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const quenData = req.body.quenData;
   quens.addQuen(username, quenData, 
     function (result) {
@@ -172,10 +160,8 @@ app.post("/addQuen", function (req, res) {
 });
 
 app.post("/deleteQuen", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const quenData = req.body.id;
   quens.deleteQuen(username, quenData, 
     function (result) {
@@ -235,18 +221,16 @@ app.post("/deleteElement", function (req, res) {
 //PONIŻSZE FNUKCJĘ SĄ NIE DO USUNIĘCIA !!!
 
 app.post("/getHivesNumbers", function (req, res) { 
-  sessions = req.session.username;
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   hives.getHivesNumbers(username, function (result) {
     res.send(result);
   });
 });
 
 app.post("/getHivesAmountInApiary", function (req, res) { 
-  sessions = req.session.username; 
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username; 
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const id = req.body._id
   hives.getHivesAmountInApiary(username,id, function (result) {
     res.send(result);
@@ -254,10 +238,8 @@ app.post("/getHivesAmountInApiary", function (req, res) {
 });
 
 app.post("/delete", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const id = req.body.data.id;
   const collection = req.body.dbCollection
   if (collection === 'hives') {
@@ -276,10 +258,8 @@ app.post("/delete", function (req, res) {
 
 
 app.post("/add", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const dbCollection = req.body.dbCollection;
   const data = req.body.data;
   switch (dbCollection) {
@@ -317,11 +297,21 @@ app.post("/add", function (req, res) {
   }
 });
 
+
+app.post("/migrateHives", function(req,res) {
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
+  const data = req.body.data;
+  const apiaryID = req.body.apiaryID;
+  hives.migrateHives(username, data, apiaryID, 
+    function (result) {
+    res.send(result);
+  });   
+
+})
 app.post("/update", function (req, res) { 
-  sessions = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
-  const sessionUsername = sessions.split("@");
-  const username = sessionUsername[0];
+  username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const dbCollection = req.body.dbCollection;
   const data = req.body.data;
   switch (dbCollection) {
@@ -357,9 +347,49 @@ app.post("/update", function (req, res) {
   }
 });
 
+/*
+app.get("/get", function (req, res) { 
+  const username = req.session.username;
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
+  const dbCollection = req.body.dbCollection;
+  switch (dbCollection) {
+    case APIARY: {
+      return apiary.getApiary(username, function (result) {
+        res.send(result);
+      });
+    }
+    case HIVES: {
+      let apiaryID= req.body.apiaryID
+      if (apiaryID===null || apiaryID===undefined) {apiaryID=''}
+      return hives.getHives(username, apiaryID, function (result) {
+        res.send(result);
+      }); 
+    }
+    case EVENT: {
+      return
+    }
+    case QUENS: {
+      return quens.getQuens(username, function (result) {
+        res.send(result);
+      });
+    }
+    case TREATMENT: {
+      return treatment.getDrugs(username, function (result) {
+        res.send(result);
+      });
+    }
+    case USER: {
+      return
+    }
+    default: {console.warn('Błąd!. Nie znaleziono odpowiedniej bazy do dodania elementu')}
+  }
+});
+*/
+
+
 app.post("/get", function (req, res) { 
   const username = req.session.username;
-  if (!checkIsLogged(sessions)) {res.send('access denied') ;return}
+  if (!checkIsLogged(username)) {res.send('access denied') ;return}
   const dbCollection = req.body.dbCollection;
   switch (dbCollection) {
     case APIARY: {
@@ -396,7 +426,7 @@ app.post("/get", function (req, res) {
 
 app.post("/logout", function (req, res) {
   logout.logoutMe(req.session, function (result) {
-    sessions=""
+    username=""
     res.send(result);
   });
 });

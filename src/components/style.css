@@ -26,3 +26,22 @@ label {
   float: left;
   width: 40%;
 }
+
+.navLink {
+  font-weight: normal;
+  color: black;
+}
+
+/* visited link */
+
+/* mouse over link */
+.navLink:hover {
+  color: black;
+  background: rgb(214, 210, 210);
+}
+
+/* selected link */
+.navLink:active {
+  color: black;
+  background: rgb(214, 210, 210);
+}

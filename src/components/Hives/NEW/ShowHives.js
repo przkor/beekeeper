@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
 import List from './List.js'
+import PopUp from './Modal/Modal.js'
 
 const HivesList = () => {
   return (
@@ -32,6 +33,7 @@ const Hives = () => {
         <div>
           <HivesList/>
         </div>
+        <div><PopUp/></div>
       </Provider>
      </>
      : 

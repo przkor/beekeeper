@@ -1,9 +1,9 @@
 import React from 'react'
-import {migrateHive} from './actions/hivesMigrationActions'
+import {migrateHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
 
 
-const MigrationElement = ({_id,number,type,handleMigration}) => {
+const MigrationElement = ({_id,number,type,handleMoveHive}) => {
 
 /*
     const handleCheckbox =  (e) => {
@@ -24,19 +24,22 @@ const MigrationElement = ({_id,number,type,handleMigration}) => {
         
     }
 */
-    const migrationButton = <button onClick={handleMigration(_id)}>
-        <span>
-        <i className="fa fa-share"></i>
-        </span>
-        </button>
-
+    const handleMove= () => {
+        handleMoveHive(_id,number)
+    }
     return (
         
         <>
         <tr key={_id}>
             <td>{number}</td>
             <td>{type}</td>
-            <td>{migrationButton}</td>
+            <td>
+                 <button onClick={handleMove}>
+                     <span>
+                        <i className="fa fa-share"></i>
+                     </span>
+                </button>
+            </td>
         </tr>
         </>       
     )

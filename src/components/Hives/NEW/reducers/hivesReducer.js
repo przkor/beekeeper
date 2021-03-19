@@ -1,7 +1,6 @@
 import  {ADD,EDIT,DELETE,GET,CLEAR} from '../actions/hivesActions'
 
 const hivesReducer = (state=[],action) => {
-
     console.log(`Jestem w hivesReducer`)
     switch(action.type) {     
         case ADD: {

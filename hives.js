@@ -265,4 +265,39 @@ module.exports = {
     });
   },
 
+  migrateHives: function (username,data,apiaryID,callback) {
+
+  
+let bulkArr = [];
+for (const i of data) {
+    bulkArr.push({
+        updateOne: {
+            "filter": { number : i },
+            "update": { '$set': { apiary : apiaryID } }
+        }
+    })
+}
+
+//let updateResult = await MongooseModel.bulkWrite( bulkArr, { ordered : false }) 
+/** Passing { ordered : false } to make sure update op doesn't fail if updating one document in the middle fails, Also bulkWrite returns write result check documentation for more info */
+
+const client =  MongoClient(uri,mongoConstructor)
+     client.connect(function (err, db) {
+     const dbcon = db.db(username);
+       dbcon.collection(dbcollection).bulkWrite(bulkArr, { ordered : false },function (err, result) {
+        if (err === null) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+        client.close()
+      }
+      )
+    })
+   // console.log('matchedCount ::', updateResult.matchedCount, 'modifiedCount ::', updateResult.modifiedCount)
+   //client.close()
+ 
+    
+  },
+
 };
