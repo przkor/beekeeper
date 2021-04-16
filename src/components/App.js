@@ -6,8 +6,8 @@ import { ContextLogin, defaultObject } from './ContextLogin';
 
 import Signin from '../pages/Signin'
 import Signup from '../pages/Signup'
-import ShowEvents from '../pages/Showevents'
-import AddEvent from '../pages/AddEvent'
+import ShowTasks from '../pages/ShowTasks'
+import AddTask from '../pages/AddTask'
 import Managers from '../pages/Managers'
 import ManagerPage from '../pages/ManagerPage' 
 import Logout from '../pages/Logout'
@@ -84,9 +84,9 @@ const App = () => {
           <Route path="/" exact><Signin/></Route>
           <Route path="/signin"><Signin/></Route>
           <Route path="/signup"  component={Signup}/>
-          <Route path="/events"><ShowEvents /></Route>
-          <Route path="/addevent/:id"  component={AddEvent}/>
-          <Route path="/addevent"  component={AddEvent}/>
+          <Route path="/tasks"><ShowTasks /></Route>
+          <Route path="/addTask/:id"  component={AddTask}/>
+          <Route path="/addTask"  component={AddTask}/>
           <Route path="/managers"  component={Managers}/>
           <Route path="/manager/:option"  component={ManagerPage}/>
           <Route path="/logout"  component={Logout}/>

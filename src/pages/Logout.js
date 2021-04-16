@@ -10,35 +10,29 @@ const Logout = () => {
   const history = useHistory()
   
   useEffect(()=> {
-    
     logout()
-    return (()=>{toggleUserLogged(false) 
+    return (()=>{
+      toggleUserLogged(false) 
       cleanUsername()
     })
-  
-  }
- 
-  ) 
+  }) 
 
   const logout = () => {
-        axios
-        .post("/logout", {})
+        axios({
+          method:'get',
+          url:'/logout',
+        })
         .then(function (response) {
           if (response.data === true) {
-            
-            history.push("/")
-            
+            history.push("/signin")
           }
           if (response.data === false) {
-            console.log("Nie zadziałało wylogowanie");
           }
         })
         .catch(function (error) {
           console.log("error is ", error);
         })
     }
-
-  
      return (<></>)
 }
 export default Logout

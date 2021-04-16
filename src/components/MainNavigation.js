@@ -12,10 +12,10 @@ const MainNavigation = () => {
         
   <Nav className="justify-content-center" variant="tabs"  id="mainMenu" name="mainMenu" style={{display: 'none',color:"red", marginBottom:"20px" }} defaultActiveKey="/events">
     <Nav.Item>
-      <LinkContainer to="/events"><Nav.Link className="navLink" eventKey="/events" >Zadania</Nav.Link></LinkContainer>
+      <LinkContainer to="/tasks"><Nav.Link className="navLink" eventKey="/tasks" >Zadania</Nav.Link></LinkContainer>
     </Nav.Item>
     <Nav.Item> 
-      <LinkContainer to="/addevent"><Nav.Link className="navLink" eventKey="/addevent" >Dodaj zadanie</Nav.Link></LinkContainer>
+      <LinkContainer to="/addTask"><Nav.Link className="navLink" eventKey="/addTask" >Dodaj zadanie</Nav.Link></LinkContainer>
     </Nav.Item>
     <Nav.Item>
       <LinkContainer to="/managers"><Nav.Link className="navLink" eventKey="/managers">Zarządzanie</Nav.Link></LinkContainer>

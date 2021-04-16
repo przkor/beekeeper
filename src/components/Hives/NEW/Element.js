@@ -8,7 +8,11 @@ const collection = 'hives'
 const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}) => {
 
     const [isVisibleForm,setIsVisibleForm]= useState(false)
+    const [isVisibleFormInspection,setIsVisibleFormInspection]= useState(false)
 
+    const toggleInspectionButton = () => {      
+        setIsVisibleFormInspection(current=>!current)
+    }
     const toggleEditButton = () => {      
         setIsVisibleForm(current=>!current)
     }
@@ -34,7 +38,7 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
         }
     }
 
-
+    const inspectionButton = <button onClick={toggleInspectionButton}><span ><i className="fa fa-wrench" aria-hidden="true"></i></span></button>
     const editButton = <button onClick={toggleEditButton}><span ><i className="fa fa-pencil fa-fw"></i></span></button>
     const deleteButton = <button onClick={handleDelete}><span><i className="fa fa-trash-o fa-lg"></i></span></button>
 
@@ -45,10 +49,11 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
             <td>{type}</td>
             <td>{power}</td>
             <td>{status}</td>
-            <td>{isVisibleForm? '' : editButton}</td>
+            <td>{isVisibleFormInspection ? '' : inspectionButton}</td>
+            <td>{isVisibleForm ? '' : editButton}</td>
             <td>{deleteButton}</td>
         </tr>
-        <tr><td colSpan={5}>{formElement()}</td></tr>
+        <tr><td colSpan={6} className="text-center">{formElement()}</td></tr>
         </>       
     )
 }

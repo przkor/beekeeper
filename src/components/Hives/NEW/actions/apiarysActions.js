@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const dbCollection = 'apiary'
 export const GETapiarys = 'getApiarys'
 
 export function getApiarys() {
     return (dispatch) => {
-        axios.post("/get", {
-            dbCollection
+        axios({
+            method: 'get',
+            url: '/apiarys',
         })
         .then(function (response) {
             if (response.data==="access denied")

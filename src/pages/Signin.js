@@ -10,7 +10,6 @@ const Signin = (props) => {
     const [password,setPassword] = useState('')
     const [wrongLogOrPass,setWronLogOrPass] = useState('')
 
-
     const handleLoginChange = (e) => {
         setLogin(e.target.value);
       }
@@ -27,20 +26,22 @@ const Signin = (props) => {
     ,[]) 
               
     const signin = () => {
-      axios
-        .post("/signin", {
-          login: login ,
-          password: password,
-        })
+      axios({
+        method:'get',
+        url:'/user/signin',
+        params:{
+          login:login,
+          password:password
+        }
+        
+      })
         .then(function (response) {
           if (response.data === "success") {    
             toggleUserLogged(true)
             changeUsername(login)
             setWronLogOrPass('Zalogowano poprawnie')
-           // setLogin('')
-          //  setPassword('')
-            history.push('events')
-            //self.props.history.push("/events")
+            history.push('/tasks')
+            //self.props.history.push("/tasks")
             return
         }
           if (response.data === "failure") {

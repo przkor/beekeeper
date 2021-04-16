@@ -1,14 +1,31 @@
-import React, {useEffect} from 'react'
+import React, {useEffect,useState} from 'react'
 import Element from './Element'
 import {connect} from 'react-redux'
 import {getHives,clear} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
+import axios from 'axios'
 
 const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
+    
+    const [hivesAmount,setHivesAmount] = useState(0)
 
+    const getHivesAmountInApiary = (apiaryID) => {
+        const _id = apiaryID
+        axios({
+            method:'get',
+            url:'/hives/getHivesAmountInApiary',
+            params:{_id}
+        }).then(function(response){
+            console.log(response.data.result)
+            setHivesAmount(response.data.result)
+        }).catch(function (error) {
+            console.log(error);
+         });
+    }
     const handleSelect = (e) => {
         const apiaryID = e.target.value
-        getHives(apiaryID)  
+        getHives(apiaryID) 
+        getHivesAmountInApiary(apiaryID) 
     }
 
     const Apiarys = apiarys.map((apiary, index) => {
@@ -38,7 +55,6 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     )
     const apiarysList = (
         <div>
-            <h5>Lista uli</h5>
             <form style={{"marginTop":"20px", "marginBottom":"20px"}}>
                 <h6>Wybierz pasieke:</h6>
                 <select
@@ -59,13 +75,15 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     const hivesList = 
         (
         <div>
+            <h5>Liczba rodzin pszczelich: {hivesAmount}</h5>
              <table className="table table-striped table- mt-3">
                 <thead className="thead thead-light">
                 <tr>
-                    <th>Nr</th>
+                    <th>ID</th>
                     <th>Typ</th>
                     <th>Siła</th>
                     <th>Status</th>
+                    <th>ins</th>
                     <th>edit</th>
                     <th>del</th>
                 </tr>

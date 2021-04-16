@@ -1,11 +1,8 @@
 
 export const ADD = "addApiary"
-export const DELETE = "delete"
+export const DELETE = "deleteApiary"
 export const EDIT = "editApiary"
 export const GET = "getApiary"
-export const GETHIVES = "getHivesAmount"
-
-const dbCollection = 'apiary'
 
 export const IDRandom =  () => {
     // Math.random should be unique because of its seeding algorithm.
@@ -19,20 +16,18 @@ export const add = ({name,location},setNameInput,setLocationInput) => ({
     data: {
         name,
         location,
-    },  
-    dbCollection,
+    },
     setDefaultInput:{
         setNameInput,
         setLocationInput,
     }
 })
 
-export const del = (id)=> ({
+export const del = (_id)=> ({
     type:DELETE,
     data: {
-        id
-    },
-    dbCollection
+        _id
+    }
 })
 
 export const edit = ({_id,name,location}) => ({
@@ -41,24 +36,14 @@ export const edit = ({_id,name,location}) => ({
         _id,
         name,
         location
-    },
-    dbCollection
+    }
 })
 
 export const get= (data) => ({
     type: GET,
     data: {
         ...data
-    },
-    dbCollection
-})
-
-export const getHivesAmount= (data2) => ({
-    type: GETHIVES,
-    data2: {
-        ...data2
-    },
-    dbCollection
+    }
 })
 
 

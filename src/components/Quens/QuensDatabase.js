@@ -2,8 +2,9 @@ import axios from 'axios'
 
 const quensFromDatabes = {
     addQuen(quenData,dispatch) {
-        axios.post("/addQuen", {
-            quenData
+      const data = quenData 
+        axios.post("/quens", {
+           data
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -23,7 +24,7 @@ const quensFromDatabes = {
     
     getQuens(dispatch) {
         axios
-        .post("/getQuens", {
+        .get("/quens", {
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -39,10 +40,9 @@ const quensFromDatabes = {
       },
 
     deleteQuen(id) {
-      console.log(`Quen ID do delete: ${id}`)
         axios
-        .post("/deleteQuen", {
-          id
+        .delete("/quens", {
+          params: {id}
         })
         .then(function (response) {
           if (response.data.deletedNumber===0)

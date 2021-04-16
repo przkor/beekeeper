@@ -1,4 +1,5 @@
 import React, {useLayoutEffect,useEffect,useState} from 'react'
+import PopUp from '../../Modal/Modal'
 import axios from 'axios'
 
 
@@ -23,27 +24,74 @@ const FormAdd = () => {
     isActive:true,
   })
 
+
  const [apiarys,setApiarys] = useState('')
- const [confirmation,setConfirmation] = useState('')
+ const [quens,setQuens] = useState({})
+ const [popUp,setPopUp] = useState({
+   status:false,
+   title:'',
+   message:'',
+   type:''
+ })
+
+
+ const getApiarys = () => {
+  axios.get("/apiarys")
+  .then(function (response) {
+      if (response.data==="access denied")
+      {
+          window.location.assign('/');
+          return
+      }
+      else {
+          setApiarys(response.data)
+      }
+  })
+  .catch(function (error) {
+     console.log(error);
+  });
+}
+
+const getQuens = () => {
+  axios
+  .get("/quens", {
+  })
+  .then(function (response) {
+      if (response.data==="access denied")
+      {
+          window.location.assign('/');
+          return
+      }
+      setQuens(response.data)
+  })
+  .catch(function (error) {
+     console.log(error);
+  });
+}
 
  const addHive= (data) => {
     const dbCollection = 'hives'
-    axios.post("/add", {
+    axios.post("/hives", {
         data,
         dbCollection
     })
     .then(function (response) {
         if (response.data==="access denied")
         {
-            window.location.assign('/');
+            window.location.assign('/'); 
             return
         }
         else if(response.data===false) {
-            alert('Błąd, nie dodano rekordu!'); 
+            alert('Błąd podczas dodawani do bazy')
             return; 
         }
         else {
-            alert('Dodano do bazy')
+            setPopUp({
+              status:true,
+              title:'Sukces',
+              message:'Dodano nową rodzinę',
+              type:'confirmation'
+            })
             setHive({
                 number:'',
                 type:'',
@@ -65,8 +113,7 @@ const FormAdd = () => {
   const handleNumberButton = (e) => {
     e.preventDefault()
     axios
-    .post("/getHivesNumbers", {
-    })
+    .get("/hives/getFreeHiveNumber")
     .then(function (response) {
       if (response.data.number===false) {
         setHive(prevHive => {
@@ -90,32 +137,19 @@ const FormAdd = () => {
     });
   } 
 
-  const getApiarys = () => {
-    const dbCollection='apiary'
-    axios.post("/get", {
-        dbCollection
-    })
-    .then(function (response) {
-        if (response.data==="access denied")
-        {
-            window.location.assign('/');
-            return
-        }
-        else {
-            setApiarys(response.data)
-        }
-    })
-    .catch(function (error) {
-       console.log(error);
-    });
-  }
+ 
 
   const handleAddHive = () => {
     if (hive.number && hive.type && hive.mother && hive.motherYear && hive.power && hive.status && hive.apiary) {
       addHive(hive)
     }
     else {
-      alert(`Błąd. Nie podano wszystkich parametrów`)
+      setPopUp({
+        status:true,
+        title:'Błąd',
+        message:'Nie wszystkie pola zostały wypełnione',
+        type:'warning'
+      })
     }
     
   }
@@ -187,6 +221,7 @@ const FormAdd = () => {
 
   useEffect(() => { 
     getApiarys()
+    getQuens()
     return function cleanUp() {}
     },[] 
     )
@@ -247,27 +282,26 @@ const FormAdd = () => {
               <div className="form-group hive">
                 <label htmlFor="mother">Rasa matki</label>
                 <select
-                  type="text"
-                  onChange={handleMother}
-                  className="form-control"
-                  id="mother"
-                  name="mother"
-                  value={hive.mother||''}
-                  placeholder='wybierz'
-                  maxLength="25"
-                >
-                 <option value='nieznana'>wybierz</option>
-                 <option value='Aga'>Aga</option>
-                 <option value='Alpejka'>Alpejka</option>
-                 <option value='CT46'>CT46</option>
-                 <option value='Dobra'>Dobra</option>
-                 <option value='Karpatka'>Karpatka</option>
-                 <option value='Reproduktorka'>REPRODUKTORKA</option> 
-                 <option value='Sklenar'>Sklenar</option> 
-                 <option value='Troiseck'>Troiseck</option> 
-                 <option value='Vigor'>Vigor</option>
-                 <option value='Własna'>Własna</option>
-                </select>
+                type="text"
+                onChange={handleMother}
+                className="form-control"
+                id="mother"
+                name="mother"
+                value={hive.mother||''}
+                placeholder='wybierz'
+                maxLength="25"
+              >
+              <option value=''>wybierz</option>  
+              { 
+              quens.length>0 ?
+                quens.map((quen, index) => {
+                  const {line} = quen
+                  return ( <option key={index} value={line}>{line}</option>);
+                }) 
+                :
+                null   
+              }
+              </select>
                 
               </div>
               <div className="form-group hive">
@@ -371,8 +405,15 @@ const FormAdd = () => {
               >
                 Dodaj
               </button>
-              <div><p>{confirmation}</p></div>
             </form>
+          {
+            popUp.status 
+            ? 
+              <PopUp parameters={popUp}
+                callback={setPopUp}/> 
+            : 
+              null
+          }
           </div>
     )
   }

@@ -4,7 +4,7 @@ import {store} from '../../../store/hivesStore.js'
 import {useHistory} from 'react-router-dom'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
-import MigrationTable from './MigrationTable2.js'
+import MigrationTable from './MigrationTable.js'
 
 const Migration = () => {
 

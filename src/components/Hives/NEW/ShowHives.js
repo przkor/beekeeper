@@ -5,7 +5,6 @@ import {useHistory} from 'react-router-dom'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
 import List from './List.js'
-import PopUp from './Modal/Modal.js'
 
 const HivesList = () => {
   return (
@@ -21,6 +20,7 @@ const Hives = () => {
   useLayoutEffect(() => {
     document.getElementById('showHives').className='nav-link active';
     document.getElementById('addHive').className='nav-link';
+    document.getElementById('migrationHives').className='nav-link';
   },[])
  
   return (
@@ -33,7 +33,6 @@ const Hives = () => {
         <div>
           <HivesList/>
         </div>
-        <div><PopUp/></div>
       </Provider>
      </>
      : 

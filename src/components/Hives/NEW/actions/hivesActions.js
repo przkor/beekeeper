@@ -66,9 +66,10 @@ export const get = (data) => ({
 
 export function getHives(apiaryID) {
     return (dispatch) => {
-        axios.post("/get", {
-            apiaryID,
-            dbCollection
+        axios({
+            method: 'get',
+            url: '/hives',
+            params: {apiaryID}  
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -83,8 +84,7 @@ export function getHives(apiaryID) {
                 dispatch({type:GET,data:response.data})
                }
                else {return}
-              
-               //console.log(`Response.data: ${response.data}`)
+
             }
         })
         .catch(function (error) {
@@ -95,11 +95,11 @@ export function getHives(apiaryID) {
 }
 
 export function addHive(data,setDefault) {
-
     return (dispatch) => {
-        axios.post("/add", {
-            data,
-            dbCollection
+        axios({
+            method: 'post',
+            url: '/hives',
+            data: {data}  
         })
         .then(function (response) {
             //const newID=response.data
@@ -113,7 +113,6 @@ export function addHive(data,setDefault) {
                 return; 
             }
             else {
-              //  dispatch({type:ADD, data:{_id:newID, ...data}}) 
                 alert('Dodano do bazy')
                 setDefault({
                     number:'',
@@ -136,9 +135,10 @@ export function addHive(data,setDefault) {
 
 export function delHive(id) {
     return (dispatch) => {
-        axios.post("/delete", {
-            data:{id},
-            dbCollection
+        axios({
+            method: 'delete',
+            url: '/hives',
+            params: {id}  
         })
         .then(function (response) {
             //const newID=response.data
@@ -148,7 +148,7 @@ export function delHive(id) {
                 return
             }
             else if(response.data===false) {
-                alert('Błąd, nie dodano rekordu!'); 
+                alert('Błąd, nie usunięto rekordu!'); 
                 return; 
             }
             else {
@@ -165,10 +165,11 @@ export function delHive(id) {
 
 export function editHive(data) {
     return dispatch => {
-    axios.post("/update", {
-        data,
-        dbCollection,
-    })
+        axios({
+            method: 'put',
+            url: '/hives',
+            data: {data}  
+        })
     .then(function (response) {
         if (response.data==="access denied")
         {
@@ -176,7 +177,7 @@ export function editHive(data) {
             return
         }
         else {
-           if (response.data===true) {
+           if (response.data===true && response.status===200) {
                dispatch({type:EDIT, data:data})
                console.log(`Pomyślnie edytowano i zapisano`) 
             }
@@ -200,10 +201,9 @@ export function migrateHive(id) {
 
 export function doMigrateHives(data,apiaryID,handleClearMigrateList,setChangeConfirmation) {
     return dispatch => {
-        console.log(`data:${data} , apiaryID:${apiaryID}`)
-        axios.post("/migrateHives", {
-            data,
-            apiaryID
+        const hivesNumbers = data
+        axios.patch("/hives", {
+            data:{hivesNumbers,apiaryID}
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -212,11 +212,11 @@ export function doMigrateHives(data,apiaryID,handleClearMigrateList,setChangeCon
                 return
             }
             else {
-               if (response.data===true) {
+            const modifiedHivesAmount = response.data.modifiedHivesAmount
+               if ( modifiedHivesAmount >= 1) {
                     handleClearMigrateList()
-                    setChangeConfirmation('Zmigrowano pomyślnie')
-                    dispatch({type:'none'})
-                   
+                    setChangeConfirmation(`Zmigrowano pomyślnie ${modifiedHivesAmount} ule.`)
+                    dispatch({type:'none'}) 
                 }
                else {console.warn(`Błąd bazy! Nie zmigrowano.`)}   
             }

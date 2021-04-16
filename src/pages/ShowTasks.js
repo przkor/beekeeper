@@ -15,7 +15,7 @@ const ShowEvents = (props) => {
     if (divRef.current) 
     {
     axios
-      .post("/getEvents", {})
+      .get('/tasks', {})
       .then(function (response) {
         if (response.data==="access denied")
         {   
@@ -35,10 +35,11 @@ const ShowEvents = (props) => {
     e.preventDefault();
     const id = e.currentTarget.value
     if (window.confirm("jesteś pewien aby usunąć")) {
-      axios
-        .post("/deleteEvent", {
-          id: id,
-        })
+      axios({
+        method: 'delete',
+        url: '/tasks',
+        params: {id}  
+    })
         .then(function (response) {
           toggleDeletedEvent()
         })
@@ -54,7 +55,7 @@ const ShowEvents = (props) => {
   const handleUpdateEvent = (e) => {
     e.preventDefault();
     const id = e.currentTarget.value
-    history.push(`/addevent/${id}`)
+    history.push(`/addTask/${id}`)
   }
 
   const handleRedirect= () => {

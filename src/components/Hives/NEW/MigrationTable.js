@@ -1,68 +1,90 @@
 import React, {useEffect, useState} from 'react'
 import MigrationElement from './MigrationElement'
 import {connect} from 'react-redux'
-import {getHives, migrateHive} from './actions/hivesMigrationActions'
+import {doMigrateHives, getHives, migrateHive} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
+import {Alert} from 'react-bootstrap'
 
-const List = ({hives1,hives2,apiarys,getHives,getApiarys,migrateHive}) => {
-    const [apiary1ID,setApiary1ID] = useState()
-    const [apiary2ID,setApiary2ID] = useState()
 
-    const handleSelectApiary1 = (e) => {
-        const apiaryID = e.target.value
-        //tab - pasieka z lewej strony
-        const tab=1
-        getHives(apiaryID,tab)  
-        setApiary1ID(apiaryID)
-    }
-    const handleSelectApiary2 = (e) => {
-        const apiaryID = e.target.value
-        //tab - pasieka z prawej strony
-        const tab=2
-        getHives(apiaryID,tab) 
-        setApiary2ID(apiaryID) 
-    }
+const List = ({hives,apiarys,getHives,getApiarys,migrateHive,doMigrateHives}) => {
 
-    const handleMigration1 = (id) => {
-        const tab=1
-        const apiaryID = apiary1ID
-        migrateHive(id,apiaryID,tab)
+    const [apiaryFrom,setApiaryFrom] = useState('')
+    const [apiaryTo,setApiaryTo] = useState('')
+    const [migrateList,setMigrateList] = useState([])
+    const [changeConfirmation,setChangeConfirmation] = useState('')
+    
+    const handleSelectApiaryFrom = (e) => {
+        const apiaryId = e.target.value
+        setChangeConfirmation('')
+        getHives(apiaryId)  
+        setApiaryFrom(apiaryId)
+        setApiaryTo('')
+        setMigrateList([])
+        
     }
 
-    const handleMigration2 = (id) => {
-        const tab=2
-        const apiaryID = apiary2ID
-        migrateHive(id,apiaryID,tab)
+    const handleSelectApiaryTo = (e) => {
+        const apiaryId = e.target.value
+        setChangeConfirmation('')
+        setApiaryTo(apiaryId)
     }
 
+    const handleMoveHive = (_id,number) => {
+        const hiveID = _id
+        const hiveNumber = number
+        setChangeConfirmation('')
+        setMigrateList(prev=>{
+            const table = [...prev]
+            table.push(hiveNumber)
+            return table
+        })
+        migrateHive(hiveID)
+    }
 
-    const Apiarys1 = apiarys.map((apiary, index) => {
+    const handleClearMigrateList =() => {
+        setMigrateList([])
+    }
+
+    const handleDoMigrate = () => {
+        if (apiaryTo==='') {
+            setChangeConfirmation('Wybierz pasieke do której migrujesz')
+            return
+        }
+       doMigrateHives(migrateList,apiaryTo,handleClearMigrateList,setChangeConfirmation)
+    }
+
+    const handleCancleMigrate = () => {
+        handleClearMigrateList()
+        getHives(apiaryFrom)
+    }
+
+    
+
+    
+
+
+    const ApiarysFrom = apiarys.map((apiary, index) => {
         const {name,_id} = apiary
         return <option key={index} value={_id}>{name}</option>
     })
 
-    const Apiarys2 = apiarys.map((apiary, index) => {
+    const ApiarysTo = apiarys.map((apiary, index) => {
         const {name,_id} = apiary
-        return <option key={index} value={_id}>{name}</option>
+        if (_id!==apiaryFrom) {return <option key={index} value={_id}>{name}</option>}
+        else {return null}
     })
 
-    const Elements1 = hives1.map(hive => {
+
+    const Elements = hives.map(hive => {
         if (hive._id)
         {
-         return <MigrationElement key={hive._id} {...hive} handleMigration={handleMigration1} />
+         return <MigrationElement key={hive._id} {...hive} handleMoveHive={handleMoveHive}  />
         }
         return null
         
     })
 
-    const Elements2 = hives2.map(hive => {
-        if (hive._id)
-        {
-         return <MigrationElement key={hive._id} {...hive} handleMigration={handleMigration2} />
-        }
-        return null
-        
-    })
+
 
     const noHivesToShow = (
         <div>
@@ -75,45 +97,55 @@ const List = ({hives1,hives2,apiarys,getHives,getApiarys,migrateHive}) => {
             <p>Brak pasiek w bazie</p>
         </div>
     )
-    const apiarysList1 = (
+    const apiarysListFrom = (
         <div>
-            <h5>Lista uli</h5>
             <form style={{"marginTop":"20px", "marginBottom":"20px"}}>
                 <h6>Wybierz pasieke:</h6>
                 <select
-                onChange={handleSelectApiary1}
+                onChange={handleSelectApiaryFrom}
                 className="form-control"
                 id="pasieka"
                 name="pasieka"
                 placeholder="wybierz"
                 >
                 <option value=''>wybierz</option>
-                    {Apiarys1}
+                    {ApiarysFrom}
                 </select>
             </form>
         </div>
     )
 
-    const apiarysList2 = (
+    const apiarysListTo = (
         <div>
-            <h5>Lista uli</h5>
             <form style={{"marginTop":"20px", "marginBottom":"20px"}}>
-                <h6>Wybierz pasieke:</h6>
+                <h6>Migracja do pasieki:</h6>
                 <select
-                onChange={handleSelectApiary2}
+                onChange={handleSelectApiaryTo}
                 className="form-control"
                 id="pasieka"
                 name="pasieka"
                 placeholder="wybierz"
                 >
                 <option value=''>wybierz</option>
-                    {Apiarys2}
+                    {ApiarysTo}
                 </select>
             </form>
         </div>
     )
 
-    const hivesList1 = 
+    const showMigrateList = migrateList.map(element=> {
+            return <li key={element}>Ul nr: {element}</li>   
+    })
+
+    const migrateButttons = 
+        <>
+            <button onClick={handleDoMigrate} style={{padding:'5px', margin:'5px'}}>Zatwierdź</button>
+            <button onClick={handleCancleMigrate} style={{padding:'5px', margin:'5px'}}>Wyczyść</button>
+        </>
+    
+
+
+    const hivesList = 
         (
         <div>
              <table className="table table-striped table- mt-3">
@@ -125,25 +157,7 @@ const List = ({hives1,hives2,apiarys,getHives,getApiarys,migrateHive}) => {
                 </tr>
                 </thead>
                 <tbody>
-                 {Elements1}    
-                </tbody>
-            </table> 
-        </div>
-    )
-
-    const hivesList2 = 
-        (
-        <div>
-             <table className="table table-striped table- mt-3">
-                <thead className="thead thead-light">
-                <tr>
-                    <th>Nr</th>
-                    <th>Typ</th>
-                    <th>Przenieś</th>
-                </tr>
-                </thead>
-                <tbody>
-                 {Elements2}    
+                 {Elements}    
                 </tbody>
             </table> 
         </div>
@@ -154,31 +168,41 @@ const List = ({hives1,hives2,apiarys,getHives,getApiarys,migrateHive}) => {
         return function cleanUp() {}
         },[getApiarys]  
     )
-
+    
     return (
+        
         <div>
-            <div style={{float:'left', width:"50%", paddingRight:'5px'}}> 
-                {apiarys.length>0 ? apiarysList1 : noApiarysToShow}
-                {hives1.length>0 ? hivesList1 : noHivesToShow}     
+            <div style={{float:'left', width:"60%", paddingRight:'3px'}}> 
+                {apiarys.length>0 ? apiarysListFrom : noApiarysToShow}
+                {hives.length>0 ? hivesList : noHivesToShow}     
             </div>
-            <div style={{float:'left', width:"50%" ,  paddingLeft:'5px'}}> 
-                {apiarys.length>0 ? apiarysList2 : noApiarysToShow}
-                {hives2.length>0 ? hivesList2 : noHivesToShow}     
+            <div style={{float:'left', width:"40%" ,  paddingLeft:'3px'}}> 
+                {apiarys.length>0 ? apiarysListTo : noApiarysToShow}
+                {migrateList.length>0 ? migrateButttons : null}
+                <div style={{width:"100%"}}>
+                    <ul>{showMigrateList}</ul>
+                    {changeConfirmation? <Alert variant="success">
+                      <p>{changeConfirmation}</p></Alert> 
+                      :
+                      null
+                    }
+                </div>
             </div>
+            <div style={{clear:'both'}}> </div>
         </div>
     )
 }
 
 const connectReduxStateToProps = store => ({
-    hives1:store.hives1,
-    hives2:store.hives2,
+    hives:store.hives,
     apiarys:store.apiarys,
 })
 
 const connectActionsToProps = ({
     getHives,
     getApiarys,
-    migrateHive
+    migrateHive,
+    doMigrateHives
   })
 
 const ListHives = connect(connectReduxStateToProps,connectActionsToProps)(List)

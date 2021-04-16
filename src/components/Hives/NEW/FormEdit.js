@@ -1,7 +1,8 @@
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import {editHive} from './actions/hivesActions'
+import axios from 'axios'
 
 //import treatmentFromDatabase from './TreatmentDatabase'
 
@@ -29,7 +30,24 @@ const FormEdit = ({
     apiary,
   })
 
+  const [quens,setQuens] = useState({line:mother})
 
+  const getQuens = () => {
+    axios
+    .get("/quens", {
+    })
+    .then(function (response) {
+        if (response.data==="access denied")
+        {
+            window.location.assign('/');
+            return
+        }
+        setQuens(response.data)
+    })
+    .catch(function (error) {
+       console.log(error);
+    });
+}
 
   const handleType = (e) => {
     setHive(prevHive => {
@@ -88,11 +106,19 @@ const FormEdit = ({
     })
   }
 
-  const handleOnSubmit =  (e) => {
+  const handleOnSubmit =  () => {
    // e.preventDefault()
     editHive(hive) 
     callback()
   }
+
+  const handleCancel = () => {
+    callback()
+  }
+
+  useEffect(()=>{
+    getQuens()
+  },[])
 
   return (
     <div className="form-area mt-4">
@@ -115,9 +141,9 @@ const FormEdit = ({
                 <option value='dadant'>Dadant</option>
                 <option value='langstroth'>Langstroth</option>
                 <option value='ostrowska'>Ostrowska</option>
+                <option value='słowian'>Słowian</option>
                 <option value='warszawska'>Warszawska</option>
                 <option value='wielkopolska'>Wielkopolska</option>
-                <option value='słowian'>Słowian</option>
                 <option value='inna'>Inna</option>
               </select>
              </div>
@@ -133,17 +159,14 @@ const FormEdit = ({
                 placeholder='wybierz'
                 maxLength="25"
               >
-               <option value='nieznana'>wybierz</option>
-               <option value='Aga'>Aga</option>
-               <option value='Alpejka'>Alpejka</option>
-               <option value='CT46'>CT46</option>
-               <option value='Dobra'>Dobra</option>
-               <option value='Karpatka'>Karpatka</option>
-               <option value='Reproduktorka'>REPRODUKTORKA</option> 
-               <option value='Sklenar'>Sklenar</option> 
-               <option value='Troiseck'>Troiseck</option> 
-               <option value='Vigor'>Vigor</option>
-               <option value='Własna'>Własna</option>
+              { quens.length>0 ?
+                quens.map((quen, index) => {
+                  const {line} = quen
+                  return ( <option key={index} value={line}>{line}</option>);
+                }) 
+                :
+                <option value={mother}>{mother}</option>   
+              }
               </select>
               
             </div>
@@ -245,6 +268,15 @@ const FormEdit = ({
               className="btn btn-primary pull-right"
             >
               Zapisz
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              id="cancel"
+              name="cancel"
+              className="btn btn-primary pull-right mr-3"
+            >
+              Anuluj
             </button>
           </form>
         </div>

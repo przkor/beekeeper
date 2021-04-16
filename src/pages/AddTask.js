@@ -6,7 +6,7 @@ import Section from '../components/SectionForAddEvent'
 
 const AddEvent = (props) => {
   
-  const eventID= props.match.params.id
+  const taskID= props.match.params.id
   const {isUserLogged} = useContext(ContextLogin)  
   let [title,setTitle] = useState("")
   let [subject,setSubject] = useState("")
@@ -16,13 +16,13 @@ const AddEvent = (props) => {
 
   const addEvent = () => { 
     axios
-      .post("/addEvent", {
+      .post("/tasks", {
           title, 
           subject,
           id,
         })
         .then(function (response) {
-          history.push("/events")
+          history.push("/tasks")
         })
         .catch(function (error) {
           console.log(error);
@@ -38,11 +38,12 @@ const AddEvent = (props) => {
     }  
 
     const getEventWithId = useCallback(() => {
-      if (eventID !== undefined && eventID!==null) {
-       axios
-        .post("/getEventWithId", {
-            id: eventID,
-          })
+      if (taskID !== undefined && taskID !==null) {
+        axios({
+          method:'get',
+          url:'/tasks',
+          params: {taskID}
+        })
         .then(function (response) {
             if (response) {
               setTitle(response.data.title);
@@ -54,7 +55,7 @@ const AddEvent = (props) => {
             console.log("error is ", error);
           });
       }
-    },[eventID])
+    },[taskID])
 
   useEffect(()=>{getEventWithId()},[getEventWithId]) 
 

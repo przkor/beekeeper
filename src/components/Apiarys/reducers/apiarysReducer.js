@@ -20,11 +20,10 @@ const apiarysReducer = (state=[],action) => {
             })
         }
         case GET: {
-           // console.log(action.data)
             return [...action.data];
         }
         case DELETE:
-            return state.filter(element=>element._id !== action.data.id);
+            return state.filter(element=>element._id !== action.data._id);
         default:
             console.warn(`Nie znaleziono akcji typu: ${action.type}`)
             return state;

@@ -1,16 +1,14 @@
 
-import {ADD,GET,GETHIVES,EDIT,DELETE} from '../actions/apiarysActions'
+import {ADD,GET,EDIT,DELETE} from '../actions/apiarysActions'
 import axios from 'axios'
 
 export const apiarysMiddleware = store => next => action =>  {
-    
+
     const data=action.data
     const type=action.type
-    const dbCollection = action.dbCollection
     if (type === ADD) {
-        axios.post("/add", {
-            data,
-            dbCollection
+        axios.post("/apiarys", {
+            data
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -37,9 +35,7 @@ export const apiarysMiddleware = store => next => action =>  {
     }
     
     if (type === GET) { 
-        axios.post("/get", { 
-            data,
-            dbCollection
+        axios.get("/apiarys", { 
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -58,30 +54,9 @@ export const apiarysMiddleware = store => next => action =>  {
         });
     }
     
-    if (type===GETHIVES) {
-        axios
-            .post("/getHivesAmountInApiary", {
-            })
-            .then(function (response) {
-                if (response.data==="access denied")
-                {
-                    window.location.assign('/');
-                    return
-                }
-                else {
-                    action.data=response.data  
-                    next(action)    
-                }
-            })
-            .catch(function (error) {
-               console.log(error);
-            });        
-    }
-    
     if (type === EDIT) {
-        axios.post("/update", {
-            data,
-            dbCollection
+        axios.put("/apiarys", {
+            data
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -90,10 +65,8 @@ export const apiarysMiddleware = store => next => action =>  {
                 return
             }
             else {
-               if (response.data===true) {console.log(`Pomyślnie edytowano i zapisano`);next(action); }
+               if (response.data===true) {next(action); }
                else {console.warn(`Błąd! Nie zmieniono w bazie.`)}
-                
-
             }
         })
         .catch(function (error) {
@@ -102,9 +75,8 @@ export const apiarysMiddleware = store => next => action =>  {
     }
 
     if (type === DELETE) {
-        axios.post("/delete", {
-            data,
-            dbCollection
+        axios.delete("/apiarys", {
+            params: {id:data._id}
         })
         .then(function (response) {
             if (response.data==="access denied")
@@ -113,16 +85,14 @@ export const apiarysMiddleware = store => next => action =>  {
                 return
             }
             else {
-               if (response.data.deletedNumber>0) {console.log(`Pomyślnie usunięto`);next(action); }
-               else {console.warn(`Błąd! Nie usunięto z bazy.`)}
-                
+               if (response.data.deletedNumber>0) {next(action); }
+               else {console.warn(`Błąd! Nie usunięto z bazy.`)}   
             }
         })
         .catch(function (error) {
            console.log(error);
         });
     }
-    
-    
+       
 } 
 

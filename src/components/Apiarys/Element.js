@@ -4,29 +4,26 @@ import {del} from './actions/apiarysActions'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
-const collection = 'apiary'
 
 const Element = ({_id,name,location,del}) => {
 
     const [isVisibleForm,setIsVisibleForm]= useState(false)
     const [hivesAmount,setHivesAmount] = useState('')
     const getHivesAmount = useCallback((_id) => {
-            axios
-            .post("/getHivesAmountInApiary", {
-                _id
-            })
-            .then(function (response) {
-                if (response.data==="access denied")
-                {
-                    window.location.assign('/');
-                    return
-                }
-                console.log(response.data.result)
-                setHivesAmount(response.data.result)
-            })
-            .catch(function (error) {
-               console.log(error);
-            });
+        axios({
+            method:'get',
+            url:'/hives/getHivesAmountInApiary',
+            params:{_id}
+        })
+        .then(function (response) {
+            if (response.data==="access denied")
+            {
+                window.location.assign('/');
+                return
+            }
+            setHivesAmount(response.data.result)
+        })
+        .catch(function (error) {console.log(error);});
     },[]
     )
 
@@ -35,7 +32,7 @@ const Element = ({_id,name,location,del}) => {
     }
 
     const handleDelete = () => { 
-        del(_id,collection)
+        del(_id)
     }
     
     useEffect(()=>{

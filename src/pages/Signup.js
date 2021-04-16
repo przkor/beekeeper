@@ -40,7 +40,7 @@ class Signup extends Component {
     signUp() {
      const self = this;
       axios
-        .post("/signup", {
+        .post("/user/signup", {
           login: this.state.login,
           name: this.state.name,
           email: this.state.email,
