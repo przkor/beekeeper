@@ -121,9 +121,8 @@ const FormEdit = ({
   },[])
 
   return (
-    <div className="form-area mt-4">
+    <div className="form-area">
           <form>
-            <br styles="clear:both" />
             <div className="form-group hive">
               <label htmlFor="type">Typ ramki</label> 
               <select

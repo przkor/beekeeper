@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom'
 import { ContextLogin } from '../../ContextLogin';
 import NotLoggedComponent from '../../NotLoggedComponent'
 import List from './List.js'
+import Container from 'react-bootstrap/Container'
 
 const HivesList = () => {
   return (
@@ -28,13 +29,11 @@ const Hives = () => {
    {
       isUserLogged 
       ? 
-      <>
+      <Container fluid>
       <Provider store={store}>
-        <div>
           <HivesList/>
-        </div>
       </Provider>
-     </>
+     </Container>
      : 
       <NotLoggedComponent history={history}/>
    }

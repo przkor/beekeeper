@@ -36,33 +36,7 @@ const App = () => {
     const cleanUsername = () => {
       setUsername('')
     }
-/*
-    const login = () => {
 
-        axios
-            .post("/getUsername")
-             .then(function (response) 
-             {
-                if (response.data!=="failure") {     
-                     const user = response.data 
-                     setIsUserLogged(true) 
-                     setUsername(user)
-                     document.getElementById('username').innerHTML=`Zalogowany: ${user}`  
-
-                     return        
-                }
-                if (response.data === "failure") {
-                    setIsUserLogged(defaultObject.isUserLogged)
-                    setUsername(defaultObject.username)
-                    return
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-        }   
-
-  */
   return (
     <Router basename={process.env.PUBLIC_URL} history={hashHistory}> 
     <ContextLogin.Provider value={

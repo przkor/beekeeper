@@ -10,7 +10,10 @@ const MainNavigation = () => {
             
             
         
-  <Nav className="justify-content-center" variant="tabs"  id="mainMenu" name="mainMenu" style={{display: 'none',color:"red", marginBottom:"20px" }} defaultActiveKey="/events">
+  <Nav className="navbar justify-content-center" variant="tabs"  id="mainMenu" name="mainMenu" 
+  style={{display: 'none',color:"red", marginBottom:"20px" }} defaultActiveKey="/events"
+  role="navigation"
+  >
     <Nav.Item>
       <LinkContainer to="/tasks"><Nav.Link className="navLink" eventKey="/tasks" >Zadania</Nav.Link></LinkContainer>
     </Nav.Item>

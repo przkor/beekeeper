@@ -1,5 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import Element from './Element'
+import Table from 'react-bootstrap/Table'
+import Container from 'react-bootstrap/Container'
 import {connect} from 'react-redux'
 import {getHives,clear} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
@@ -74,24 +76,21 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     )
     const hivesList = 
         (
-        <div>
+        <div className="table-responsive container-for-table" >
             <h5>Liczba rodzin pszczelich: {hivesAmount}</h5>
-             <table className="table table-striped table- mt-3">
+            <Table bordered  size="sm">
                 <thead className="thead thead-light">
                 <tr>
                     <th>ID</th>
                     <th>Typ</th>
-                    <th>Siła</th>
                     <th>Status</th>
-                    <th>ins</th>
-                    <th>edit</th>
-                    <th>del</th>
+                    <th>Akcje</th>
                 </tr>
                 </thead>
                 <tbody>
                  {Elements}    
                 </tbody>
-            </table> 
+            </Table>
         </div>
     )
 

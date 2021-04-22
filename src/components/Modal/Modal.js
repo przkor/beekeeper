@@ -10,7 +10,9 @@ export default function PopUp(props) {
   switch(type) {
     case 'confirmation' : wariant='success' ; titleColor='green'; 
       break
-    case 'warning' : wariant='danger' ; titleColor='red'; 
+    case 'warning' : wariant='warning' ; titleColor='black'; 
+      break
+    case 'danger' : wariant='danger' ; titleColor='red'; 
       break
     default: wariant ='primary' ; titleColor='black'; 
 
@@ -27,6 +29,7 @@ export default function PopUp(props) {
         type:''
       })
     }
+
     /*const handleShow = () => setShow(true);*/
     
     return (

@@ -1,5 +1,8 @@
 import React, {useState, useContext} from 'react' ;
 import {useHistory} from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+//import Row from 'react-bootstrap/Row'
+//import Col from 'react-bootstrap/Col'
 import FormAdd from './FormAdd'
 import ShowHives from './ShowHives'
 import MigrationHives from './MigrationHives'
@@ -19,7 +22,7 @@ const ComponentToShow = ({action}) => {
     }
     return (  
         <>
-        <div>{componentToShow}</div>
+        <Container fluid>{componentToShow}</Container>
         </>
     );
 }
