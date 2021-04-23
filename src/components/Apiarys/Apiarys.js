@@ -16,7 +16,7 @@ const ApiarysList = () => {
           <tr>
             <th>Nazwa</th>
             <th>Lokalizacja</th>
-            <th>Uli</th>
+            <th>Ilość Uli</th>
             <th>edytuj</th>
             <th>usuń</th>
           </tr>

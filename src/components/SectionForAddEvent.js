@@ -9,7 +9,7 @@ const Section = ({handleTitleChange, title,handleSubjectChange,subject,addEvent}
             <div>
               <h4>Zadanie do wykonania</h4>
             </div>
-            <div className="col-md-7">
+            <div className="col-md-12">
               <div className="form-area">
                 <form onSubmit={handleSubmit}>
                   <br styles="clear:both" />
@@ -22,7 +22,7 @@ const Section = ({handleTitleChange, title,handleSubjectChange,subject,addEvent}
                       name="title"
                       value={title || ''}
                       placeholder="Nazwij zadanie"
-                      maxLength='20'
+                      maxLength='75'
                       required
                     />
                   </div>

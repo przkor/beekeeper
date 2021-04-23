@@ -32,7 +32,8 @@ const Element = ({_id,name,location,del}) => {
     }
 
     const handleDelete = () => { 
-        del(_id)
+        if (hivesAmount>0) {alert('Nie można zlikwidować pasieki gdy znajdują się w niej ule.')}
+        else {del(_id)}
     }
     
     useEffect(()=>{
@@ -62,7 +63,7 @@ const Element = ({_id,name,location,del}) => {
             <td>{location}</td>
             <td>{hivesAmount}</td>
             <td>{isVisibleForm? '' : editButton}</td>
-            <td>{hivesAmount? deleteButtonBlocked : deleteButton}</td>
+            <td>{deleteButton}</td>
         </tr>
        <tr><td colSpan={4}>{formElement()}</td></tr>
         </>       
