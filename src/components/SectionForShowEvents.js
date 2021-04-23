@@ -2,7 +2,7 @@ import React from 'react'
 
 const Section = ({events,updateEvent, deleteEvent}) =>  {
     return(
-      <>
+      <div className="container fluid" style={{maxWidth:'720px'}}>
       <table className="table table-striped table-hover" style={{width:"100%"}}>
       <thead className="thead thead-light">
         <tr>
@@ -39,7 +39,7 @@ const Section = ({events,updateEvent, deleteEvent}) =>  {
         )}
       </tbody>
     </table>
-    </>
+    </div>
 
     )
   }
