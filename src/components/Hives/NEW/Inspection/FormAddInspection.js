@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import PopUp from '../../../Modal/Modal'
 import axios from 'axios'
 
@@ -166,7 +166,6 @@ const insTable = [
     },   
 ]
 
-
 const FormAddInspection = (props) => {
     let data = new Date().toISOString().slice(0,10)
     const {hiveID,callback,handleSetInspections,handleShowPopUp} = props
@@ -179,7 +178,7 @@ const FormAddInspection = (props) => {
     })
     
 const [type1ID,setType1ID] = useState('')  
- const [popUp,setPopUp] = useState({
+const [popUp,setPopUp] = useState({
    status:false,
    title:'',
    message:'',
@@ -251,9 +250,11 @@ const [type1ID,setType1ID] = useState('')
     )
  }
 
-
-  const handleAddInspection = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault()
+ }
+
+  const handleAddInspection = (e) => {   
     if (inspection.ins_type1) {
       addInspection (inspection)
     }
@@ -280,7 +281,7 @@ const [type1ID,setType1ID] = useState('')
 
   const handleType2 = (e) => {
     setInspection(prev => {
-      return {
+      return {  
         ...prev,
         ins_type2: e.target.value,  
       }
@@ -288,104 +289,98 @@ const [type1ID,setType1ID] = useState('')
   }
 
   const handleDescription = (e) => {
-    e.preventDefault()
-    setInspection(prev => {
-      return {
+    setInspection(prev => ({
         ...prev,
         description: e.target.value,  
-      }
-    })
+    }))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-}
+
 
   useEffect(() => { 
     return function cleanUp() {}
     },[] 
     )
-  
-  const Section = () => {
-    return (
-      <div className="form-area mt-4">
-        <h5>Nowa inspekcja</h5>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group hive">
-                <label htmlFor="ins_type1">Typ inspeckcji</label> 
-                <select
-                  type="text"
-                  onChange={handleType1}
-                  className="form-control"
-                  id="ins_type1"
-                  name="ins_type1"
-                  value={inspection.ins_type1 || ''}
-                  placeholder='wybierz'
-                  maxLength="30"
-                >
-                    <option value = '' data-id=''>wybierz</option>
-                     {inspectionType}
-                </select>
-               </div>
-                {
-                 type1ID!==''
-                 ?
-                    <div className="form-group hive">
-                        <label htmlFor="ins_type2">Podtyp inspeckcji</label> 
-                        <select
-                            type="text"
-                            onChange={handleType2}
-                            className="form-control"
-                            id="ins_type2"
-                            name="ins_type2"
-                            value={inspection.ins_type2 || ""}
-                            placeholder='wybierz'
-                            maxLength="30"
-                            >
-                                <option value="">wybierz</option>
-                                {inspectionType2} 
-                        </select>
-                </div>
-                :
-                null
-               }
-               <div className="form-group hive">
-                <label htmlFor="ins_description">Opis czynności</label> 
-                <textarea
-                  type='textarea'
-                  onChange={handleDescription}
-                  className="form-control"
-                  id="ins_description"
-                  name="ins_description"
-                  value={inspection.description || ''}
-                  maxLength="150"
-                />
-               </div>
-              <button
-                type="button"
-                onClick={handleAddInspection}
-                id="submit"
-                name="submit"
-                className="btn btn-primary pull-right"
-              >
-                Dodaj
-              </button>
-            </form>
-          {
-            popUp.status 
-            ? 
-              <PopUp parameters={popUp}
-                callback={setPopUp}/> 
-            : 
-              null
-          }
-          </div>
-    )
-  }
 
   return (
-    <Section/>  
-    )
+    <>
+    <div className="form-area mt-4">
+      <h5>Nowa inspekcja</h5>
+      <form onSubmit={handleSubmit}>
+            <div className="form-group hive">
+              <label htmlFor="ins_type1">Typ inspeckcji</label> 
+              <select
+                type="text"
+                onChange={handleType1}
+                className="form-control"
+                id="ins_type1"
+                name="ins_type1"
+                value={inspection.ins_type1 || ''}
+                placeholder='wybierz'
+                maxLength="30"
+              >
+                  <option value = '' data-id=''>wybierz</option>
+                   {inspectionType}
+              </select>
+             </div>
+              {
+               type1ID!==''
+               ?
+                  <div className="form-group hive">
+                      <label htmlFor="ins_type2">Podtyp inspeckcji</label> 
+                      <select
+                          type="text"
+                          onChange={handleType2}
+                          className="form-control"
+                          id="ins_type2"
+                          name="ins_type2"
+                          value={inspection.ins_type2 || ""}
+                          placeholder='wybierz'
+                          maxLength="30"
+                          >
+                              <option value="">wybierz</option>
+                              {inspectionType2} 
+                      </select>
+              </div>
+              :
+              null
+             }
+             <div className="form-group hive">
+              <label htmlFor="description">Szczegóły</label> 
+              <textarea
+              type="textarea"
+              onChange={handleDescription}
+              className="form-control"
+              id="description"
+              name="description"
+              value={inspection.description || ''}
+              maxLength='150'
+              />
+             </div>
+            <button
+              type="button"
+              onClick={handleAddInspection}
+              id="submit"
+              name="submit"
+              className="btn btn-primary pull-right"
+            >
+              Dodaj
+            </button>
+      </form>
+          
+   </div>
+   <div>
+   {
+        popUp.status 
+         ? 
+         <PopUp parameters={popUp}
+             callback={setPopUp}/> 
+          : 
+          null
+   }
+  </div>
+  </>    
+)
 }
 
 export default FormAddInspection

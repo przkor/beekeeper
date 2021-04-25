@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef, useCallback, useLayoutE
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
-import Section from '../components/SectionForShowEvents'
+import Section from '../components/Tasks/SectionForShowTask'
 
 const ShowEvents = (props) => {
   const {isUserLogged} = useContext(ContextLogin)  

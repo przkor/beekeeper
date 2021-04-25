@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState, useContext} from 'react
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
-import Section from '../components/SectionForAddEvent'
+import Section from '../components/Tasks/SectionForAddTask'
 
 const AddEvent = (props) => {
   
