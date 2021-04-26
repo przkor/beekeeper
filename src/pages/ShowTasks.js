@@ -4,14 +4,14 @@ import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
 import Section from '../components/Tasks/SectionForShowTask'
 
-const ShowEvents = (props) => {
+const ShowTasks = (props) => {
   const {isUserLogged} = useContext(ContextLogin)  
-  const [events,setEvents] = useState([])
-  const [deletedEvent,setDeletedEvent] = useState(false)
+  const [tasks,setTasks] = useState([])
+  const [deletedTask,setDeletedTask] = useState(false)
   const history = useHistory()
   const divRef = useRef()
 
-  const getEvent = useCallback(() => {
+  const getTasks = useCallback(() => {
     if (divRef.current) 
     {
     axios
@@ -22,7 +22,7 @@ const ShowEvents = (props) => {
          history.push("/")
          return 
         }
-        setEvents (response.data)
+        setTasks (response.data)
       })
       .catch(function (error) {
         console.log("error is ", error);
@@ -31,7 +31,7 @@ const ShowEvents = (props) => {
 },[history]
 )
 
-  const handleDeleteEvent = (e) => {
+  const handleDeleteTask = (e) => {
     e.preventDefault();
     const id = e.currentTarget.value
     if (window.confirm("jesteś pewien aby usunąć")) {
@@ -41,18 +41,18 @@ const ShowEvents = (props) => {
         params: {id}  
     })
         .then(function (response) {
-          toggleDeletedEvent()
+          toggleDeletedTask()
         })
         .catch(function (error) {});
     }
      
   }
 
-  const toggleDeletedEvent = () => {
-    setDeletedEvent(prevValue => !prevValue)
+  const toggleDeletedTask = () => {
+    setDeletedTask(prevValue => !prevValue)
   }
 
-  const handleUpdateEvent = (e) => {
+  const handleUpdateTask = (e) => {
     e.preventDefault();
     const id = e.currentTarget.value
     history.push(`/addTask/${id}`)
@@ -76,15 +76,13 @@ const ShowEvents = (props) => {
 
   useEffect(()=> {
     divRef.current = true
-    console.log(`Renderuje ShowEvents... `)
-    getEvent()
-    return () => {divRef.current=false; console.log("Czyszcze ShowEvents..")}  
-    },[getEvent,deletedEvent]
+    getTasks()
+    return () => {divRef.current=false;}  
+    },[getTasks,deletedTask]
     ) 
 
   useLayoutEffect(() => {
     document.getElementById('mainMenu').style.display='flex';
-    console.log('Renderuje useLayoutEffect')
   },[])
 
    return (
@@ -93,8 +91,8 @@ const ShowEvents = (props) => {
              isUserLogged 
              ? 
              <>
-             <Section events={events} 
-             updateEvent={handleUpdateEvent} deleteEvent={handleDeleteEvent}/> 
+             <Section tasks={tasks} 
+             updateTask={handleUpdateTask} deleteTask={handleDeleteTask}/> 
             </>
             : 
              notLoggedInformation()
@@ -105,4 +103,4 @@ const ShowEvents = (props) => {
 
   }
 
-  export default ShowEvents
+  export default ShowTasks

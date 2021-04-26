@@ -10,16 +10,21 @@ const AddEvent = (props) => {
   const {isUserLogged} = useContext(ContextLogin)  
   let [title,setTitle] = useState("")
   let [subject,setSubject] = useState("")
+  let [apiary,setApiary] = useState("")
+  let [date,setDate] = useState("")
   let [id,setID] = useState("")
   const divRef = useRef()
   const history = useHistory()
 
   const addEvent = () => { 
+
     axios
       .post("/tasks", {
+          id,
           title, 
           subject,
-          id,
+          apiary,
+          date
         })
         .then(function (response) {
           history.push("/tasks")
@@ -33,9 +38,18 @@ const AddEvent = (props) => {
     const handleTitleChange = (e) => {
       setTitle(e.target.value);
     }
+
     const handleSubjectChange = (e) => {
       setSubject(e.target.value);
     }  
+
+    const handleDateChange = (e) => {
+      setDate(e.target.value);
+    }
+
+    const handleApiaryChange = (e) => {
+      setApiary(e.target.value);
+    }
 
     const getEventWithId = useCallback(() => {
       if (taskID !== undefined && taskID !==null) {
@@ -48,6 +62,8 @@ const AddEvent = (props) => {
             if (response) {
               setTitle(response.data.title);
               setSubject(response.data.subject);
+              setApiary(response.data.apiary);
+              setDate(response.data.date);
               setID(response.data._id);
             }
           })
@@ -78,9 +94,15 @@ const AddEvent = (props) => {
           {
              isUserLogged 
              ? 
-             <Section handleTitleChange = {handleTitleChange} title ={title} 
-                  handleSubjectChange = {handleSubjectChange} subject = {subject}
-              addEvent={addEvent}
+             <Section handleTitleChange = {handleTitleChange} 
+                handleSubjectChange = {handleSubjectChange} 
+                handleDateChange = {handleDateChange} 
+                handleApiaryChange = {handleApiaryChange} 
+                title ={title} 
+                subject = {subject}
+                apiary = {apiary}
+                date = {date}
+                addEvent={addEvent}
             /> 
             : 
              notLoggedInformation()

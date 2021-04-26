@@ -1,39 +1,43 @@
 import React from 'react'
 
-const Section = ({events,updateEvent, deleteEvent}) =>  {
+const Section = ({tasks,updateTask, deleteTask}) =>  {
     return(
       <div className="container fluid" style={{maxWidth:'660px'}}>
       <table className="table table-striped table-hover" style={{width:"100%"}}>
       <thead className="thead thead-light">
         <tr>
           <th>#</th>
-          <th>Zadanie aktywe</th>
-          <th>Opis</th>
-          <th>Edytuj</th>
-          <th>Usuń</th>
+          <th>Tytuł</th>
+          <th>Pasieka</th>
+          <th>Termin</th>
+          <th>Akcje</th>
         </tr>
       </thead>
       <tbody>
-        {events.map(
-          function (event, index) {
+        {tasks.map(
+          function (task, index) {
             return (
+              <>
               <tr key={index}>
-                <td style={{width:"10%"}}>{index + 1}</td>
-                <td style={{width:"20%"}}>{event.title}</td>
-                <td style={{width:"70%"}}>{event.subject}</td>
+                <td>{index + 1}</td>
+                <td>{task.title}</td>
+                <td>{task.apiary ? task.apiary : 'brak'}</td>
+                <td>{task.date ? task.date : 'brak'}</td>
                 <td>
-                  <button onClick={updateEvent} value={event._id}>
+                  <button onClick={updateTask} value={task._id}>
                   <span ><i className="fa fa-pencil fa-fw"></i>
                   </span>
                   </button>
-                </td>
-                <td>
-                  <button onClick={deleteEvent} value={event._id}>
+                  <button onClick={deleteTask} value={task._id}>
                   <span> <i className="fa fa-trash-o fa-lg"></i>
                   </span>
                   </button>
                 </td>
               </tr>
+              <tr>
+               <td colSpan='5'>Opis: {task.subject}</td>
+             </tr>
+             </>
             );
           }
         )}
