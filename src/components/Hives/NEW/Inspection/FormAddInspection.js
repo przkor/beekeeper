@@ -304,7 +304,7 @@ const [popUp,setPopUp] = useState({
 
   return (
     <>
-    <div className="form-area mt-4">
+    <div className="form-area mt-3 mb-3">
       <h5>Nowa inspekcja</h5>
       <form onSubmit={handleSubmit}>
             <div className="form-group hive">
@@ -366,8 +366,7 @@ const [popUp,setPopUp] = useState({
             >
               Dodaj
             </button>
-      </form>
-          
+      </form>        
    </div>
    <div>
    {

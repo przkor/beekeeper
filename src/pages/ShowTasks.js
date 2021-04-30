@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
 import Section from '../components/Tasks/SectionForShowTask'
+import Container from 'react-bootstrap/Container'
 
 const ShowTasks = (props) => {
   const {isUserLogged} = useContext(ContextLogin)
@@ -116,16 +117,15 @@ const apiarysList = () => {
   },[])
 
    return (
+     <Container fluid>
          <div ref={divRef}> 
           {
              isUserLogged 
              ? 
-             <>
-              
+             <>      
+            <form>
               <div className="form-group">
-                <form>
-              <label htmlFor="apiary" className="left"><b>Lista zadań:</b></label>
-                <span className="left2">
+                <label htmlFor="apiary">Lista zadań:</label>
                   <select
                     value={apiary || 'all'}
                     onChange={handleApiaryChange}
@@ -134,11 +134,11 @@ const apiarysList = () => {
                     name="apiary"
                   >
                   <option value='all'>wszystkie</option>
-                  {apiarysList()}
+                    {apiarysList()}
                   </select>
-                </span>
-                </form>
               </div>
+            </form>
+              
              <Section tasks={tasks} apiary={apiary} 
              updateTask={handleUpdateTask} deleteTask={handleDeleteTask}/> 
             </>
@@ -146,7 +146,7 @@ const apiarysList = () => {
              notLoggedInformation()
           }
         </div>         
-        
+      </Container> 
       );
 
   }

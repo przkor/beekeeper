@@ -129,12 +129,15 @@ const options = {
 const rowStyle = { backgroundColor: '#c8e6c9' };
 
 const showInspection = (
+  <div className="mt-3">
+    <h6>Historia Inspekcji</h6>
     <BootstrapTable  condensed bordered={ false }  hover
     keyField='_id' data={ inspections } columns={ columns } expandRow={ expandRow }
     defaultSorted={ defaultSorted } 
     pagination={ paginationFactory(options) }
     rowStyle={ rowStyle } 
     />
+  </div>
   )
  
   const handleCancel = () => {
@@ -159,7 +162,6 @@ const showInspection = (
   return (
     <>
       <div className="form-area">
-        <h6>Historia inspekcji:</h6>
         <Button onClick={handleCancel} className="m-2">Zamknij</Button>
         {showAddInspection ? null : <Button onClick={handleAddInspection} className="m-2">Dodaj inspekcje</Button> }
         <Button onClick={handleButtonAddTask} className="m-2">Dodaj zadanie</Button>

@@ -55,7 +55,6 @@ const Element = ({_id,name,location,del}) => {
 
     const editButton = <button onClick={toggleEditButton}><span ><i className="fa fa-pencil fa-fw"></i></span></button>
     const deleteButton = <button onClick={handleDelete}><span><i className="fa fa-trash-o fa-lg"></i></span></button>
-    const deleteButtonBlocked = <button><span><i className="bi bi-bag-x bi-lg"></i></span></button>
     return (
         <>
         <tr key={_id}>

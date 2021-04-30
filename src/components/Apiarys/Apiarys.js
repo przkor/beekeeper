@@ -11,7 +11,7 @@ const ApiarysList = () => {
   return (
     <div>
       <h5>Lista pasiek</h5>
-      <table className="table table-striped table- mt-3">
+      <table className="table table-striped table-sm mt-3">
         <thead className="thead thead-light">
           <tr>
             <th>Nazwa</th>

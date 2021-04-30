@@ -1,6 +1,5 @@
 import React, {useContext} from 'react'
 import {Link,useHistory} from 'react-router-dom'
-import Button from 'react-bootstrap/Button'
 import { ContextLogin } from '../components/ContextLogin'
 import NotLoggedComponent from  '../components/NotLoggedComponent'
 
@@ -9,17 +8,23 @@ const ManagerMenu = (props) => {
     const {isUserLogged} = useContext(ContextLogin)  
     const history = useHistory()
     const list = menuList.map(option =>(
-        <li key={option} className="list-group-item">
-            <Link to={`/manager/${option}`}>{option}</Link>
-        </li>
+        
+            <Link to={`/manager/${option}`} className="tags">
+                <button type="button" class="list-group-item list-group-item-action">{option}</button>
+            </Link>
+        
     ))
     const nav= () => (
+        <div className="list-group w-50 m-auto" >
+            {list}
+        </div>
+        /*
         <nav>
         <ul className="list-group">
             {list}
         </ul>
         </nav>
-
+        */
     )
     return ( 
         <div className="managerMenu">

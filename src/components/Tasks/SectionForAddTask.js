@@ -49,25 +49,20 @@ const Section = ({title,subject,apiary,apiaryID,date,
     })
 
     return (
-      <div style={{"width":"100%"}}>
-            <div>
-              <h4>Zadanie do wykonania</h4>
-            </div>
-            <div className="col-md-12">
-              <div className="form-area">
-                <form onSubmit={handleSubmit}>
-                  <br styles="clear:both" />
+      <div className="container fluid">
+        <div><h4>Zadanie do wykonania</h4></div>
+        <form onSubmit={handleSubmit}>
                   <div className="form-group" >
-                  <label htmlFor="title">Nazwa/Nr Ula</label>
+                  <label htmlFor="title">Nazwa zadania / Nr Ula</label>
                     <input
                       type="text"
                       onChange={handleTitleChange}
-                      className="form-control"
+                      className="form-control form-control-sm"
                       id="title"
                       name="title"
                       value={title || ''}
-                      placeholder="Nazwij zadanie"
-                      maxLength='75'
+                      placeholder="Nazwij zadanie(max 30 znaków)"
+                      maxLength='30'
                       required
                     />
                   </div>
@@ -75,7 +70,7 @@ const Section = ({title,subject,apiary,apiaryID,date,
                   <div className="form-group">
                   <label htmlFor="subject">Opis</label>
                     <textarea
-                      className="form-control"
+                      className="form-control form-control-sm"
                       onChange={handleSubjectChange}
                       type="textarea"
                       id="subject"
@@ -91,13 +86,12 @@ const Section = ({title,subject,apiary,apiaryID,date,
                     <select
                       value={apiary || ''}
                       onChange={handleApiaryChange}
-                      className="form-control"
+                      className="form-control form-control-sm"
                       id="apiary"
                       name="apiary"
                     >
                       <option value=''>bez przypisania</option>
                       {
-                        
                         apiarysList()
                       }
 
@@ -108,7 +102,7 @@ const Section = ({title,subject,apiary,apiaryID,date,
                     <input
                       type="date"
                       onChange={handleDateChange}
-                      className="form-control"
+                      className="form-control form-control-sm"
                       id="date"
                       name="date"
                       value={date || ''}
@@ -125,10 +119,8 @@ const Section = ({title,subject,apiary,apiaryID,date,
                   >
                     Zatwierdź/Dodaj
                   </button>
-                </form>
-              </div>
-            </div>
-          </div>
+          </form>
+      </div>
     ) 
   }
 

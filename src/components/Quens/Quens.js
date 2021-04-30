@@ -24,7 +24,7 @@ const quensTable = (state,dispatch) => {
     ))
     return (
     <div>
-          <table className="table table-striped table-hover">
+          <table className="table table-striped table-sm table-hover">
             <thead className="thead thead-light">
               <tr>
                 <th>Linia</th>

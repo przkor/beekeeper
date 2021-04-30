@@ -4,15 +4,15 @@ const Section = ({tasks,apiary,updateTask, deleteTask}) =>  {
   
   const today = new Date().toISOString().slice(0,10)
     return(
-      <div className="container fluid" style={{maxWidth:'580px'}}>
-      <table className="table table-hover striped" style={{width:"100%"}}>
+      <div className="table-responsive container-for-table m-auto" >
+      <table className="table table-sm table-responsive table-hover striped" style={{width:"100%"}}>
       <thead className="thead thead-dark">
         <tr>
-          <th>#</th>
-          <th>Nazwa</th>
-          <th>Pasieka</th>
-          <th>Termin</th>
-          <th>Akcje</th>
+        <th scope="col">#</th>
+        <th scope="col">Nazwa zadania</th>
+        <th scope="col">Pasieka</th>
+        <th scope="col">Termin</th>
+        <th scope="col">Edytuj/Usuń</th>
         </tr>
       </thead>
       <tbody>
@@ -21,8 +21,8 @@ const Section = ({tasks,apiary,updateTask, deleteTask}) =>  {
             if ((task.apiary !== apiary)&&(apiary!=='all')) {return null}
             return (
               <>
-              <tr style={{backgroundColor:'grey'}} key={index}>
-                <td>{index + 1}</td>
+              <tr className="table-warning" key={index}>
+              <th scope="row">{index + 1}</th>
                 <td>{task.title}</td>
                 <td>{task.apiary ? task.apiary : 'brak'}</td>
                 {today < task.date ? 
@@ -41,7 +41,7 @@ const Section = ({tasks,apiary,updateTask, deleteTask}) =>  {
                   </button>
                 </td>
               </tr>
-              <tr>
+              <tr className="table-secondary">
                <td colSpan='5' style={{textAlign:'left'}}><b>Treść zadania: </b> {task.subject}</td>
              </tr>
              </>

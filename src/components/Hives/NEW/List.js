@@ -1,7 +1,6 @@
 import React, {useEffect,useState} from 'react'
 import Element from './Element'
 import Table from 'react-bootstrap/Table'
-import Container from 'react-bootstrap/Container'
 import {connect} from 'react-redux'
 import {getHives,clear} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
