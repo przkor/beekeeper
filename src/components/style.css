@@ -45,3 +45,16 @@ label {
   color: black;
   background: rgb(214, 210, 210);
 }
+
+.left {
+  float: left;
+}
+
+.left2 {
+  overflow: hidden;
+  display: block;
+  padding: 0 4px 0 10px;
+}
+.left2 input {
+  width: 50%;
+}

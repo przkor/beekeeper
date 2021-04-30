@@ -1,13 +1,15 @@
 import React from 'react'
 
-const Section = ({tasks,updateTask, deleteTask}) =>  {
+const Section = ({tasks,apiary,updateTask, deleteTask}) =>  {
+  
+  const today = new Date().toISOString().slice(0,10)
     return(
-      <div className="container fluid" style={{maxWidth:'660px'}}>
-      <table className="table table-striped table-hover" style={{width:"100%"}}>
-      <thead className="thead thead-light">
+      <div className="container fluid" style={{maxWidth:'580px'}}>
+      <table className="table table-hover striped" style={{width:"100%"}}>
+      <thead className="thead thead-dark">
         <tr>
           <th>#</th>
-          <th>Tytuł</th>
+          <th>Nazwa</th>
           <th>Pasieka</th>
           <th>Termin</th>
           <th>Akcje</th>
@@ -16,15 +18,20 @@ const Section = ({tasks,updateTask, deleteTask}) =>  {
       <tbody>
         {tasks.map(
           function (task, index) {
+            if ((task.apiary !== apiary)&&(apiary!=='all')) {return null}
             return (
               <>
-              <tr key={index}>
+              <tr style={{backgroundColor:'grey'}} key={index}>
                 <td>{index + 1}</td>
                 <td>{task.title}</td>
                 <td>{task.apiary ? task.apiary : 'brak'}</td>
-                <td>{task.date ? task.date : 'brak'}</td>
+                {today < task.date ? 
+                  <td>{task.date ? task.date : 'brak'}</td>
+                  :
+                  <td style={{color:'#ee0033'}}><b>{task.date ? task.date : 'brak'}</b></td>
+              }   
                 <td>
-                  <button onClick={updateTask} value={task._id}>
+                  <button  className="mr-2" onClick={updateTask} value={task._id}>
                   <span ><i className="fa fa-pencil fa-fw"></i>
                   </span>
                   </button>
@@ -35,7 +42,7 @@ const Section = ({tasks,updateTask, deleteTask}) =>  {
                 </td>
               </tr>
               <tr>
-               <td colSpan='5'>Opis: {task.subject}</td>
+               <td colSpan='5' style={{textAlign:'left'}}><b>Treść zadania: </b> {task.subject}</td>
              </tr>
              </>
             );

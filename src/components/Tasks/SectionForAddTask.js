@@ -1,12 +1,10 @@
 import React, {useState,useEffect} from 'react'
 import axios from 'axios'
 
-const Section = ({title,subject,apiary,date,
+const Section = ({title,subject,apiary,apiaryID,date,
   handleTitleChange,handleSubjectChange,handleDateChange,handleApiaryChange,addEvent
 }) => {
-    const handleSubmit = (e) => {
-      e.preventDefault()
-  }
+   
     const  defaultDate = new Date().toISOString().slice(0,10)
     const [apiarys,setApiarys] = useState('')
   
@@ -30,15 +28,21 @@ const Section = ({title,subject,apiary,date,
 
     const apiarysList = () => {
       if(apiarys.length>0) {
-        const list = apiarys.map((apiary) => (
-          <option key={apiary._id} value={apiary.name}>{apiary.name}</option>
-        ))
+        const list = apiarys.map((apiary) => {
+          if (apiaryID!==null && apiaryID !== apiary._id) {return null}
+          else {
+            return <option key={apiary._id} value={apiary.name}>{apiary.name}</option>
+          } 
+          
+        })
         return list
       }
       return
     } 
     
-    
+    const handleSubmit = (e) => {
+      e.preventDefault()
+    }
 
     useEffect(()=>{
       getApiarys()
@@ -54,6 +58,7 @@ const Section = ({title,subject,apiary,date,
                 <form onSubmit={handleSubmit}>
                   <br styles="clear:both" />
                   <div className="form-group" >
+                  <label htmlFor="title">Nazwa/Nr Ula</label>
                     <input
                       type="text"
                       onChange={handleTitleChange}
@@ -68,6 +73,7 @@ const Section = ({title,subject,apiary,date,
                   </div>
     
                   <div className="form-group">
+                  <label htmlFor="subject">Opis</label>
                     <textarea
                       className="form-control"
                       onChange={handleSubjectChange}
@@ -80,8 +86,8 @@ const Section = ({title,subject,apiary,date,
                       rows="5"
                     ></textarea>
                   </div>
-                  <label htmlFor="apiary">Dla pasieki</label>
                   <div className="form-group" >
+                  <label htmlFor="apiary">Pasieka</label>
                     <select
                       value={apiary || ''}
                       onChange={handleApiaryChange}
@@ -89,8 +95,9 @@ const Section = ({title,subject,apiary,date,
                       id="apiary"
                       name="apiary"
                     >
-                      <option value=''>wybierz</option>
+                      <option value=''>bez przypisania</option>
                       {
+                        
                         apiarysList()
                       }
 
@@ -106,12 +113,8 @@ const Section = ({title,subject,apiary,date,
                       name="date"
                       value={date || ''}
                       min={defaultDate}
-                      placeholder="Do kiedy"
                     />
                   </div>
-                  
-                  
-    
                   <button
                     type="button"
                     onClick={addEvent}
@@ -120,7 +123,7 @@ const Section = ({title,subject,apiary,date,
                     className="btn btn-primary pull-right"
                     value=""
                   >
-                    Dodaj/Zmień
+                    Zatwierdź/Dodaj
                   </button>
                 </form>
               </div>

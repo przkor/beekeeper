@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import PopUp from '../../../Modal/Modal'
+import PopUpAddTask from '../../../Modal/ModalAddTask'
 import FormAddInspection from './FormAddInspection'
 import Button from 'react-bootstrap/Button'
 //import Table from 'react-bootstrap/Table'
@@ -9,15 +10,25 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'; 
 
-const Inspection = ({hiveID,callback}) => 
+const Inspection = ({hiveID,apiary,callback}) => 
 {
   const [inspections,setInspections] = useState([])
   const [showAddInspection,setShowAddInspection] = useState(false)
+
   const [popUp,setPopUp] = useState({
     status:false,
     title:'',
     message:'',
     type:''
+  })
+
+  const [popUpAddTask,setPopUpAddTask] = useState({
+    status:false,
+    title:'Nowe zadanie',
+    message:'',
+    type:'',
+    hiveID,
+    apiary
   })
 
   const getInspection = (hiveID) => {
@@ -130,6 +141,15 @@ const showInspection = (
     callback()
   }
 
+  const handleButtonAddTask = () => {
+    setPopUpAddTask(prev => {
+      return {
+        ...prev,
+        status:true
+      }
+    })
+  }
+
   const handleAddInspection = () => {setShowAddInspection(true)} 
 
   useEffect(()=>{
@@ -140,8 +160,9 @@ const showInspection = (
     <>
       <div className="form-area">
         <h6>Historia inspekcji:</h6>
-        <Button onClick={handleCancel} className="mr-2">Zamknij</Button>
-        {showAddInspection ? null : <Button onClick={handleAddInspection} className="mr-2">Dodaj inspekcje</Button> }
+        <Button onClick={handleCancel} className="m-2">Zamknij</Button>
+        {showAddInspection ? null : <Button onClick={handleAddInspection} className="m-2">Dodaj inspekcje</Button> }
+        <Button onClick={handleButtonAddTask} className="m-2">Dodaj zadanie</Button>
         {showAddInspection ? <FormAddInspection hiveID={hiveID} handleShowPopUp={setPopUp} callback={setShowAddInspection} 
         handleSetInspections={setInspections}/> : null}
         {inspections.length>0 ? showInspection : null}
@@ -152,6 +173,13 @@ const showInspection = (
         <PopUp parameters={popUp}
         callback={setPopUp}/> 
         : 
+        null
+      }
+      {
+        popUpAddTask.status 
+        ?
+        <PopUpAddTask parameters={popUpAddTask} callback={setPopUpAddTask}/>
+        :
         null
       }
     </>

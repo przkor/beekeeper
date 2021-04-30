@@ -4,15 +4,19 @@ import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
 import Section from '../components/Tasks/SectionForAddTask'
 
-const AddEvent = (props) => {
-  
-  const taskID= props.match.params.id
-  const {isUserLogged} = useContext(ContextLogin)  
-  let [title,setTitle] = useState("")
-  let [subject,setSubject] = useState("")
-  let [apiary,setApiary] = useState("")
-  let [date,setDate] = useState("")
-  let [id,setID] = useState("")
+const AddTask = (props) => {
+  let hiveID = null
+  if (props.hiveID !==undefined) {hiveID=`Ul nr ${props.hiveID}`}
+  let apiaryID = null
+  if (props.apiary!==undefined) {apiaryID=props.apiary}
+  let taskID = null
+  if (props.match) {taskID = props.match.params.id}
+  const {isUserLogged} = useContext(ContextLogin)   
+  let [title,setTitle] = useState(hiveID)
+  let [subject,setSubject] = useState('')
+  let [apiary,setApiary] = useState('')
+  let [date,setDate] = useState('')
+  let [id,setID] = useState('')
   const divRef = useRef()
   const history = useHistory()
 
@@ -102,6 +106,7 @@ const AddEvent = (props) => {
                 subject = {subject}
                 apiary = {apiary}
                 date = {date}
+                apiaryID={apiaryID}
                 addEvent={addEvent}
             /> 
             : 
@@ -111,4 +116,4 @@ const AddEvent = (props) => {
   )
   }
 
-  export default AddEvent
+  export default AddTask

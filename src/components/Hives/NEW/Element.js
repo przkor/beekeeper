@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import FormEdit from './FormEdit'
 import ShowInspection from './Inspection/ShowInspection'
-import PopUp from '../../Modal/Modal'
 import {delHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
 
@@ -45,6 +44,7 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
         if (isVisibleInspection) {
             return (<ShowInspection
                 hiveID={number}
+                apiary = {apiary}
                 callback={toggleInspectionButton}
             />)
         }
