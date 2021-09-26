@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { ContextLogin } from '../components/ContextLogin';
 import Section from '../components/Tasks/SectionForAddTask'
+import PopUp from '../components/Modal/Modal'
 
 const AddTask = (props) => {
   let hiveID = null
@@ -12,63 +13,120 @@ const AddTask = (props) => {
   let taskID = null
   if (props.match) {taskID = props.match.params.id}
   const {isUserLogged} = useContext(ContextLogin)   
-  let [title,setTitle] = useState(hiveID)
-  let [subject,setSubject] = useState('')
-  let [apiary,setApiary] = useState('')
-  let [date,setDate] = useState('')
-  let [id,setID] = useState('')
+  const [data,setData] = useState({
+    id:taskID,
+    title:hiveID,
+    subject:'',
+    apiary:'',
+    date:''
+  })
+  const [popUp,setPopUp] = useState({
+    status:false,
+    title:'',
+    message:'',
+    type:''
+  })
+
   const divRef = useRef()
+
   const history = useHistory()
 
   const addEvent = () => { 
-
-    axios
+    if (divRef.current) {
+      axios
       .post("/tasks", {
-          id,
-          title, 
-          subject,
-          apiary,
-          date
+          data
         })
         .then(function (response) {
-          history.push("/tasks")
+          //history.push("/tasks")
+          if ((response.status===200)||(response.status===201)) {
+            setPopUp
+            ({
+              status:true,
+              title:'Potwierdzenie',
+              message:'Dodano lub zaktualizowano zadanie',
+              type:'confirmation'
+           })
+           setData({
+            id:'',
+            title:'',
+            subject:'',
+            apiary:'',
+            date:''
+           })
+          }
+          else {
+            setPopUp
+            ({
+              status:true,
+              title:'Ostrzeżenie!',
+              message:'Coś poszło nie tak',
+              type:'warning'
+           })
+
+          }
         })
         .catch(function (error) {
           console.log(error);
         });
+      }
     }
   
  
     const handleTitleChange = (e) => {
-      setTitle(e.target.value);
+      setData(prevData => {
+        return {
+          ...prevData, 
+          title: e.target.value, 
+        }
+      })
     }
 
     const handleSubjectChange = (e) => {
-      setSubject(e.target.value);
+      setData(prevData => {
+        return {
+          ...prevData, 
+          subject: e.target.value, 
+         
+        }
+      })
     }  
 
     const handleDateChange = (e) => {
-      setDate(e.target.value);
+      setData(prevData => {
+        return {
+          ...prevData, 
+          date: e.target.value, 
+         
+        }
+      })
     }
 
     const handleApiaryChange = (e) => {
-      setApiary(e.target.value);
+      setData(prevData => {
+        return {
+          ...prevData, 
+          apiary: e.target.value, 
+        }
+      })
     }
 
     const getEventWithId = useCallback(() => {
-      if (taskID !== undefined && taskID !==null) {
+      if (taskID !== undefined && taskID !==null && divRef.current) {
         axios({
           method:'get',
           url:'/tasks',
           params: {taskID}
         })
         .then(function (response) {
-            if (response) {
-              setTitle(response.data.title);
-              setSubject(response.data.subject);
-              setApiary(response.data.apiary);
-              setDate(response.data.date);
-              setID(response.data._id);
+            if (response.status===200) {
+              setData({
+                id:response.data._id,
+                title:response.data.title,
+                subject:response.data.subject,
+                apiary:response.data.apiary,
+                date:response.data.date
+              })
             }
           })
           .catch(function (error) {
@@ -77,7 +135,15 @@ const AddTask = (props) => {
       }
     },[taskID])
 
-  useEffect(()=>{getEventWithId()},[getEventWithId]) 
+  useEffect(
+    ()=>{
+      divRef.current=true
+      getEventWithId()
+      return function cleanup() {
+        divRef.current=false
+      }
+    },
+    [getEventWithId]) 
 
   const handleRedirect= () => {
     const location = { 
@@ -96,23 +162,28 @@ const AddTask = (props) => {
   return (
     <div ref={divRef}> 
           {
-             isUserLogged 
+             isUserLogged
              ? 
              <Section handleTitleChange = {handleTitleChange} 
                 handleSubjectChange = {handleSubjectChange} 
                 handleDateChange = {handleDateChange} 
                 handleApiaryChange = {handleApiaryChange} 
-                title ={title} 
-                subject = {subject}
-                apiary = {apiary}
-                date = {date}
+                data = {data}
                 apiaryID={apiaryID}
                 addEvent={addEvent}
             /> 
             : 
              notLoggedInformation()
           }
-        </div>  
+          {          
+            popUp.status 
+              ? 
+                <PopUp parameters={popUp}
+                  callback={setPopUp}/> 
+              : 
+                null
+          }
+    </div>  
   )
   }
 

@@ -1,11 +1,11 @@
 import React,{useState} from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import AddTask from '../../pages/AddTask'
 
-export default function PopUpAddTask(props) {
-  const {title,message,type,hiveID,apiary} = props.parameters
+export default function PopUp(props) {
+  const {title,message,type} = props.parameters
   let callback = props.callback
+  let action = props.action
   let wariant
   let titleColor
   switch(type) {
@@ -31,7 +31,7 @@ export default function PopUpAddTask(props) {
       })
     }
 
-    console.log({apiary})
+
 
     /*const handleShow = () => setShow(true);*/
     
@@ -53,16 +53,10 @@ export default function PopUpAddTask(props) {
           </Modal.Header>
           <Modal.Body>
             {message}
-            <AddTask hiveID={hiveID} apiary={apiary}/>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant={wariant} onClick={handleClose}>
-              Powrót
-            </Button>
-            {/*
-            <Button variant="secondary">Understood</Button>
-            */
-            }
+            <Button variant={wariant} onClick={action}>OK</Button>
+            <Button variant="secondary" onClick={handleClose}>Anuluj</Button>
           </Modal.Footer>
         </Modal>
       </>

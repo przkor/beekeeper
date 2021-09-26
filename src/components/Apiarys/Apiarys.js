@@ -6,31 +6,31 @@ import { ContextLogin } from '../ContextLogin';
 import NotLoggedComponent from '../NotLoggedComponent'
 import List from './List.js'
 import FormAdd from './FormAdd.js'
+import Container from 'react-bootstrap/Container'
 
 const ApiarysList = () => {
   return (
-    <div>
+      <Container fluid>
       <h5>Lista pasiek</h5>
-      <table className="table table-striped table-sm mt-3">
-        <thead className="thead thead-light">
+      <table className="table table-striped table-sm">
+        <thead className="thead thead-dark">
           <tr>
             <th>Nazwa</th>
             <th>Lokalizacja</th>
-            <th>Ilość Uli</th>
-            <th>edytuj</th>
-            <th>usuń</th>
+            <th>Uli [szt]</th>
+            <th>Akcje</th>
           </tr>
         </thead>
         <tbody>
           <List/>     
         </tbody>
       </table> 
-    </div>
+    </Container>
   )
 }
 
 const Form = () => {
-    return (<div><h5>Dodaj nową pasieke</h5><FormAdd/></div>)
+    return (<Container fluid><h5>Dodaj nową pasieke</h5><FormAdd/></Container>)
 }
 
 const Apiarys = () => {

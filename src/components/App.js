@@ -6,7 +6,7 @@ import { ContextLogin, defaultObject } from './ContextLogin';
 
 import Signin from '../pages/Signin'
 import Signup from '../pages/Signup'
-import ShowTasks from '../pages/ShowTasks'
+import Tasks from '../pages/Tasks'
 import AddTask from '../pages/AddTask'
 import Managers from '../pages/Managers'
 import ManagerPage from '../pages/ManagerPage' 
@@ -58,7 +58,7 @@ const App = () => {
           <Route path="/" exact><Signin/></Route>
           <Route path="/signin"><Signin/></Route>
           <Route path="/signup"  component={Signup}/>
-          <Route path="/tasks"><ShowTasks /></Route>
+          <Route path="/tasks"><Tasks/></Route>
           <Route path="/addTask/:id"  component={AddTask}/>
           <Route path="/addTask"  component={AddTask}/>
           <Route path="/managers"  component={Managers}/>

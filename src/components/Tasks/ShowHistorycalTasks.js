@@ -1,33 +1,24 @@
 import React, { useState, useContext, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
-import { ContextLogin } from '../components/ContextLogin';
-import SectionTasks from '../components/Tasks/SectionForShowTask'
+import { ContextLogin } from '../ContextLogin';
+import SectionForHistorycalTasks from './SectionForHistorycalTasks'
 import Container from 'react-bootstrap/Container'
-import PopUp from '../components/Modal/ModalConfirmation'
 
-const ShowTasks = (props) => {
+const ShowHistorycalTasks = (props) => {
   const {isUserLogged} = useContext(ContextLogin)
   const [apiarys,setApiarys] = useState([])  
   const [apiary,setApiary] = useState('all')  
   const [tasks,setTasks] = useState([])
-  const [deletedTask,setDeletedTask] = useState(false)
   const history = useHistory()
   const divRef = useRef()
 
-  const [taskID,setTaskID] = useState('')
-  const [popUp,setPopUp] = useState({
-    status:false,
-    title:'',
-    message:'',
-    type:'',
-  })
 
   const getTasksAndApiarys = useCallback(() => {
     if (divRef.current) 
     {
     axios
-      .get('/tasks', {})
+      .get('/tasks', { params: {status:0}  })
       .then(function (response) {
         if (response.data==="access denied")
         {   
@@ -67,67 +58,6 @@ const apiarysList = () => {
   return
 } 
 
-const handleDeleteModal = (e) => {
-  e.preventDefault();
-  const id = e.currentTarget.value
-  setTaskID(id)
-  setPopUp
-            ({
-              status:true,
-              title:'Ostrzeżenie',
-              message:'Czy na pewno usunąć?',
-              type:'danger',
-           })
-}
-
-  const handleDeleteTask = () => {
-    const id = taskID
-      axios({
-        method: 'delete',
-        url: '/tasks',
-        params: {id}
-    })
-        .then(function (response) {
-          if (response.data===true) {
-            toggleDeletedTask()
-            setPopUp
-            ({
-              status:false,
-              title:'',
-              message:'',
-              type:'',
-           })
-          }
-          else {
-            alert('Błąd ! Nie usunięto')
-          }
-          
-        })
-        .catch(function (error) {});
-  }
-
-  const handleFinishTask = (e) => {
-    const id = e.currentTarget.value
-      axios({
-        method: 'patch',
-        url: '/tasks',
-        data: {id}
-    })
-        .then(function (response) {
-          toggleDeletedTask()
-        })
-        .catch(function (error) {});
-  }
-
-  const toggleDeletedTask = () => {
-    setDeletedTask(prevValue => !prevValue)
-  }
-
-  const handleUpdateTask = (e) => {
-    e.preventDefault();
-    const id = e.currentTarget.value
-    history.push(`/addTask/${id}`)
-  }
 
   const handleApiaryChange = (e) => {
     setApiary(e.target.value);
@@ -148,17 +78,19 @@ const handleDeleteModal = (e) => {
       </div>       
     ) 
 
+    useLayoutEffect(() => {
+        document.getElementById('showTasks').className='nav-link';
+        document.getElementById('showHistorycalTasks').className='nav-link active';
+      },[])
+
 
   useEffect(()=> {
     divRef.current = true
     getTasksAndApiarys()
     return () => {divRef.current=false;}  
-    },[getTasksAndApiarys,deletedTask]
+    },[getTasksAndApiarys]
     ) 
 
-  useLayoutEffect(() => {
-    document.getElementById('mainMenu').style.display='flex';
-  },[])
 
    return (
      <Container fluid ref={divRef}>
@@ -166,7 +98,8 @@ const handleDeleteModal = (e) => {
              isUserLogged 
              ? 
              <>  
-             <h5>Lista zadań</h5>    
+             <p></p>
+             <h5>Lista zakończonych zadań</h5>    
              {
               tasks.length<=0 ? (<b> brak zadań do wyświetlenia</b>) :
               (
@@ -186,25 +119,16 @@ const handleDeleteModal = (e) => {
                     </select>
                 </div>
               </form>  
-              <SectionTasks tasks={tasks} apiary={apiary} finishTask={handleFinishTask}
-              updateTask={handleUpdateTask} deleteTask={handleDeleteModal}/>
+              <SectionForHistorycalTasks tasks={tasks} apiary={apiary}/>
               </>
               )}
             </>
             : 
              notLoggedInformation()
           }
-          {          
-            popUp.status 
-              ? 
-                <PopUp parameters={popUp} action={handleDeleteTask}
-                  callback={setPopUp}/> 
-              : 
-                null
-          }     
       </Container> 
       );
 
   }
 
-  export default ShowTasks
+  export default ShowHistorycalTasks

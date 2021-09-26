@@ -1,11 +1,13 @@
 import React, {useState,useEffect} from 'react'
 import axios from 'axios'
 
-const Section = ({title,subject,apiary,apiaryID,date,
+const Section = ({data,apiaryID,
   handleTitleChange,handleSubjectChange,handleDateChange,handleApiaryChange,addEvent
 }) => {
    
     const  defaultDate = new Date().toISOString().slice(0,10)
+    const {title,subject,apiary,date} = data
+
     const [apiarys,setApiarys] = useState('')
   
     const getApiarys = () => {
@@ -31,7 +33,7 @@ const Section = ({title,subject,apiary,apiaryID,date,
         const list = apiarys.map((apiary) => {
           if (apiaryID!==null && apiaryID !== apiary._id) {return null}
           else {
-            return <option key={apiary._id} value={apiary.name}>{apiary.name}</option>
+            return <option key={apiary._id} value={apiary._id}>{apiary.name}</option>
           } 
           
         })
@@ -53,7 +55,7 @@ const Section = ({title,subject,apiary,apiaryID,date,
         <div><h4>Zadanie do wykonania</h4></div>
         <form onSubmit={handleSubmit}>
                   <div className="form-group" >
-                  <label htmlFor="title">Nazwa zadania / Nr Ula</label>
+                  <label htmlFor="title">Nazwa zadania lub Nr Ula</label>
                     <input
                       type="text"
                       onChange={handleTitleChange}
@@ -65,21 +67,6 @@ const Section = ({title,subject,apiary,apiaryID,date,
                       maxLength='30'
                       required
                     />
-                  </div>
-    
-                  <div className="form-group">
-                  <label htmlFor="subject">Opis</label>
-                    <textarea
-                      className="form-control form-control-sm"
-                      onChange={handleSubjectChange}
-                      type="textarea"
-                      id="subject"
-                      name="subject"
-                      value={subject || ''}
-                      placeholder="Opisz zadanie"
-                      maxLength="200"
-                      rows="5"
-                    ></textarea>
                   </div>
                   <div className="form-group" >
                   <label htmlFor="apiary">Pasieka</label>
@@ -96,6 +83,21 @@ const Section = ({title,subject,apiary,apiaryID,date,
                       }
 
                     </select>
+                  </div>
+    
+                  <div className="form-group">
+                  <label htmlFor="subject">Opis</label>
+                    <textarea
+                      className="form-control form-control-sm"
+                      onChange={handleSubjectChange}
+                      type="textarea"
+                      id="subject"
+                      name="subject"
+                      value={subject || ''}
+                      placeholder="Opisz zadanie"
+                      maxLength="200"
+                      rows="5"
+                    ></textarea>
                   </div>
                   <label htmlFor="date">Wykonać do (data)</label>
                   <div className="form-group" >

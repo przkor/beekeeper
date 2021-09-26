@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
-import { ContextLogin } from '../components/ContextLogin';
-import SectionTasks from '../components/Tasks/SectionForShowTask'
+import { ContextLogin } from '../ContextLogin';
+import SectionTasks from './SectionForShowTasks'
 import Container from 'react-bootstrap/Container'
-import PopUp from '../components/Modal/ModalConfirmation'
+import PopUp from '../Modal/ModalConfirmation'
 
 const ShowTasks = (props) => {
   const {isUserLogged} = useContext(ContextLogin)
@@ -27,7 +27,7 @@ const ShowTasks = (props) => {
     if (divRef.current) 
     {
     axios
-      .get('/tasks', {})
+      .get('/tasks', {params:{status:1}})
       .then(function (response) {
         if (response.data==="access denied")
         {   
@@ -148,6 +148,10 @@ const handleDeleteModal = (e) => {
       </div>       
     ) 
 
+    useLayoutEffect(() => {
+        document.getElementById('showTasks').className='nav-link active';
+        document.getElementById('showHistorycalTasks').className='nav-link';
+      },[])
 
   useEffect(()=> {
     divRef.current = true
@@ -165,8 +169,9 @@ const handleDeleteModal = (e) => {
           {
              isUserLogged 
              ? 
-             <>  
-             <h5>Lista zadań</h5>    
+             <> 
+             <p></p> 
+             <h5>Lista aktywnych zadań</h5>    
              {
               tasks.length<=0 ? (<b> brak zadań do wyświetlenia</b>) :
               (

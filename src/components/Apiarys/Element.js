@@ -61,8 +61,7 @@ const Element = ({_id,name,location,del}) => {
             <td>{name}</td>
             <td>{location}</td>
             <td>{hivesAmount}</td>
-            <td>{isVisibleForm? '' : editButton}</td>
-            <td>{deleteButton}</td>
+            <td>{isVisibleForm? '' : editButton} {deleteButton}</td>
         </tr>
        <tr><td colSpan={4}>{formElement()}</td></tr>
         </>       
