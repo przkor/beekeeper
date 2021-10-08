@@ -7,7 +7,7 @@ const SectionHistorycalTasks = ({tasks,apiary}) =>  {
   let tableTasks
   if (apiary==='noassignment') {tableTasks = tasks.filter(task=>(task.apiary==='' ))}
   else {tableTasks = tasks.filter(task=>((task.apiary===apiary || apiary==='all'))) }
-
+ 
   const columns = [{
     dataField: 'title',
     text: 'Zadanie',
