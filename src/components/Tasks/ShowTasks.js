@@ -16,6 +16,7 @@ const ShowTasks = (props) => {
   const divRef = useRef()
 
   const [taskID,setTaskID] = useState('')
+  const [isError,setIsError] = useState(false)
   const [popUp,setPopUp] = useState({
     status:false,
     title:'',
@@ -37,6 +38,7 @@ const ShowTasks = (props) => {
         setTasks (response.data)
       })
       .catch(function (error) {
+        setIsError('Błąd! Nie udało się pobrać danych z bazy')
         console.log("error is ", error);
       });
 
@@ -51,6 +53,7 @@ const ShowTasks = (props) => {
         setApiarys(response.data)
       })
       .catch(function (error) {
+        setIsError('Błąd! Nie udało się pobrać danych z bazy')
         console.log("error is ", error);
       });
   }
@@ -103,7 +106,7 @@ const handleDeleteModal = (e) => {
           }
           
         })
-        .catch(function (error) {});
+        .catch(function (error) {setIsError(`Błąd! Nie udało się usunąć`)});
   }
 
   const handleFinishTask = (e) => {
@@ -116,7 +119,7 @@ const handleDeleteModal = (e) => {
         .then(function (response) {
           toggleDeletedTask()
         })
-        .catch(function (error) {});
+        .catch(function (error) {setIsError(true)});
   }
 
   const toggleDeletedTask = () => {
@@ -140,13 +143,23 @@ const handleDeleteModal = (e) => {
      history.push(location)
    }
 
-   const notLoggedInformation = () => 
-    (
-      <div>
-        <p>Użytkownik nie jest zalogowany / brak dostępu</p>
-        <button onClick={handleRedirect}>Zaloguj sie</button>
-      </div>       
-    ) 
+   const errorInformation = () => 
+   {
+    if (isError!==false)
+      (
+        <div>
+          <p>Użytkownik nie jest zalogowany / brak dostępu</p>
+          <button onClick={handleRedirect}>Zaloguj sie</button>
+        </div>       
+      ) 
+    else 
+      (
+        <div>
+          <p>{isError}</p>
+      </div>
+      )
+  }
+    
 
     useLayoutEffect(() => {
         document.getElementById('showTasks').className='nav-link active';
@@ -165,9 +178,9 @@ const handleDeleteModal = (e) => {
   },[])
 
    return (
-     <Container fluid ref={divRef}>
+     <Container fluid ref={divRef} className="m-0 p-0 small_font">
           {
-             isUserLogged 
+             isUserLogged && (isError===false)
              ? 
              <> 
              <p></p> 
@@ -197,7 +210,7 @@ const handleDeleteModal = (e) => {
               )}
             </>
             : 
-             notLoggedInformation()
+              errorInformation()    
           }
           {          
             popUp.status 

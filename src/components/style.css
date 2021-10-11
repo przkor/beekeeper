@@ -32,6 +32,11 @@ label {
   color: black;
 }
 
+.small_font {
+  font-weight: normal;
+  font-size: 14px;
+}
+
 /* visited link */
 
 /* mouse over link */

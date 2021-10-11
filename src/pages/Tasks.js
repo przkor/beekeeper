@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react' ;
 import {useHistory} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
+import Button from 'react-bootstrap/Button'
 import ShowTasks from '../components/Tasks/ShowTasks'
 import ShowHistorycalTasks from '../components/Tasks/ShowHistorycalTasks'
 import { ContextLogin } from '../components/ContextLogin';
@@ -17,7 +18,7 @@ const ComponentToShow = ({action}) => {
         default: componentToShow=<ShowTasks/>
     }
     return (  
-        <Container fluid >
+        <Container fluid>
             {componentToShow}
         </Container>
     );
@@ -36,10 +37,10 @@ const Tasks = () => {
     const tab = () => {
         return (
         <ul className="nav nav-tabs" >
-            <li className="nav-item"><button className="nav-link active" 
-            onClick={handleClickButton} value="showTasks" id="showTasks">Zadania aktywne</button></li>
-            <li className="nav-item"><button className="nav-link" 
-            onClick={handleClickButton} value="showHistorycalTasks" id="showHistorycalTasks">Zadania wykonane</button></li>
+            <li className="nav-item"><Button className="nav-link active"
+            onClick={handleClickButton} value="showTasks" id="showTasks">Aktywne</Button></li>
+            <li className="nav-item"><button className="nav-link"  
+            onClick={handleClickButton} value="showHistorycalTasks" id="showHistorycalTasks">Zakończone</button></li>
         </ul>
         )
     }

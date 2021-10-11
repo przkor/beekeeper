@@ -18,7 +18,7 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
           <th scope="col">#</th>
           <th scope="col">Zadanie / Nr ula</th>
           <th scope="col">Wykonać do</th>
-          <th scope="col">zakończ/edytuj/usuń</th>
+          <th scope="col">Działanie</th>
           </tr>
         </thead>
         <tbody>
@@ -36,16 +36,16 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
                     <td style={{color:'#ee0033'}}><b>{task.date ? task.date : 'brak'}</b></td>
                   }   
                   <td>
-                  <button  className="mr-2" onClick={finishTask} value={task._id}>
-                    <span ><i class="fa fa-check"></i>
+                  <button  className="m-1"  onClick={finishTask} value={task._id}>
+                    <span style={{fontSize:"0.8rem"}} ><i class="fa fa-check "></i>
                     </span>
                     </button>
-                    <button  className="mr-2" onClick={updateTask} value={task._id}>
-                    <span ><i className="fa fa-pencil fa-fw"></i>
+                    <button  className="m-1" onClick={updateTask} value={task._id}>
+                    <span style={{fontSize:"0.8rem"}} ><i className="fa fa-pencil fa-fw"></i>
                     </span>
                     </button>
-                    <button onClick={deleteTask} value={task._id}>
-                    <span> <i className="fa fa-trash-o fa-lg"></i>
+                    <button className="m-1" onClick={deleteTask} value={task._id}>
+                    <span style={{fontSize:"0.8rem"}} > <i className="fa fa-trash-o fa-lg"></i>
                     </span>
                     </button>
                   </td>
