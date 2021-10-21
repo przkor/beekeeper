@@ -72,6 +72,7 @@ const Signin = (props) => {
               placeholder="Login"
               value={login}
               required
+              autoComplete="username"
               
             />
             <label htmlFor="inputPassword" className="sr-only">
@@ -85,6 +86,7 @@ const Signin = (props) => {
               className="form-control"
               placeholder="Hasło"
               required
+              autoComplete="current-password"
             />
   
             <button

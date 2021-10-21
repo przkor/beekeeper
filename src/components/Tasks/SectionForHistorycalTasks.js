@@ -73,7 +73,7 @@ const SectionHistorycalTasks = ({tasks,apiary}) =>  {
   
   const showHistorycalTasks = (
     
-      <BootstrapTable classes="foo"  condensed bordered={ false }  hover
+      <BootstrapTable  condensed bordered={ false }  hover
       keyField='_id' data={ tableTasks } columns={ columns } expandRow={ expandRow }
       defaultSorted={ defaultSorted } 
       pagination={ paginationFactory(options) }

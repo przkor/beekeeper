@@ -82,12 +82,13 @@ class Signup extends Component {
               Login
             </label>
             <input
-              type="name"
+              type="text"
               onChange={this.handleLoginChange}
               id="inputLogin"
               value={this.state.login}
               className="form-control"
               placeholder="Login"
+              autoComplete="username"
               required
               autoFocus
             />
@@ -95,11 +96,12 @@ class Signup extends Component {
               Imie
             </label>
             <input
-              type="name"
+              type="text"
               onChange={this.handleNameChange}
               id="inputName"
               value={this.state.name}
               className="form-control"
+              autoComplete="name"
               placeholder="Imie"
               required
             />
@@ -112,6 +114,7 @@ class Signup extends Component {
               id="inputEmail"
               value={this.state.email}
               className="form-control"
+              autoComplete="email"
               placeholder="E-mail"
               required
             />
@@ -125,6 +128,7 @@ class Signup extends Component {
               value={this.state.password}
               className="form-control"
               placeholder="Hasło"
+              autoComplete="new-password"
               required
             />
             <button

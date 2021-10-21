@@ -10,11 +10,14 @@ const ShowHistorycalTasks = (props) => {
   const [apiarys,setApiarys] = useState([])  
   const [apiary,setApiary] = useState('all')  
   const [tasks,setTasks] = useState([])
+  const [loading,setLoading] = useState(false)
+
   const history = useHistory()
   const divRef = useRef()
 
 
   const getTasksAndApiarys = useCallback(() => {
+    setLoading(true)
     if (divRef.current) 
     {
     axios
@@ -25,6 +28,7 @@ const ShowHistorycalTasks = (props) => {
          history.push("/")
          return 
         }
+        setLoading(false)
         setTasks (response.data)
       })
       .catch(function (error) {
@@ -99,8 +103,12 @@ const apiarysList = () => {
              ? 
              <>  
              <p></p>
-             <h5>Lista zakończonych zadań</h5>    
+             <h6>Lista zakończonych zadań</h6>    
              {
+              loading
+              ?
+              <p>Ładowanie...</p> 
+              :
               tasks.length<=0 ? (<b> brak zadań do wyświetlenia</b>) :
               (
                 <>

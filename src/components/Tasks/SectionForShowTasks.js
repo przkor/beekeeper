@@ -1,4 +1,6 @@
 import React from 'react'
+import {Accordion,Card,Container,Row,Col} from 'react-bootstrap'
+
 
 const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
   
@@ -12,56 +14,66 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
   else
   {
     return(
-        <table className="table table-sm table-striped table-bordered">
-        <thead className="thead thead-dark">
-          <tr>
-          <th scope="col">#</th>
-          <th scope="col">Zadanie / Nr ula</th>
-          <th scope="col">Wykonać do</th>
-          <th scope="col">Działanie</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            tableTasks.map((task,index) =>
-            {
-              return(
-                <>
-                <tr className="table-warning" key={task._id}>
-                <th scope="row">{index + 1}</th>
-                  <td>{task.title}</td>
-                  {today < task.date ? 
-                    <td>{task.date ? task.date : 'brak'}</td>
-                    :
-                    <td style={{color:'#ee0033'}}><b>{task.date ? task.date : 'brak'}</b></td>
-                  }   
-                  <td>
-                  <button  className="m-1"  onClick={finishTask} value={task._id}>
-                    <span style={{fontSize:"0.8rem"}} ><i class="fa fa-check "></i>
-                    </span>
-                    </button>
-                    <button  className="m-1" onClick={updateTask} value={task._id}>
-                    <span style={{fontSize:"0.8rem"}} ><i className="fa fa-pencil fa-fw"></i>
-                    </span>
-                    </button>
-                    <button className="m-1" onClick={deleteTask} value={task._id}>
-                    <span style={{fontSize:"0.8rem"}} > <i className="fa fa-trash-o fa-lg"></i>
-                    </span>
-                    </button>
-                  </td>
-                </tr>
-                <tr className="table-secondary">
-                 <td colSpan='5' style={{textAlign:'left'}}><b>Opis: </b> {task.subject}</td>
-               </tr>
-               </>
-              )
-            })
-            }
-        </tbody>
-      </table>
+      <>
+      <p style={{textAlign:"left"}}>Kliknij zadanie aby rozwinąć szczegóły..</p>
+      <Container className="pb-3">
+                <Row>
+                 <Col xs={2} className="p-0"><b>Nr zad.</b></Col>
+                 <Col xs={6} className="p-0"><b>Nazwa zad.</b></Col>
+                 <Col className="p-0"><b>Wykonać do</b></Col>
+                </Row>
+              </Container>
+      {
+         tableTasks.map((task,index) =>
+         {
+           return (
+             <>
+              <Accordion className="pb-1" key={task._id}>
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey={task._id}>
+                            <Container>
+                              <Row>
+                                <Col xs={2} className="p-0">Nr {index+1}</Col>
+                                <Col xs={6} className="p-0">{task.title}</Col>
+                                <Col className="p-0">
+                                {
+                                  today < task.date 
+                                  ? 
+                                    <p>{(task.date ? task.date : 'brak')}</p>
+                                  :
+                                    <p style={{color:'#ee0033'}}><b>{task.date ? task.date : 'brak'}</b></p>
+                                }  
+                                </Col>
+                              </Row>
+                            </Container>
+                            </Accordion.Toggle>
+
+                            <Accordion.Collapse eventKey={task._id}>
+                                <Card.Body>
+                                  <p>{task.subject}</p>
+                                  <button  className="m-1"  onClick={finishTask} value={task._id}>
+                                  <span><i className="fa fa-check "></i>
+                                  </span>
+                                  </button>
+                                  <button  className="m-1" onClick={updateTask} value={task._id}>
+                                  <span><i className="fa fa-pencil fa-fw"></i>
+                                  </span>
+                                  </button>
+                                  <button className="m-1" onClick={deleteTask} value={task._id}>
+                                  <span> <i className="fa fa-trash-o fa-lg"></i>
+                                  </span>
+                                  </button>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                </Accordion>
+             </>
+           )
+         }
+         )}  
+        </>
       )
-  } 
-    
+  }  
   }
 
   export default SectionTasks

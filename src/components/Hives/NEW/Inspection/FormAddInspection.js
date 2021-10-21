@@ -237,7 +237,7 @@ const [popUp,setPopUp] = useState({
 
  const inspectionType = insTable.map(inspection => 
      (
-      <option value={inspection.type1} data-id={inspection.id}>{inspection.type1}</option>
+      <option value={inspection.type1} data-id={inspection.id}>{inspection.type1} key={inspection.id}</option>
      )
  )
 

@@ -161,13 +161,13 @@ const showInspection = (
 
   return (
     <>
-      <div className="form-area">
-        <Button onClick={handleCancel} className="m-2">Zamknij</Button>
+      <div className="form-area"> 
         {showAddInspection ? null : <Button onClick={handleAddInspection} className="m-2">Dodaj inspekcje</Button> }
         <Button onClick={handleButtonAddTask} className="m-2">Dodaj zadanie</Button>
         {showAddInspection ? <FormAddInspection hiveID={hiveID} handleShowPopUp={setPopUp} callback={setShowAddInspection} 
         handleSetInspections={setInspections}/> : null}
         {inspections.length>0 ? showInspection : null}
+        <Button onClick={handleCancel} className="m-2">Zamknij</Button>
       </div>
       {
         popUp.status 

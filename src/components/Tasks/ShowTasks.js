@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import { ContextLogin } from '../ContextLogin';
 import SectionTasks from './SectionForShowTasks'
-import Container from 'react-bootstrap/Container'
+import {Container} from 'react-bootstrap'
 import PopUp from '../Modal/ModalConfirmation'
 
 const ShowTasks = (props) => {
@@ -16,6 +16,7 @@ const ShowTasks = (props) => {
   const divRef = useRef()
 
   const [taskID,setTaskID] = useState('')
+  const [loading,setLoading] = useState(false)
   const [isError,setIsError] = useState(false)
   const [popUp,setPopUp] = useState({
     status:false,
@@ -25,6 +26,7 @@ const ShowTasks = (props) => {
   })
 
   const getTasksAndApiarys = useCallback(() => {
+    setLoading(true)
     if (divRef.current) 
     {
     axios
@@ -35,9 +37,11 @@ const ShowTasks = (props) => {
          history.push("/")
          return 
         }
+        setLoading(false)
         setTasks (response.data)
       })
       .catch(function (error) {
+        setLoading(false)
         setIsError('Błąd! Nie udało się pobrać danych z bazy')
         console.log("error is ", error);
       });
@@ -79,7 +83,7 @@ const handleDeleteModal = (e) => {
               status:true,
               title:'Ostrzeżenie',
               message:'Czy na pewno usunąć?',
-              type:'danger',
+              type:'warning',
            })
 }
 
@@ -178,19 +182,25 @@ const handleDeleteModal = (e) => {
   },[])
 
    return (
+     <>
      <Container fluid ref={divRef} className="m-0 p-0 small_font">
           {
              isUserLogged && (isError===false)
              ? 
              <> 
              <p></p> 
-             <h5>Lista aktywnych zadań</h5>    
+             <h6>Lista aktywnych zadań</h6>    
              {
+              loading 
+              ?
+              <p>Ładowanie...</p>
+              :
               tasks.length<=0 ? (<b> brak zadań do wyświetlenia</b>) :
               (
                 <>
               <form>
-                <div className="form-group">
+                <div className="form-group small_font">
+                    <label htmlFor="apiary">Wybierz pasieke:</label>
                     <select
                       value={apiary || 'all'}
                       onChange={handleApiaryChange}
@@ -205,12 +215,12 @@ const handleDeleteModal = (e) => {
                 </div>
               </form>  
               <SectionTasks tasks={tasks} apiary={apiary} finishTask={handleFinishTask}
-              updateTask={handleUpdateTask} deleteTask={handleDeleteModal}/>
+              updateTask={handleUpdateTask} deleteTask={handleDeleteModal} key={tasks.length}/>
               </>
               )}
             </>
             : 
-              errorInformation()    
+            errorInformation()    
           }
           {          
             popUp.status 
@@ -221,6 +231,7 @@ const handleDeleteModal = (e) => {
                 null
           }     
       </Container> 
+      </>
       );
 
   }

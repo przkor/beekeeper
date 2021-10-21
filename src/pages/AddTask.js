@@ -31,9 +31,10 @@ const AddTask = (props) => {
 
   const history = useHistory()
 
-  const addEvent = () => { 
+  const addTask = () => { 
     if (divRef.current) {
-      axios
+      if (data.title && data.date) {
+        axios
       .post("/tasks", {
           data
         })
@@ -70,48 +71,30 @@ const AddTask = (props) => {
           console.log(error);
         });
       }
+      else {
+        setPopUp
+          ({
+            status:true,
+            title:'Błąd!',
+            message:'Nie uzupełniono wymaganych pól',
+            type:'warning'
+           })
+      }
+      
+      }
     }
   
- 
-    const handleTitleChange = (e) => {
-      setData(prevData => {
+    const handleFormChange = (e) => {
+      const name = e.target.name
+      setData(prevData=> {
         return {
-          ...prevData, 
-          title: e.target.value, 
+          ...prevData,
+          [name]: e.target.value 
         }
       })
     }
-
-    const handleSubjectChange = (e) => {
-      setData(prevData => {
-        return {
-          ...prevData, 
-          subject: e.target.value, 
-         
-        }
-      })
-    }  
-
-    const handleDateChange = (e) => {
-      setData(prevData => {
-        return {
-          ...prevData, 
-          date: e.target.value, 
-         
-        }
-      })
-    }
-
-    const handleApiaryChange = (e) => {
-      setData(prevData => {
-        return {
-          ...prevData, 
-          apiary: e.target.value, 
-        }
-      })
-    }
-
-    const getEventWithId = useCallback(() => {
+  
+    const getEventWithId = useCallback((mounted) => {
       if (taskID !== undefined && taskID !==null && divRef.current) {
         axios({
           method:'get',
@@ -119,7 +102,7 @@ const AddTask = (props) => {
           params: {taskID}
         })
         .then(function (response) {
-            if (response.status===200) {
+            if (response.status===200 && mounted===true) {
               setData({
                 id:response.data._id,
                 title:response.data.title,
@@ -137,10 +120,12 @@ const AddTask = (props) => {
 
   useEffect(
     ()=>{
+      let mounted=true
       divRef.current=true
-      getEventWithId()
+      getEventWithId(mounted)
       return function cleanup() {
-        divRef.current=false
+       mounted=false
+       divRef.current=false
       }
     },
     [getEventWithId]) 
@@ -162,26 +147,24 @@ const AddTask = (props) => {
   return (
     <div ref={divRef}> 
           {
-             isUserLogged
-             ? 
-             <Section handleTitleChange = {handleTitleChange} 
-                handleSubjectChange = {handleSubjectChange} 
-                handleDateChange = {handleDateChange} 
-                handleApiaryChange = {handleApiaryChange} 
+            isUserLogged
+              ? 
+              <Section 
+                handleFormChange = {handleFormChange}
                 data = {data}
                 apiaryID={apiaryID}
-                addEvent={addEvent}
-            /> 
-            : 
-             notLoggedInformation()
+                addTask={addTask}
+              /> 
+              : 
+              notLoggedInformation()
           }
           {          
             popUp.status 
               ? 
-                <PopUp parameters={popUp}
-                  callback={setPopUp}/> 
+              <PopUp parameters={popUp}
+               callback={setPopUp}/> 
               : 
-                null
+              null
           }
     </div>  
   )

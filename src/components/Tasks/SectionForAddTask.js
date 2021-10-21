@@ -1,31 +1,31 @@
 import React, {useState,useEffect} from 'react'
 import axios from 'axios'
 
-const Section = ({data,apiaryID,
-  handleTitleChange,handleSubjectChange,handleDateChange,handleApiaryChange,addEvent
-}) => {
-   
+const Section = ({data,apiaryID, handleFormChange,addTask}) => {
     const  defaultDate = new Date().toISOString().slice(0,10)
     const {title,subject,apiary,date} = data
-
     const [apiarys,setApiarys] = useState('')
-  
-    const getApiarys = () => {
-      axios.get("/apiarys", { 
-      })
-      .then(function (response) {
-          if (response.data==="access denied")
-          {
-              window.location.assign('/');
-              return
-          }
-          if(response.status===200) {
-            setApiarys(response.data)
-          }
-      })
-      .catch(function (error) {
-         console.log(error);
-      });
+    const [loading,setLoading] = useState(false)
+    
+    const getApiarys = (mounted) => {
+      if (mounted) {
+        axios.get("/apiarys", { 
+        })
+        .then(function (response) {
+            if (response.data==="access denied")
+            {
+                window.location.assign('/');
+                return
+            }
+            if(response.status===200) {
+              setLoading(false)
+              setApiarys(response.data)
+            }
+        })
+        .catch(function (error) {
+           console.log(error);
+        });  
+      }      
     }
 
     const apiarysList = () => {
@@ -47,8 +47,13 @@ const Section = ({data,apiaryID,
     }
 
     useEffect(()=>{
-      getApiarys()
-    })
+      let mounted = true
+      setLoading(true)
+      getApiarys(mounted)
+      return function cleanup() {
+        mounted=false
+       }
+    },[])
 
     return (
       <div className="container fluid">
@@ -58,7 +63,7 @@ const Section = ({data,apiaryID,
                   <label htmlFor="title">Nazwa zadania lub Nr Ula</label>
                     <input
                       type="text"
-                      onChange={handleTitleChange}
+                      onChange={handleFormChange}
                       className="form-control form-control-sm"
                       id="title"
                       name="title"
@@ -69,27 +74,34 @@ const Section = ({data,apiaryID,
                     />
                   </div>
                   <div className="form-group" >
-                  <label htmlFor="apiary">Pasieka</label>
-                    <select
-                      value={apiary || ''}
-                      onChange={handleApiaryChange}
-                      className="form-control form-control-sm"
-                      id="apiary"
-                      name="apiary"
-                    >
-                      <option value=''>bez przypisania</option>
-                      {
-                        apiarysList()
-                      }
-
-                    </select>
+                    {
+                      !loading 
+                      ?
+                      <>
+                        <label htmlFor="apiary">Pasieka</label>
+                        <select
+                          value={apiary || ''}
+                          onChange={handleFormChange}
+                          className="form-control form-control-sm"
+                          id="apiary"
+                          name="apiary"
+                        >
+                          <option value=''>bez przypisania</option>
+                          {
+                            apiarysList()
+                          }
+                        </select>
+                    </>  
+                    :
+                    <p>Ładowanie ...</p> 
+                    }
                   </div>
     
                   <div className="form-group">
                   <label htmlFor="subject">Opis</label>
                     <textarea
                       className="form-control form-control-sm"
-                      onChange={handleSubjectChange}
+                      onChange={handleFormChange}
                       type="textarea"
                       id="subject"
                       name="subject"
@@ -103,7 +115,7 @@ const Section = ({data,apiaryID,
                   <div className="form-group" >
                     <input
                       type="date"
-                      onChange={handleDateChange}
+                      onChange={handleFormChange}
                       className="form-control form-control-sm"
                       id="date"
                       name="date"
@@ -111,9 +123,9 @@ const Section = ({data,apiaryID,
                       min={defaultDate}
                     />
                   </div>
-                  <button
+                  <button 
                     type="button"
-                    onClick={addEvent}
+                    onClick={addTask}
                     id="submit"
                     name="submit"
                     className="btn btn-primary pull-right"

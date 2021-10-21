@@ -7,10 +7,10 @@ const menuList = ["pasieki","ule","matki","akcje"]
 const ManagerMenu = (props) => {
     const {isUserLogged} = useContext(ContextLogin)  
     const history = useHistory()
-    const list = menuList.map(option =>(
+    const list = menuList.map((option,index) =>(
         
-            <Link to={`/manager/${option}`} className="tags">
-                <button type="button" class="list-group-item list-group-item-action">{option}</button>
+            <Link to={`/manager/${option}`} className="tags" key={index}>
+                <button type="button" className="list-group-item list-group-item-action">{option}</button>
             </Link>
         
     ))
