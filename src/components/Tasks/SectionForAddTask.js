@@ -111,7 +111,7 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
                       rows="5"
                     ></textarea>
                   </div>
-                  <label htmlFor="date">Wykonać do (data)</label>
+                  <label htmlFor="date">Wykonać do</label>
                   <div className="form-group" >
                     <input
                       type="date"
@@ -131,7 +131,7 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
                     className="btn btn-primary pull-right"
                     value=""
                   >
-                    Zatwierdź/Dodaj
+                    Zatwierdź
                   </button>
           </form>
       </div>
