@@ -6,7 +6,7 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
     const {title,subject,apiary,date} = data
     const [apiarys,setApiarys] = useState('')
     const [loading,setLoading] = useState(false)
-    
+
     const getApiarys = (mounted) => {
       if (mounted) {
         axios.get("/apiarys", { 
@@ -105,7 +105,7 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
                       type="textarea"
                       id="subject"
                       name="subject"
-                      value={subject || ''}
+                      value={subject || ''} 
                       placeholder="Opisz zadanie"
                       maxLength="200"
                       rows="5"
