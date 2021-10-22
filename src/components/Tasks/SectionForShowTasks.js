@@ -1,7 +1,6 @@
 import React from 'react'
 import {Accordion,Card,Container,Row,Col} from 'react-bootstrap'
 
-
 const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
   
   let tableTasks
@@ -29,12 +28,12 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
            return (
              <>
               <Accordion className="pb-1" key={task._id}>
-                        <Card key={task._id}>
-                            <Accordion.Toggle as={Card.Header} eventKey={task._id} key={task._id}>
-                            <Container key={task._id}>
-                              <Row key={task._id}>
+                        <Card>
+                            <Accordion.Toggle as={Card.Header} eventKey={task._id}>
+                            <Container>
+                              <Row>
                                 <Col xs={2} className="p-0" >Nr {index+1}</Col>
-                                <Col xs={6} className="p-0">{task.title}</Col>
+                                <Col xs={6} className="p-0">{task.title} ...</Col>
                                 <Col className="p-0">
                                 {
                                   today < task.date 
@@ -48,7 +47,7 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
                             </Container>
                             </Accordion.Toggle>
 
-                            <Accordion.Collapse eventKey={task._id}>
+                            <Accordion.Collapse eventKey={task._id} key={index}>
                                 <Card.Body>
                                   <p>{task.subject}</p>
                                   <button  className="m-1"  onClick={finishTask} value={task._id}>

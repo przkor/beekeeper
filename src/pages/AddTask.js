@@ -130,6 +130,7 @@ const AddTask = (props) => {
     },
     [getEventWithId]) 
 
+
   const handleRedirect= () => {
     const location = { 
       pathname: '/'

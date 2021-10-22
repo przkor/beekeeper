@@ -27,25 +27,32 @@ const ShowTasks = (props) => {
 
   const getTasksAndApiarys = useCallback(() => {
     setLoading(true)
-    if (divRef.current) 
-    {
+    const source = axios.CancelToken.source()
     axios
-      .get('/tasks', {params:{status:1}})
+      .get('/tasks', {params:{status:1}, cancelToken: source.token})
       .then(function (response) {
-        if (response.data==="access denied")
-        {   
-         history.push("/")
-         return 
+        if (divRef.current) 
+        {
+          if (response.data==="access denied")
+          {   
+          history.push("/")
+          return 
+          }
+          setTasks (response.data)
         }
-        setLoading(false)
-        setTasks (response.data)
       })
       .catch(function (error) {
-        setLoading(false)
-        setIsError('Błąd! Nie udało się pobrać danych z bazy')
-        console.log("error is ", error);
-      });
-
+        if (axios.isCancel(error)) {
+          console.log('Request canceled', error.message)
+        }
+        else {
+          
+          setIsError('Błąd! Nie udało się pobrać danych z bazy')
+          throw error
+        }  
+      })
+      ;
+ 
       axios
       .get('/apiarys', {})
       .then(function (response) {
@@ -59,8 +66,10 @@ const ShowTasks = (props) => {
       .catch(function (error) {
         setIsError('Błąd! Nie udało się pobrać danych z bazy')
         console.log("error is ", error);
+      })
+      .then(function() {
+        setLoading(false)
       });
-  }
 },[history]
 )
 
@@ -164,11 +173,10 @@ const handleDeleteModal = (e) => {
       )
   }
     
-
-    useLayoutEffect(() => {
-        document.getElementById('showTasks').className='nav-link active';
-        document.getElementById('showHistorycalTasks').className='nav-link';
-      },[])
+  useLayoutEffect(() => {
+    document.getElementById('showTasks').className='nav-link active';
+    document.getElementById('showHistorycalTasks').className='nav-link';
+  },[])
 
   useEffect(()=> {
     divRef.current = true
@@ -198,25 +206,25 @@ const handleDeleteModal = (e) => {
               tasks.length<=0 ? (<b> brak zadań do wyświetlenia</b>) :
               (
                 <>
-              <form>
-                <div className="form-group small_font">
-                    <label htmlFor="apiary">Wybierz pasieke:</label>
-                    <select
-                      value={apiary || 'all'}
-                      onChange={handleApiaryChange}
-                      className="form-control"
-                      id="apiary"
-                      name="apiary"
-                    >
-                    <option value='all'>wszystkie</option>
-                    <option value='noassignment'>bez przypisania</option>
-                      {apiarysList()}
-                    </select>
-                </div>
-              </form>  
-              <SectionTasks tasks={tasks} apiary={apiary} finishTask={handleFinishTask}
-              updateTask={handleUpdateTask} deleteTask={handleDeleteModal} key={tasks.length}/>
-              </>
+                  <form>
+                    <div className="form-group small_font">
+                        <label htmlFor="apiary">Wybierz pasieke:</label>
+                        <select
+                          value={apiary || 'all'}
+                          onChange={handleApiaryChange}
+                          className="form-control"
+                          id="apiary"
+                          name="apiary"
+                        >
+                        <option value='all'>wszystkie</option>
+                        <option value='noassignment'>bez przypisania</option>
+                          {apiarysList()}
+                        </select>
+                    </div>
+                  </form>  
+                  <SectionTasks tasks={tasks} apiary={apiary} finishTask={handleFinishTask}
+                    updateTask={handleUpdateTask} deleteTask={handleDeleteModal} key={tasks.length}/>
+                </>
               )}
             </>
             : 
@@ -224,11 +232,11 @@ const handleDeleteModal = (e) => {
           }
           {          
             popUp.status 
-              ? 
-                <PopUp parameters={popUp} action={handleDeleteTask}
-                  callback={setPopUp}/> 
-              : 
-                null
+            ? 
+              <PopUp parameters={popUp} action={handleDeleteTask}
+                callback={setPopUp}/> 
+            : 
+              null
           }     
       </Container> 
       </>
