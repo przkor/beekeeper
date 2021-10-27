@@ -2,9 +2,6 @@ import React, {useLayoutEffect,useEffect,useState} from 'react'
 import PopUp from '../../Modal/Modal'
 import axios from 'axios'
 
-
-//import treatmentFromDatabase from './TreatmentDatabase'
-
 const FormAdd = () => {
 
   useLayoutEffect(() => {

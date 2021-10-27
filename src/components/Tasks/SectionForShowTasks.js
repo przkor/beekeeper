@@ -15,8 +15,8 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
     return(
       <>
       <p style={{textAlign:"left"}}>Kliknij zadanie aby rozwinąć szczegóły..</p>
-      <Container className="pb-3">
-                <Row>
+      <Container className="mb-2">
+                <Row >
                  <Col xs={2} className="p-0"><b>Nr zad.</b></Col>
                  <Col xs={6} className="p-0"><b>Nazwa zad.</b></Col>
                  <Col className="p-0"><b>Wykonać do</b></Col>
@@ -27,12 +27,12 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
          {
            return (
              <>
-              <Accordion className="pb-1" key={task._id}>
+              <Accordion className="pb-2" key={task._id}>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey={task._id}>
                             <Container>
                               <Row>
-                                <Col xs={2} className="p-0" >Nr {index+1}</Col>
+                                <Col xs={2} className="p-0" >{index+1}</Col>
                                 <Col xs={6} className="p-0">{task.title} ...</Col>
                                 <Col className="p-0">
                                 {

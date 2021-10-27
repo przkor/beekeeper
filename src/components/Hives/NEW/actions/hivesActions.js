@@ -215,7 +215,10 @@ export function doMigrateHives(data,apiaryID,handleClearMigrateList,setChangeCon
             const modifiedHivesAmount = response.data.modifiedHivesAmount
                if ( modifiedHivesAmount >= 1) {
                     handleClearMigrateList()
-                    setChangeConfirmation(`Zmigrowano pomyślnie ${modifiedHivesAmount} ule.`)
+                    setChangeConfirmation({
+                        variant:'success',
+                        message:`Zmigrowano pomyślnie ${modifiedHivesAmount} ule.`
+                    })
                     dispatch({type:'none'}) 
                 }
                else {console.warn(`Błąd bazy! Nie zmigrowano.`)}   

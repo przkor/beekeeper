@@ -23,9 +23,6 @@ const ManagerPage = (props) => {
         <>
         <div><h5>Zarządzanie - {option}</h5></div>
         <div>{componentToShow}</div>
-        <div>
-        <Link to="/managers"><h6>Powrót</h6></Link>
-        </div>
 </>
     );
 }
