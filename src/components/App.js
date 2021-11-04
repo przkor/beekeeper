@@ -1,9 +1,6 @@
 import  React, {hashHistory, useState} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { ContextLogin, defaultObject } from './ContextLogin';
-
-//import axios from 'axios'
-
 import Signin from '../pages/Signin'
 import Signup from '../pages/Signup'
 import Tasks from '../pages/Tasks'
