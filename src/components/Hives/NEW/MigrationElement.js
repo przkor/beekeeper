@@ -3,12 +3,7 @@ import {migrateHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
 import { Archive } from 'react-bootstrap-icons';
 
-
-
-
-
-const MigrationElement = ({_id,number,type,handleMoveHive}) => {
-
+const MigrationElement = ({_id,number,type,power,handleMoveHive}) => {
 /*
     const handleCheckbox =  (e) => {
         const id = e.target.value
@@ -36,7 +31,7 @@ const MigrationElement = ({_id,number,type,handleMoveHive}) => {
         <>
         <tr key={_id}>
             <td><span><Archive></Archive> {number}</span></td>
-            <td>{type}</td>
+            <td><b>{type}</b><br/><em>{power}</em></td>
             <td>
                  <button onClick={handleMove}>
                      <span>

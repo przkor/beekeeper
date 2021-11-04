@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const GETapiarys = 'getApiarys'
 
-export function getApiarys() {
+export function getApiarys(callback) {
     return (dispatch) => {
         axios({
             method: 'get',
@@ -15,7 +15,8 @@ export function getApiarys() {
                 return
             }
             else {
-                dispatch({type:GETapiarys,data:response.data})
+                dispatch({type:GETapiarys,data:response.data})  
+                callback()    
             }
         })
         .catch(function (error) {

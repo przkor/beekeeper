@@ -9,6 +9,11 @@ import axios from 'axios'
 const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     
     const [hivesAmount,setHivesAmount] = useState(0)
+    const [loadingApiarys,setLoadingApiarys] = useState(false)
+    const [loadingHives,setLoadingHives] = useState(false)
+
+    const callbackApiarys = () => {return setLoadingApiarys(false)}
+    const callbackHives = () => {return setLoadingHives(false)}
 
     const getHivesAmountInApiary = (apiaryID) => {
         const _id = apiaryID
@@ -25,7 +30,8 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     }
     const handleSelect = (e) => {
         const apiaryID = e.target.value
-        getHives(apiaryID) 
+        setLoadingHives(true)
+        getHives(apiaryID,callbackHives) 
         getHivesAmountInApiary(apiaryID) 
     }
 
@@ -95,15 +101,27 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
 
     useEffect(() => { 
         clear()
-        getApiarys()
+        setLoadingApiarys(true)
+        getApiarys(callbackApiarys)
         return function cleanUp() {clear()}
         },[getApiarys,clear]  
     )
 
     return (
     <>
-        {apiarys.length>0 ? apiarysList : noApiarysToShow}
-        { hives.length>0 ? hivesList : noHivesToShow}
+        {
+            !loadingApiarys 
+            ?
+            apiarys.length>0 ? apiarysList : noApiarysToShow
+            : <p>Ładowanie</p>
+        }
+        {
+            !loadingHives
+            ?
+            hives.length>0 ? hivesList : noHivesToShow
+            : <p>Ładowanie</p>
+        }
+         
     </>
     )
 }

@@ -64,7 +64,7 @@ export const get = (data) => ({
     }
 })
 
-export function getHives(apiaryID) {
+export function getHives(apiaryID,callback) {
     return (dispatch) => {
         axios({
             method: 'get',
@@ -81,6 +81,7 @@ export function getHives(apiaryID) {
                // console.log(`apiaryID: ${apiaryID}`)
                // console.log(`Response.data.result: ${response.data.result}`)
                if (response.data!==false) {
+                callback()
                 dispatch({type:GET,data:response.data})
                }
                else {return}

@@ -16,15 +16,21 @@ const List = () => {
         variant:'success',
         message:''
     })
+    const [loadingApiary,setLoadingApiary] = useState(false)
+    const [loadingHives,setLoadingHives] = useState(false)
 
     const dispatch = useDispatch()
     const hives = useSelector(store=>store.hives)
     const apiarys = useSelector(store=>store.apiarys)
+
+    const callbackApiarys = () => {return setLoadingApiary(false)}
+    const callbackHives = () => {return setLoadingHives(false)}
     
     const handleSelectApiaryFrom = (e) => {
         const apiaryId = e.target.value
+        setLoadingHives(true)
         setChangeConfirmation(prev=>({ variant:prev.variant , message:''}))
-        dispatch(getHives(apiaryId))  
+        dispatch(getHives(apiaryId,callbackHives))  
         setApiaryFrom(apiaryId)
         setApiaryTo('')
         setMigrateList([])
@@ -63,7 +69,8 @@ const List = () => {
 
     const handleCancleMigrate = () => {
         handleClearMigrateList()
-        dispatch(getHives(apiaryFrom))
+        setLoadingHives(true)
+        dispatch(getHives(apiaryFrom,callbackHives))
     }
 
     const ApiarysFrom = apiarys.map((apiary, index) => {
@@ -150,7 +157,7 @@ const List = () => {
                 <thead className="thead thead-light">
                 <tr>
                     <th>Nr</th>
-                    <th>Typ</th>
+                    <th>Ramka /<br/>Siła</th>
                     <th>Przenieś</th>
                 </tr>
                 </thead>
@@ -161,19 +168,29 @@ const List = () => {
         </div>
     )
 
-    useEffect(() => { 
-        dispatch(getApiarys())
+    useEffect(() => {  
+        dispatch(getApiarys(callbackApiarys))
         return function cleanUp() {}
         },[]  
     )
     
     return (
         
-        <Container>
+        <Container className="m-0 p-0">
             <Row>
                 <Col sm={7}> 
-                {apiarys.length>0 ? apiarysListFrom : noApiarysToShow}
-                {hives.length>0 ? hivesList : noHivesToShow}  
+                {
+                    !loadingApiary 
+                    ? apiarys.length>0 ? apiarysListFrom : noApiarysToShow
+                    : <p>Ładowanie</p>
+                }   
+                {
+                    !loadingHives 
+                    ? hives.length>0 ? hivesList : noHivesToShow
+                    : <p>Ładowanie</p> 
+                  
+                }
+                 
                 </Col>   
                 <Col sm={5}>
                     {apiarys.length>0 ? apiarysListTo : noApiarysToShow}
@@ -187,6 +204,7 @@ const List = () => {
                 </Col>
             </Row>
         </Container>
+
     )
 }
 
