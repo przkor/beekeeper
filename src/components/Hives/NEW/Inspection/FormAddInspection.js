@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import PopUp from '../../../Modal/Modal'
 import axios from 'axios'
+import { Button, Container} from 'react-bootstrap'
 
 const insTable = [
     {
@@ -185,6 +186,8 @@ const [popUp,setPopUp] = useState({
    type:''
  })
 
+ const close = () => {callback(false)}
+
  const addInspection= (inspection) => {
     data = new Date().toISOString().slice(0,10)
     callback(false)
@@ -237,7 +240,7 @@ const [popUp,setPopUp] = useState({
 
  const inspectionType = insTable.map(inspection => 
      (
-      <option value={inspection.type1} data-id={inspection.id}>{inspection.type1} key={inspection.id}</option>
+      <option key={inspection.id} value={inspection.type1} data-id={inspection.id}>{inspection.type1}</option>
      )
  )
 
@@ -303,7 +306,7 @@ const [popUp,setPopUp] = useState({
     )
 
   return (
-    <>
+    <Container fluid className="m-0 mt-2 p-1 pb-5 " style={{backgroundColor:"lightgrey"}}>
     <div className="form-area mt-3 mb-3">
       <h5>Nowa inspekcja</h5>
       <form onSubmit={handleSubmit}>
@@ -357,15 +360,17 @@ const [popUp,setPopUp] = useState({
               maxLength='150'
               />
              </div>
-            <button
+            <Button
               type="button"
               onClick={handleAddInspection}
               id="submit"
               name="submit"
-              className="btn btn-primary pull-right"
+              variant="success"
+              className="pull-right m-1"
             >
               Dodaj
-            </button>
+            </Button>
+            <Button variant="secondary" className="pull-right m-1 mr-2" onClick={close}>Zamknij</Button>
       </form>        
    </div>
    <div>
@@ -378,7 +383,8 @@ const [popUp,setPopUp] = useState({
           null
    }
   </div>
-  </>    
+  </Container>
+   
 )
 }
 

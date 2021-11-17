@@ -58,9 +58,9 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
     return (
       <div className="container fluid">
         <div><h4>Zadanie do wykonania</h4></div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{textAlign:'left'}}>
                   <div className="form-group" >
-                  <label htmlFor="title">Nazwa zadania lub Nr Ula</label>
+                  <label htmlFor="title">Nazwa zadania lub Nr Ula*</label>
                     <input
                       type="text"
                       onChange={handleFormChange}
@@ -111,7 +111,7 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
                       rows="5"
                     ></textarea>
                   </div>
-                  <label htmlFor="date">Wykonać do</label>
+                  <label htmlFor="date">Wykonać do* (data)</label>
                   <div className="form-group" >
                     <input
                       type="date"
@@ -124,11 +124,10 @@ const Section = ({data,apiaryID, handleFormChange,addTask}) => {
                     />
                   </div>
                   <button 
-                    type="button"
                     onClick={addTask}
                     id="submit"
                     name="submit"
-                    className="btn btn-primary pull-right"
+                    className="btn btn-success pull-right"
                     value=""
                   >
                     Zatwierdź

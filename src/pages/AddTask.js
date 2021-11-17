@@ -76,7 +76,7 @@ const AddTask = (props) => {
           ({
             status:true,
             title:'Błąd!',
-            message:'Nie uzupełniono wymaganych pól',
+            message:'Nie uzupełniono wymaganych pól (oznaczonych *)',
             type:'warning'
            })
       }

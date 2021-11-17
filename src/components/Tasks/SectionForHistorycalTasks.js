@@ -8,32 +8,40 @@ const SectionHistorycalTasks = ({tasks,apiary}) =>  {
   if (apiary==='noassignment') {tableTasks = tasks.filter(task=>(task.apiary==='' ))}
   else {tableTasks = tasks.filter(task=>((task.apiary===apiary || apiary==='all'))) }
  
-  const columns = [{
-    dataField: 'title',
-    text: 'Zadanie',
-    sort: false
-  },
-{
-    dataField: 'date',
-    text: 'Wykonać do',
-    sort: true
-  },
-  {
-    dataField: 'finishDate',
-    text: 'Data zakończenia',
-    sort: true
-  }];
   
   const expandRow = {
     parentClassName: 'foo',
     showExpandColumn: true,
     renderer: row => (
-      <div style={{backgroundColor:"#c8e6c9"}}><p >{row.subject}</p></div>
+      <div style={{backgroundColor:"#c8e6c9"}}><p>Opis zadanie:{row.subject}</p></div>
     ),
     
     
   };
+
+  const headerSortingStyle = { backgroundColor: '#c8e6c9' };
+  const headerSortingClasses = 'demo-sorting';
   
+  
+  const columns = [{
+    dataField: 'title',
+    text: 'Zadanie',
+    sort: false,
+  },
+{
+    dataField: 'date',
+    text: 'Wykonać do',
+    sort: true,
+    headerSortingStyle
+
+    
+  },
+  {
+    dataField: 'finishDate',
+    text: 'Data zakończenia',
+    sort: true,
+    headerSortingStyle
+  }];
   const defaultSorted = [{
     dataField: 'finishDate',
     order: 'desc'
@@ -72,14 +80,11 @@ const SectionHistorycalTasks = ({tasks,apiary}) =>  {
   
   
   const showHistorycalTasks = (
-    
-      <BootstrapTable  condensed bordered={ false }  hover
-      keyField='_id' data={ tableTasks } columns={ columns } expandRow={ expandRow }
+      <BootstrapTable condensed bordered={ false }  hover expandRow={expandRow}
+      keyField='_id' data={ tableTasks } columns={ columns } 
       defaultSorted={ defaultSorted } 
-      pagination={ paginationFactory(options) }
-      headerWrapperClasses='foo'
+      pagination={ paginationFactory(options) } 
       />
-   
     )
 
   if (apiary==='noassignment') {tableTasks = tasks.filter(task=>(task.apiary==='' ))}

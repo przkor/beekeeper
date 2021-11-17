@@ -29,7 +29,7 @@ const Hives = () => {
    {
       isUserLogged 
       ? 
-      <Container fluid>
+      <Container fluid className="p-0 m-0">
       <Provider store={store}>
           <HivesList/>
       </Provider>

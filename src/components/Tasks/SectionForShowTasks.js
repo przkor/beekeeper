@@ -26,8 +26,7 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
          tableTasks.map((task,index) =>
          {
            return (
-             <>
-              <Accordion className="pb-2 text-left" key={task._id}>
+              <Accordion className="pb-2 text-left" key={index}>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey={task._id}>
                             <Container>
@@ -66,7 +65,6 @@ const SectionTasks = ({tasks,apiary,finishTask,updateTask, deleteTask}) =>  {
                             </Accordion.Collapse>
                         </Card>
                 </Accordion>
-             </>
            )
          }
          )}  

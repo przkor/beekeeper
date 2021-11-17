@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator'; 
+import { Container } from 'react-bootstrap'
 
 const Inspection = ({hiveID,apiary,callback}) => 
 {
@@ -77,16 +78,16 @@ const columns = [{
   
 }, {
   dataField: 'ins_type1',
-  text: 'Czynność',
+  text: 'Typ ins.',
   sort: true
 }, {
   dataField: 'ins_type2',
-  text: 'Szczegóły',
+  text: 'Podtyp',
 }];
 
 const expandRow = {
   renderer: row => (
-    <div><p>{row.description}</p></div>
+    <div>{row.description?<p><b>Szczegóły:</b> {row.description}</p> : 'brak dodatkowych informacji'}</div>
   )
 };
 
@@ -102,7 +103,7 @@ const customTotal = (from, to, size) => (
 );
 
 const options = {
-  paginationSize: 3,
+  paginationSize: 1,
   pageStartIndex: 1,
   // alwaysShowAllBtns: true, // Always show next and previous button
   withFirstAndLast: false, // Hide the going to First and Last page button
@@ -126,18 +127,18 @@ const options = {
   }] // A numeric array is also available. the purpose of above example is custom the text
 };
 
-const rowStyle = { backgroundColor: '#c8e6c9' };
+const rowStyle = { };
 
 const showInspection = (
-  <div className="mt-3">
-    <h6>Historia Inspekcji</h6>
+  <Container fluid className="m-0 mt-5">
+    <h5>Historia Inspekcji</h5>
     <BootstrapTable  condensed bordered={ false }  hover
     keyField='_id' data={ inspections } columns={ columns } expandRow={ expandRow }
     defaultSorted={ defaultSorted } 
     pagination={ paginationFactory(options) }
     rowStyle={ rowStyle } 
     />
-  </div>
+  </Container>
   )
  
   const handleCancel = () => {
@@ -162,12 +163,13 @@ const showInspection = (
   return (
     <>
       <div className="form-area"> 
-        {showAddInspection ? null : <Button onClick={handleAddInspection} className="m-2">Dodaj inspekcje</Button> }
-        <Button onClick={handleButtonAddTask} className="m-2">Dodaj zadanie</Button>
-        {showAddInspection ? <FormAddInspection hiveID={hiveID} handleShowPopUp={setPopUp} callback={setShowAddInspection} 
+        {showAddInspection ? null : <Button variant="success" onClick={handleAddInspection} className="m-1">+Inspekcja</Button> }
+        <Button variant="success" onClick={handleButtonAddTask} className="m-1">+Zadanie</Button>
+        <Button variant="secondary" onClick={handleCancel} className="m-1">Zamknij</Button>
+        {showAddInspection ? <FormAddInspection key={hiveID} hiveID={hiveID} handleShowPopUp={setPopUp} callback={setShowAddInspection} 
         handleSetInspections={setInspections}/> : null}
         {inspections.length>0 ? showInspection : null}
-        <Button onClick={handleCancel} className="m-2">Zamknij</Button>
+        
       </div>
       {
         popUp.status 

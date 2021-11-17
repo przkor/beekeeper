@@ -223,7 +223,7 @@ const handleDeleteModal = (e) => {
                     </div>
                   </form>  
                   <SectionTasks tasks={tasks} apiary={apiary} finishTask={handleFinishTask}
-                    updateTask={handleUpdateTask} deleteTask={handleDeleteModal} key={tasks.length}/>
+                    updateTask={handleUpdateTask} deleteTask={handleDeleteModal}/>
                 </>
               )}
             </>

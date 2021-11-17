@@ -1,5 +1,6 @@
 import React, {useLayoutEffect,useEffect,useState} from 'react'
 import PopUp from '../../Modal/Modal'
+import {Button,Col,Container,Row } from 'react-bootstrap'
 import axios from 'axios'
 
 const FormAdd = () => {
@@ -228,31 +229,35 @@ const getQuens = () => {
       <div className="form-area mt-4">
         <h5>Dodawanie nowego Ula</h5>
             <form>
-              <br styles="clear:both" />
-              <div className="form-group hive">
-                <div className="hiveNumberInput">
-                  <label htmlFor="number">Numer ula</label>
-                  <input
-                    type="text"
-                    onChange={handleNumber}
-                    className="form-control"
-                    id="number"
-                    name="number"
-                    value={hive.number || ''}
-                    placeholder="numer ula"
-                    maxLength="3"
-                    required
-                    readOnly
-                    disabled
-                    />
-                </div>
-                <div className="hiveNumberButton">
-                  <p><br></br></p>
-                 <button className="btn btn-primary" onClick={handleNumberButton}>Pobierz z puli</button>
-                 
-                </div>
-              </div>
-  
+              <Row >
+                <Col>
+                  <div className="form-group hive">
+                  <label htmlFor="number" >Numer/ID</label> 
+                  
+                    <input
+                      type="text"
+                      onChange={handleNumber}
+                      className="form-control"
+                      id="number"
+                      name="number"
+                      value={hive.number || ''}
+                      placeholder="numer ula"
+                      maxLength="5"
+                      required
+                      readOnly
+                      disabled
+                      />
+                      
+                  </div>
+                  
+                </Col>
+                <Col xs={7} style={{textAlign:'left'}}>
+                  <p></p>
+                <Button className="mt-3" onClick={handleNumberButton}>Pobierz z puli</Button>
+                </Col>
+              </Row>
+            <Row xs={1} md={3} lg={3}>
+              <Col>
               <div className="form-group hive">
                 <label htmlFor="type">Typ ramki</label> 
                 <select
@@ -276,6 +281,8 @@ const getQuens = () => {
                   <option value='inna'>Inna</option>
                 </select>
                </div>
+              </Col>
+              <Col>
               <div className="form-group hive">
                 <label htmlFor="mother">Rasa matki</label>
                 <select
@@ -298,9 +305,10 @@ const getQuens = () => {
                 :
                 null   
               }
-              </select>
-                
+              </select>     
               </div>
+              </Col>
+              <Col>
               <div className="form-group hive">
                 <label htmlFor="motherYear">Rok matki</label>
                 <select
@@ -321,6 +329,8 @@ const getQuens = () => {
                  <option value='2021'>2021</option>
                 </select>
               </div> 
+              </Col>
+              <Col>
               <div className="form-group hive">
               <label htmlFor="power">Siła rodziny</label>
                 <select
@@ -341,6 +351,8 @@ const getQuens = () => {
                  <option value='słaba'>słaba</option>
                 </select>
               </div> 
+              </Col>
+              <Col>
               <div className="form-group hive">
               <label htmlFor="status">Status</label>
                 <select
@@ -368,8 +380,10 @@ const getQuens = () => {
                  <option value='choroba nieznana'>choroba nieznana</option>
                 </select>
               </div>
+              </Col>
+              <Col>
               <div className="form-group hive">
-              <label htmlFor="pasieka">Przypisz do pasieki</label>
+              <label htmlFor="pasieka">Pasieka</label>
                 <select
                   type="text"
                   onChange={handleApiary}
@@ -393,16 +407,22 @@ const getQuens = () => {
                 }
                 </select>
               </div>    
+              </Col>
+            </Row>
+            <Row>
+              <Col>
               <button
                 type="button"
                 onClick={handleAddHive}
                 id="submit"
                 name="submit"
-                className="btn btn-primary pull-right"
+                className="btn btn-success pull-right"
               >
                 Dodaj
               </button>
-            </form>
+              </Col>
+            </Row> 
+          </form>
           {
             popUp.status 
             ? 

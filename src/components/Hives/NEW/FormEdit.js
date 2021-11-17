@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import {editHive} from './actions/hivesActions'
 import axios from 'axios'
+import { Button } from 'react-bootstrap'
 
 //import treatmentFromDatabase from './TreatmentDatabase'
 
@@ -259,24 +260,25 @@ const FormEdit = ({
               }
               </select>
             </div>    
-            <button
-              type="button"
+            <Button
+              variant="success"
               onClick={handleOnSubmit}
               id="submit"
               name="submit"
-              className="btn btn-primary pull-right"
+              className="pull-right"
             >
               Zapisz
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               type="button"
               onClick={handleCancel}
               id="cancel"
               name="cancel"
-              className="btn btn-primary pull-right mr-3"
+              className="pull-right mr-3"
             >
               Anuluj
-            </button>
+            </Button>
           </form>
         </div>
   )

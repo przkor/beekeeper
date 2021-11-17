@@ -5,7 +5,6 @@ const hivesReducer = (state=[],action) => {
     switch(action.type) {     
         case ADD: {
           //  action.setDefaultInput.setDefault()
-           console.log(`dodano nowy ul do bazyy`)
             return [...state,action.data];
         } 
         case EDIT: {

@@ -3,6 +3,9 @@ import FormEdit from './FormEdit'
 import ShowInspection from './Inspection/ShowInspection'
 import {delHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
+import { Accordion,Card,Col,Container,Row } from 'react-bootstrap'
+import PopUp from '../../Modal/ModalConfirmation'
+import { store } from '../../../store/hivesStore'
 
 const collection = 'hives'
 
@@ -11,18 +14,38 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
 
     const [isVisibleFormEdit,setIsVisibleFormEdit]= useState(false)
     const [isVisibleInspection,setIsVisibleInspection]= useState(false)
+    const [popUp,setPopUp] = useState({
+        status:false,
+        title:'',
+        message:'',
+        type:'',
+      })
 
-    const toggleInspectionButton = () => {      
+    const toggleInspectionButton = () => {   
+        setIsVisibleFormEdit(false)   
         setIsVisibleInspection(current=>!current)
     }
-    const toggleEditButton = () => {      
+    const toggleEditButton = () => {  
+        setIsVisibleInspection(false)    
         setIsVisibleFormEdit(current=>!current)
+    }
+
+    const handleDeleteModal = (e) => {
+        //e.prevent.default()
+        setPopUp({
+            status:true,
+            title:'Ostrzeżenie',
+            message:'Czy na pewno usunąć?',
+            type:'warning',
+        })
     }
 
     const handleDelete = () => {  
         let id =_id
-        if(window.confirm('Czy na pewno trwale usunąć')) {delHive(id,collection)}
+        delHive(id,collection)
     }
+
+    
 
     const formEdit = () => {
         if (isVisibleFormEdit) {
@@ -50,38 +73,54 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
         }
     }
 
-    const inspectionButton = <button style={{margin:"4px"}} onClick={toggleInspectionButton}><span ><i className="fa fa-wrench" aria-hidden="true"></i></span></button>
-    const editButton = <button style={{margin:"4px"}} onClick={toggleEditButton}><span ><i className="fa fa-pencil fa-fw"></i></span></button>
-    const deleteButton = <button style={{margin:"4px"}} onClick={handleDelete}><span><i className="fa fa-trash-o fa-lg"></i></span></button>
+    const inspectionButton = <button style={{margin:"2vh",fontSize:'1.3rem'}} onClick={toggleInspectionButton}><span ><i className="fa fa-wrench" aria-hidden="true"></i></span></button>
+    const editButton = <button style={{margin:"2vh",fontSize:'1.3rem'}} onClick={toggleEditButton}><span ><i className="fa fa-pencil fa-fw"></i></span></button>
+    const deleteButton = <button style={{margin:"2vh", fontSize:'1.3rem'}} onClick={handleDeleteModal}><span><i className="fa fa-trash-o fa-lg"></i></span></button>
+    
 
     return (
         <>
-        <tr key={_id} >
-            <td>{number}</td>
-            <td>{type}</td>
-            <td>{status}</td>
-            <td >
-                {isVisibleInspection ? '' : inspectionButton}
-                {isVisibleFormEdit ? '' : editButton}
-                {deleteButton}
-            </td>
-        </tr>
-        {isVisibleFormEdit ? 
-            <tr><td colSpan={4} className="text-center">{formEdit()}</td></tr>
-            :
-            null
-        }
-        {isVisibleInspection ? 
-            <tr>
-                <td colSpan={4} className="text-center">
-                    <div style={{maxWidth:"500px"}}>
-                     {inspection()}
-                    </div>
-                </td>
-            </tr>
-            :
-            null
-        }
+         <Accordion className="p-0 m-0 pb-2 text-center " key={_id}>
+                        <Card className="p-0 m-0">
+                            <Accordion.Toggle as={Card.Header} eventKey={_id}>
+                            <Container className="p-0 m-0">
+                              <Row className="p-1 m-0">
+                                <Col xs={2} md={1} lg={1} className="p-1">ID*<br/><b>{number}</b></Col>
+                                <Col className="p-1">typ:<br/><b>{type}</b></Col>
+                                <Col className="p-1">matka:<br/><b>{motherYear}r.</b></Col>
+                                <Col  className="p-1">siła:<br/><b>{power}</b></Col>
+                                <Col className="p-1 d-none d-md-block">status:<br/><b>{status}</b></Col>
+                              </Row>
+                            </Container>
+                            </Accordion.Toggle>
+
+                            <Accordion.Collapse className="text-center" eventKey={_id}>
+                                <Card.Body>
+                                    <p style={{textAlign:'left'}}><b>Rasa matki: </b>{mother} ,  <b>Status: </b>{status}</p>
+                                    {isVisibleInspection ? '' : inspectionButton}
+                                    {isVisibleFormEdit ? '' : editButton}
+                                    {deleteButton}
+                                    <Container>
+                                    {
+                                        isVisibleFormEdit ? formEdit() : null
+                                    }
+                                    {
+                                        isVisibleInspection ? inspection() :null
+                                    }
+                                    </Container>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+        </Accordion>
+        {          
+            popUp.status 
+            ? 
+              <PopUp parameters={popUp} action={handleDelete}
+                callback={setPopUp}/> 
+            : 
+              null
+          }     
+                
         </>       
     )
 }

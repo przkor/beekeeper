@@ -1,10 +1,10 @@
 import React, {useEffect,useState} from 'react'
 import Element from './Element'
-import Table from 'react-bootstrap/Table'
 import {connect} from 'react-redux'
 import {getHives,clear} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
 import axios from 'axios'
+import { Container,Col,Row } from 'react-bootstrap'
 
 const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     
@@ -51,7 +51,7 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
 
     const noHivesToShow = (
         <div>
-            <p>Brak uli</p>
+            <p>brak uli</p>
         </div>
     )
 
@@ -61,42 +61,35 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
         </div>
     )
     const apiarysList = (
-        <div>
-            <form style={{"marginTop":"20px", "marginBottom":"20px"}}>
-                <h6>Wybierz pasieke:</h6>
-                <select
-                onChange={handleSelect}
-                className="form-control"
-                id="pasieka"
-                name="pasieka"
-                placeholder="wybierz"
-                >
-                <option value=''>wybierz</option>
-                    {Apiarys}
-                <option value='all'>wszystkie</option>
-                </select>
-            </form>
-        </div>
+        <Container className="m-0 p-0" >
+            <Row className="mt-5 p-0">
+                <Col md={12}>
+                    <p><b>Wybierz pasieke:</b></p>
+                    <form className="m-auto" style={{maxWidth:'90%'}}>
+                        <select
+                        onChange={handleSelect}
+                        className="form-control text-center mb-3"
+                        id="pasieka"
+                        name="pasieka"
+                        placeholder="wybierz"
+                        >
+                        <option value=''>wybierz</option>
+                            {Apiarys}
+                        <option value='all'>wszystkie</option>
+                        </select>
+                    </form>
+                </Col>
+            </Row>
+        </Container>
 
     )
     const hivesList = 
         (
-        <div className="table-responsive container-for-table" >
-            <h5>Liczba rodzin pszczelich: {hivesAmount}</h5>
-            <Table bordered  size="sm">
-                <thead className="thead thead-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Typ</th>
-                    <th>Status</th>
-                    <th>Akcje</th>
-                </tr>
-                </thead>
-                <tbody>
-                 {Elements}    
-                </tbody>
-            </Table>
-        </div>
+            <Container className="small_font p-0 m-0">
+                <h6 className="mb-4"><u>Łączna ilość uli: {hives.length}</u></h6>
+                <p style={{textAlign:'left'}}>*Kliknij aby rozwinąć...</p>
+                {Elements}
+            </Container>                    
     )
 
     useEffect(() => { 

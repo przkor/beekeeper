@@ -97,7 +97,7 @@ const apiarysList = () => {
 
 
    return (
-     <Container fluid ref={divRef}>
+     <Container fluid ref={divRef} className="m-0 p-0">
           {
              isUserLogged 
              ? 

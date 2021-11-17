@@ -3,7 +3,6 @@ import {GET} from '../actions/apiarysActions'
 import axios from 'axios'
 
 export const apiarysMiddleware = store => next => action =>  {
-    console.log(`Jestem w apiarysMiddleware, akcja: ${action.type}`)
     const type=action.type
     const dbCollection = action.dbCollection
     if (type === GET) {
