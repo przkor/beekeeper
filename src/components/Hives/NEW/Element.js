@@ -5,10 +5,9 @@ import {delHive} from './actions/hivesActions'
 import {connect} from 'react-redux'
 import { Accordion,Card,Col,Container,Row } from 'react-bootstrap'
 import PopUp from '../../Modal/ModalConfirmation'
-import { store } from '../../../store/hivesStore'
+
 
 const collection = 'hives'
-
 
 const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}) => {
 
@@ -42,7 +41,7 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
 
     const handleDelete = () => {  
         let id =_id
-        delHive(id,collection)
+        delHive(id,number,collection)
     }
 
     
@@ -80,27 +79,25 @@ const Element = ({_id,number,type,mother,motherYear,power,status,apiary,delHive}
 
     return (
         <>
-         <Accordion className="p-0 m-0 pb-2 text-center " key={_id}>
+         <Accordion className="p-0 m-0 m-md-2 p-md-2 mb-3  text-center " key={_id}>
                         <Card className="p-0 m-0">
-                            <Accordion.Toggle as={Card.Header} eventKey={_id}>
-                            <Container className="p-0 m-0">
-                              <Row className="p-1 m-0">
+                            <Accordion.Toggle className="m-0 p-0" as={Card.Header} eventKey={_id}>
+                              <Row className="p-0 m-0">
                                 <Col xs={2} md={1} lg={1} className="p-1">ID*<br/><b>{number}</b></Col>
                                 <Col className="p-1">typ:<br/><b>{type}</b></Col>
                                 <Col className="p-1">matka:<br/><b>{motherYear}r.</b></Col>
                                 <Col  className="p-1">siła:<br/><b>{power}</b></Col>
                                 <Col className="p-1 d-none d-md-block">status:<br/><b>{status}</b></Col>
                               </Row>
-                            </Container>
                             </Accordion.Toggle>
 
-                            <Accordion.Collapse className="text-center" eventKey={_id}>
-                                <Card.Body>
+                            <Accordion.Collapse className="text-center p-0 m-0" eventKey={_id}>
+                                <Card.Body className="m-0 p-0 m-md-2 p-md-2"  >
                                     <p style={{textAlign:'left'}}><b>Rasa matki: </b>{mother} ,  <b>Status: </b>{status}</p>
                                     {isVisibleInspection ? '' : inspectionButton}
                                     {isVisibleFormEdit ? '' : editButton}
                                     {deleteButton}
-                                    <Container>
+                                    <Container  className="m-0 p-0 m-md-2 p-md-2" >
                                     {
                                         isVisibleFormEdit ? formEdit() : null
                                     }

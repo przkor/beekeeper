@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
 import { ContextLogin } from '../components/ContextLogin';
+import { Container,Col,Row } from 'react-bootstrap';
 
 const Signin = (props) => {
     const history = useHistory()
@@ -58,8 +59,10 @@ const Signin = (props) => {
      
       return (
         <section>
-        <div>
+        <Container>
           <h4>Panel logowania</h4>
+          <Row className="justify-content-center">
+            <Col lg={6} md={6} sm={9}>
           <form className="form-signin" onSubmit={handleSubmit}>
             <label htmlFor="inputLogin" className="sr-only">
               Adres email
@@ -97,11 +100,16 @@ const Signin = (props) => {
               Zaloguj
             </button>
           </form>
-          <div>
+          </Col>
+          </Row>
+          <Row className="justify-content-center">
+            <Col  lg={6} md={6} sm={9}>
             <p>{wrongLogOrPass}</p>
             <Link to="/signup">{"Zarejestruj konto"}</Link>
-          </div>
-        </div>
+            </Col>
+          </Row>
+
+        </Container>
         </section>
       );
     }

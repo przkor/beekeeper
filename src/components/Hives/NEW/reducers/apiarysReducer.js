@@ -1,7 +1,7 @@
 import  {GETapiarys} from '../actions/apiarysActions.js'
 
 const apiarysReducer = (state=[],action) => {
-    console.log(`Jestem w apiarys Reducerze`)
+   // console.log(`Jestem w apiarys Reducerze`)
     switch(action.type) {     
         case GETapiarys: {
             return [...action.data];

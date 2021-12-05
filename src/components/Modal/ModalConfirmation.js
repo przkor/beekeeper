@@ -6,6 +6,9 @@ export default function PopUp(props) {
   const {title,message,type} = props.parameters
   let callback = props.callback
   let action = props.action
+  let showOkButton = true
+  if (title==="Uwaga")  { showOkButton = false}
+  
   let wariant
   let titleColor
   switch(type) {
@@ -55,8 +58,8 @@ export default function PopUp(props) {
             {message}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant={wariant} onClick={action}>OK</Button>
-            <Button variant="secondary" onClick={handleClose}>Anuluj</Button>
+            {showOkButton ? <Button variant={wariant} onClick={action}>Tak</Button> : null }
+            <Button variant="secondary" onClick={handleClose}>Zamknij</Button>
           </Modal.Footer>
         </Modal>
       </>

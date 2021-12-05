@@ -130,7 +130,7 @@ const options = {
 const rowStyle = { };
 
 const showInspection = (
-  <Container fluid className="m-0 mt-5">
+  <Container className="m-0 mt-5 p-0">
     <h5>Historia Inspekcji</h5>
     <BootstrapTable  condensed bordered={ false }  hover
     keyField='_id' data={ inspections } columns={ columns } expandRow={ expandRow }
@@ -162,7 +162,7 @@ const showInspection = (
 
   return (
     <>
-      <div className="form-area"> 
+      <div className="form-area m-0 p-0"> 
         {showAddInspection ? null : <Button variant="success" onClick={handleAddInspection} className="m-1">+Inspekcja</Button> }
         <Button variant="success" onClick={handleButtonAddTask} className="m-1">+Zadanie</Button>
         <Button variant="secondary" onClick={handleCancel} className="m-1">Zamknij</Button>

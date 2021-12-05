@@ -134,12 +134,12 @@ export function addHive(data,setDefault) {
   }
 }
 
-export function delHive(id) {
+export  function delHive(id,number) {
     return (dispatch) => {
         axios({
             method: 'delete',
             url: '/hives',
-            params: {id}  
+            params: {id,number}  
         })
         .then(function (response) {
             //const newID=response.data

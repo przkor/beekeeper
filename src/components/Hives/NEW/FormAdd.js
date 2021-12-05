@@ -1,10 +1,9 @@
 import React, {useLayoutEffect,useEffect,useState} from 'react'
 import PopUp from '../../Modal/Modal'
-import {Button,Col,Container,Row } from 'react-bootstrap'
+import {Button,Col,Row } from 'react-bootstrap'
 import axios from 'axios'
 
 const FormAdd = () => {
-
   useLayoutEffect(() => {
     document.getElementById('showHives').className='nav-link';
     document.getElementById('migrationHives').className='nav-link';
@@ -233,7 +232,6 @@ const getQuens = () => {
                 <Col>
                   <div className="form-group hive">
                   <label htmlFor="number" >Numer/ID</label> 
-                  
                     <input
                       type="text"
                       onChange={handleNumber}
@@ -246,10 +244,8 @@ const getQuens = () => {
                       required
                       readOnly
                       disabled
-                      />
-                      
+                      />       
                   </div>
-                  
                 </Col>
                 <Col xs={7} style={{textAlign:'left'}}>
                   <p></p>

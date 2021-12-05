@@ -2,176 +2,14 @@ import React, {useEffect, useState} from 'react'
 import PopUp from '../../../Modal/Modal'
 import axios from 'axios'
 import { Button, Container} from 'react-bootstrap'
-
-const insTable = [
-    {
-        id:0,
-        type1:'przegląd zwykły',
-        type2: [
-            {
-                id:'0',
-                name:'dodanie ramek'
-            },
-            {
-                id:'1',
-                name:'rozbudowa gniazda'
-            },
-            {
-                id:'2',
-                name:'dodanie ramki pracy'
-            },
-            {
-                id:'3',
-                name:'wycinanie ramki pracy'
-            },
-            {
-                id:'4',
-                name:'usunięcie ramki pracy'
-            },
-            {
-                id:'5',
-                name:'kontrola czerwienia'
-            },
-            {
-                id:'6',
-                name:'dołożenie korpusu'
-            },
-            {
-                id:'7',
-                name:'zacieśnienie gniazda'
-            },
-            {
-                id:'8',
-                name:'układanie do zimowli'
-            },
-            {
-                id:'9',
-                name:'inne'
-            },
-
-        ]
-    },
-    {
-        id:1,
-        type1:'przegląd zimowy',
-        type2: [
-            {
-                id:'0',
-                name:'spr. umiejscowienia kłębu'
-            },
-            {
-                id:'1',
-                name:'spr. ilości pokarmu'
-            },
-            {
-                id:'2',
-                name:'poddanie pokarmu'
-            },
-            {
-                id:'3',
-                name:'poddanie wody'
-            },
-        ]
-    },
-    {
-        id:2,
-        type1:'przegląd wiosenny',
-        type2: [
-            {
-                id:'0',
-                name:'spr. ilości pszczół'
-            },
-            {
-                id:'1',
-                name:'spr. ilości pokarmu'
-            },
-            {
-                id:'2',
-                name:'spr. czerwienia'
-            },
-            {
-                id:'3',
-                name:'poddanie wody'
-            },
-            {
-                id:'4',
-                name:'podkarmienie'
-            },
-            {
-                id:'5',
-                name:'rozbudowa gniazda'
-            },
-            {
-                id:'6',
-                name:'zacieśnienie gniazda'
-            },
-        ]
-    },
-    {
-        id:3,
-        type1:'podkarmianie',
-        type2: [
-            {
-                id:'0',
-                name:'pobudzające'
-            },
-            {
-                id:'1',
-                name:'zapas zimowy'
-            },
-            {
-                id:'2',
-                name:'wiosenne uzupełnienie'
-            },
-        ]
-    },
-    {
-        id:4,
-        type1:'midobranie',
-        type2: [
-        ]
-    },
-    {
-        id:5,
-        type1:'leczenie',
-        type2: [
-            {
-                id:'0',
-                name:'warrroza'
-            },
-            {
-                id:'1',
-                name:'nosema'
-            },
-            {
-                id:'2',
-                name:'grzybica'
-            },
-            {
-                id:'3',
-                name:'zgnilec europejski'
-            },
-            {
-                id:'4',
-                name:'zgnilec amerykański'
-            },
-            {
-                id:'5',
-                name:'wirusowe'
-            },
-            {
-                id:'6',
-                name:'inne'
-            },
-        ]
-    },   
-]
+import inspectionTable from './Const/inspectionTable'
 
 const FormAddInspection = (props) => {
     let data = new Date().toISOString().slice(0,10)
     const {hiveID,callback,handleSetInspections,handleShowPopUp} = props
     const [inspection,setInspection] = useState({
         hiveID,
+        _id:Date.now(),
         ins_data: data,
         ins_type1:'',
         ins_type2:'',
@@ -213,12 +51,14 @@ const [popUp,setPopUp] = useState({
             return; 
         }
         else {
+            /*
             handleShowPopUp({
               status:true,
               title:'Sukces',
               message:'Dodano inspekcję',
               type:'confirmation'
             })
+            */
             handleSetInspections( prev => {
                let table = [...prev]
                table.push(inspection)
@@ -238,7 +78,7 @@ const [popUp,setPopUp] = useState({
     });
  }
 
- const inspectionType = insTable.map(inspection => 
+ const inspectionType = inspectionTable.map(inspection => 
      (
       <option key={inspection.id} value={inspection.type1} data-id={inspection.id}>{inspection.type1}</option>
      )
@@ -248,8 +88,8 @@ const [popUp,setPopUp] = useState({
 
  if (type1ID!=='') {
     //const temporaryTable = insTable[type1ID].type2
-    inspectionType2 = insTable[type1ID].type2.map(element =>
-        <option value={element.name}>{element.name}</option>
+    inspectionType2 = inspectionTable[type1ID].type2.map(element =>
+        <option key={element.id} value={element.name}>{element.name}</option>
     )
  }
 

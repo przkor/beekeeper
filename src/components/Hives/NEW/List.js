@@ -3,17 +3,38 @@ import Element from './Element'
 import {connect} from 'react-redux'
 import {getHives,clear} from './actions/hivesActions'
 import {getApiarys} from './actions/apiarysActions'
-import axios from 'axios'
 import { Container,Col,Row } from 'react-bootstrap'
 
 const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     
-    const [hivesAmount,setHivesAmount] = useState(0)
-    const [loadingApiarys,setLoadingApiarys] = useState(false)
-    const [loadingHives,setLoadingHives] = useState(false)
+    const [loading,setLoading] = useState ({
+        apiarys:false,
+        hives:false
+    })
 
-    const callbackApiarys = () => {return setLoadingApiarys(false)}
-    const callbackHives = () => {return setLoadingHives(false)}
+    const callbackApiarys = () => {
+        setLoading(prevState=>{
+            return {
+                apiarys:false,
+                ...prevState.hives   
+            }
+        })
+    }
+
+    const callbackHives = () => {
+        setLoading(prevState=>{
+            return {
+                hives:false,
+                ...prevState.apiarys   
+            }
+        })
+    }
+
+/* Funkcja getHivesAmonutIn Apiary została usunięta ponieważ jest nie potrzebna
+ilość uli jest sprawdzana za ponocą metody lenghth dla stata hives. Metoda ta zwraca ilość obiektów 
+znajdujących się w zmiennej hives 
+
+  const [hivesAmount,setHivesAmount] = useState(0)
 
     const getHivesAmountInApiary = (apiaryID) => {
         const _id = apiaryID
@@ -22,17 +43,16 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
             url:'/hives/getHivesAmountInApiary',
             params:{_id}
         }).then(function(response){
-            console.log(response.data.result)
             setHivesAmount(response.data.result)
         }).catch(function (error) {
             console.log(error);
          });
     }
+    */
     const handleSelect = (e) => {
         const apiaryID = e.target.value
-        setLoadingHives(true)
+        setLoading({hives:true, apiarys:false})
         getHives(apiaryID,callbackHives) 
-        getHivesAmountInApiary(apiaryID) 
     }
 
     const Apiarys = apiarys.map((apiary, index) => {
@@ -62,7 +82,7 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
     )
     const apiarysList = (
         <Container className="m-0 p-0" >
-            <Row className="mt-5 p-0">
+            <Row className="m-0 mt-5 p-0">
                 <Col md={12}>
                     <p><b>Wybierz pasieke:</b></p>
                     <form className="m-auto" style={{maxWidth:'90%'}}>
@@ -94,28 +114,29 @@ const List = ({hives,apiarys,getHives,getApiarys,clear}) => {
 
     useEffect(() => { 
         clear()
-        setLoadingApiarys(true)
+        setLoading({apiarys:true,hives:false})
+       // setLoading(prev=>({apiarys:true, ...prev}))
         getApiarys(callbackApiarys)
         return function cleanUp() {clear()}
         },[getApiarys,clear]  
     )
 
     return (
-    <>
+    <Container className="m-0 p-0">
         {
-            !loadingApiarys 
+            !loading.apiarys 
             ?
-            apiarys.length>0 ? apiarysList : noApiarysToShow
+            apiarys.length>0 ? apiarysList : noApiarysToShow 
             : <p>Ładowanie</p>
         }
         {
-            !loadingHives
+            !loading.hives
             ?
             hives.length>0 ? hivesList : noHivesToShow
             : <p>Ładowanie</p>
         }
          
-    </>
+    </Container>
     )
 }
 

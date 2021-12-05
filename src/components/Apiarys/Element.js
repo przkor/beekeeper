@@ -3,12 +3,21 @@ import FormAdd from './FormAdd'
 import {del} from './actions/apiarysActions'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import PopUp  from '../Modal/ModalConfirmation' 
+
 
 
 const Element = ({_id,name,location,del}) => {
 
     const [isVisibleForm,setIsVisibleForm]= useState(false)
     const [hivesAmount,setHivesAmount] = useState('')
+    const [popUp,setPopUp] = useState({
+        status:false,
+        title:'',
+        message:'',
+        type:'',
+      })
+
     const getHivesAmount = useCallback((_id) => {
         axios({
             method:'get',
@@ -32,8 +41,26 @@ const Element = ({_id,name,location,del}) => {
     }
 
     const handleDelete = () => { 
-        if (hivesAmount>0) {alert('Nie można zlikwidować pasieki gdy znajdują się w niej ule.')}
-        else {del(_id)}
+        if (hivesAmount>0) {
+            setPopUp({
+                status:true,
+                title:'Uwaga',
+                message:'Nie można trwale usunąć pasieki gdy znajdują się w niej ule!',
+                type:'warning',
+            })
+        }
+        else {
+            setPopUp({
+                status:true,
+                title:'Potwierdź',
+                message:'Czy na pewno usunąć?',
+                type:'danger',
+            })
+        }
+    }
+
+    const deleteApiary = () => {
+        del(_id)
     }
     
     useEffect(()=>{
@@ -64,6 +91,14 @@ const Element = ({_id,name,location,del}) => {
             <td>{isVisibleForm? '' : editButton} {deleteButton}</td>
         </tr>
        <tr><td colSpan={4}>{formElement()}</td></tr>
+       {          
+            popUp.status 
+            ? 
+              <PopUp parameters={popUp} action={deleteApiary}
+                callback={setPopUp}/> 
+            : 
+              null
+          }   
         </>       
     )
 }

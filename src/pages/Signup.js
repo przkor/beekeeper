@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {Container,Col,Row} from 'react-bootstrap'
 
 class Signup extends Component {
     constructor(props) {
@@ -75,7 +76,9 @@ class Signup extends Component {
    
       return (
         <section>
-        <div>
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={6} md={6} sm={9}>
           <form className="form-signin" onSubmit={this.handleSubmit}>
             <h2 className="form-signin-heading">Zarejestruj się:</h2>
             <label htmlFor="inputLogin" className="sr-only">
@@ -139,14 +142,15 @@ class Signup extends Component {
               Zarejestruj
             </button>
           </form>
-          
+          </Col>
+          </Row>
           <div>
             <h4>{this.state.confirmation}</h4>
           </div>
           <div>
             <Link to="/signin">{"Zaloguj"}</Link>
           </div>
-        </div>
+        </Container>
         </section>
       );
     }
